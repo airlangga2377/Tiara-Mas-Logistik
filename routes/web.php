@@ -10,7 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () { 
+    return view('page.guest.tracking');
+});
+
+Route::get('/login', function () { 
+    return view('auth.login');
+});
+
+Route::post('/login', 'Auth\AuthController@login');
+
+Route::get('/logout', 'Auth\AuthController@logout');
+
+Route::group(['middleware' => 'userAuthenticated'], function ()
+{      
+    Route::get('/home', 'HomeController@page');
+
+    Route::get('/barang', 'CargoBarangController@page');
+    
+    Route::get('/barang/pengiriman', 'CargoPengirimanBarangController@page');
+
+    Route::post('/barang/pengiriman/insert', 'CargoPengirimanBarangController@store');
 });
