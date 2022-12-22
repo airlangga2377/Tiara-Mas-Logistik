@@ -16,7 +16,7 @@ class UserAuthenticated
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {
+    { 
         if ($request->session()->exists('isLogin')) { 
             try {
                 $token = decrypt($request->session()->get('isLogin'));

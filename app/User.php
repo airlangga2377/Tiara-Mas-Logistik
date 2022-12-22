@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Cargo\CargoPengirimanBarang as CargoPengirimanBarang;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -18,10 +20,11 @@ class User extends Authenticatable
         'name', 
         'email', 
         'password', 
-        'status_user',
-        'is_user_superadmin',
-        'kota',
+        'status_user', 
+        'is_user_superadmin', 
+        'kota', 
         'wilayah',
+
     ];
 
     /**
@@ -30,7 +33,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'api_token'
+        'password',
+        'remember_token',
+        'api_token'
     ];
 
     /**
@@ -40,5 +45,53 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+
     ];
+
+    /**
+     * Get Detail the Pengiriman Cargo.
+    */ 
+    public function allDetailCargoPengirimanBarang()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new CargoPengirimanBarang();
+        } else {
+            $data =  $this->hasMany(CargoPengirimanBarang::class, "id_user");
+        }
+        $data =  $sql
+        ->orderByDesc('created_at')
+        ->get();
+        return $data ? $data : array();
+    }
+
+    /**
+     * Get the Pengiriman Cargo.
+    */ 
+    public function allCargoPengirimanBarang()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new CargoPengirimanBarang();
+        } else {
+            $sql =  $this->hasMany(CargoPengirimanBarang::class, "id_user"); 
+        }
+        $data = $sql
+        ->selectRaw(
+            'id_cargo_pengiriman_barangs,
+            no_lmt,
+            no_resi,
+            nama_pengirim,
+            nama_penerima,
+            SUM(cargo_pengiriman_barangs.biaya) as biaya,
+            SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
+            keterangan,
+            is_lunas,
+            is_diterima,
+            DATE(created_at) as created',
+        ) 
+        ->orderByDesc('cargo_pengiriman_barangs.created_at') 
+        ->groupBy("no_lmt")
+        ->get()
+        ; 
+        return $data ? $data : array();
+    }
 }

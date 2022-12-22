@@ -2,6 +2,9 @@
 
 @section('preload') 
     <link rel="preload" href="https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?cs=srgb&dl=pexels-samuel-w%C3%B6lfl-1427541.jpg&fm=jpg">
+
+    {{-- Jquery --}}
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 @endsection
 
 @section('title') 
@@ -71,4 +74,12 @@
 
 @section('footer')
   @include('layouts.footer') 
+@endsection
+
+@section('script-body-bottom')  
+    <script> 
+        $(document).ready( function () { 
+            $('#overlayLoading').css('visibility', 'hidden');
+        });
+    </script>
 @endsection

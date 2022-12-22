@@ -13,12 +13,34 @@
     <!-- Icon -->
     
 
+    <style> 
+      .overlayLoading{
+          position: fixed; 
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);  
+          z-index: 1;
+      }
+    </style>
+    
+<?php $__env->startSection('title'); ?> 
+    <title>Cargo aja</title>
+<?php $__env->stopSection(); ?> 
+    
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
     <?php echo $__env->yieldContent('preload'); ?>
     
     <?php echo $__env->yieldContent('title'); ?>
   </head>
   <body>
     <div class="container-fluid p-0 h-100">
+        <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
+          <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
+            <span class="fs-1 visually-hidden">Loading...</span>
+          </div>
+        </div>
+        
         <?php echo $__env->yieldContent('top-nav-bar'); ?>
         
         <?php echo $__env->yieldContent('content'); ?>

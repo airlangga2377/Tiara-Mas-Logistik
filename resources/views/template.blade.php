@@ -18,7 +18,36 @@
 @endsection
 
 @section('top-nav-bar')
-    {{-- Your code --}}
+<nav class="navbar navbar-light shadow-sm"> 
+    <div class="container-fluid"> 
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="dropdown">
+            <a class="ms-2 me-2 fs-5 text-dark text-decoration-none" href="{{ url('home') }}">Beranda</a>
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ $name }}
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url('logout') }}">Keluar</a></li> 
+            </ul>
+        </div>
+
+        <div class="offcanvas offcanvas-start text-bg-light" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">    
+                
+                <button type="button" class="btn-close offcanvas-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body"> 
+                <div class="list-group list-group-flush"> 
+                    <a role="button" class="fs-5 fw-bold list-group-item list-group-item-action" href="{{ url('barang') }}">Barang</a>  
+                    <a role="button" class="fs-5 list-group-item list-group-item-action" href="{{ url('barang/pengiriman#pengiriman') }}">Pengiriman</a>
+                </div>
+            </div>
+        </div> 
+    </div>
+</nav> 
 @endsection
 
 @section('content')  

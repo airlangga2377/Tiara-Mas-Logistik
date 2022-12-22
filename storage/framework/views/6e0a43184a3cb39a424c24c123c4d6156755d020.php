@@ -1,5 +1,8 @@
 <?php $__env->startSection('preload'); ?> 
     <link rel="preload" href="https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?cs=srgb&dl=pexels-samuel-w%C3%B6lfl-1427541.jpg&fm=jpg">
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('title'); ?> 
@@ -69,5 +72,13 @@
 
 <?php $__env->startSection('footer'); ?>
   <?php echo $__env->make('layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('script-body-bottom'); ?>  
+    <script> 
+        $(document).ready( function () { 
+            $('#overlayLoading').css('visibility', 'hidden');
+        });
+    </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\agi\Desktop\kerja\Kargo Website\resources\views/page/guest/tracking.blade.php ENDPATH**/ ?>

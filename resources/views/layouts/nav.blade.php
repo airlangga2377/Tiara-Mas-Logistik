@@ -3,7 +3,9 @@
     <div class="container">
         <div class="col w-25"> 
             <!-- Logo -->
-            <a class="navbar-brand float-start" href="{{ url('/') }}">Logo</a> 
+            <a class="navbar-brand float-start" href="{{ url('/') }}"> 
+                <img style="width: 80%" src="{{ url('/tiara-mas.png') }}"/> 
+            </a> 
 
             <div class="row float-end me-2"> 
                 <button class="navbar-toggler d-lg-none " type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId"

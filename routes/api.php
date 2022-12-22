@@ -14,14 +14,9 @@ use Illuminate\Http\Request;
 */
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::post('/register', 'Auth\RegisterController@create');
-
-
-Route::group(['middleware' => 'userAuthenticated'], function ()
-{  
-    Route::post('/barang', 'CargoBarangController@index');
-});
+Route::post('/register', 'Auth\RegisterController@create'); 
+Route::post('/register/distributor', 'DistributorController@store'); 

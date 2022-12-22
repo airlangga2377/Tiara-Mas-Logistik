@@ -13,12 +13,34 @@
     <!-- Icon -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> --}}
 
+    <style> 
+      .overlayLoading{
+          position: fixed; 
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.5);  
+          z-index: 1;
+      }
+    </style>
+    
+@section('title') 
+    <title>Cargo aja</title>
+@endsection 
+    {{-- Jquery --}}
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
     @yield('preload')
     
     @yield('title')
   </head>
   <body>
     <div class="container-fluid p-0 h-100">
+        <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
+          <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
+            <span class="fs-1 visually-hidden">Loading...</span>
+          </div>
+        </div>
+        
         @yield('top-nav-bar')
         
         @yield('content')
@@ -30,6 +52,12 @@
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
     
     @yield('script-body-bottom')
   </body>
