@@ -61,46 +61,48 @@
     <form action="{{ url("barang/bus/insert") }}" method="post">
         @csrf
         <div class="row justify-content-between d-flex g-3">
-            <label class="text-wrap fs-3 mb-2" id="pengiriman"><h2>IDENTITAS PENGIRIM</h2></label>
+            <label class="text-wrap g-5" id="pengiriman"><h2>IDENTITAS PENGIRIM</h2></label>
             <div class="col-12 m-1 py-2 rounded-2 justify-content-center shadow-sm bg-dark text-light">    
-                {{-- Error handler --}}
-                @if ($errors->any())
-                    <div class="fs-5 alert alert-danger bg-danger text-white border-0 text-center" role="alert">
-                        {!! $errors->first() !!}
-                    </div>
-                @endif
+                    {{-- Error handler --}}
+                    @if ($errors->any())
+                        <div class="fs-5 alert alert-danger bg-danger text-white border-0 text-center" role="alert">
+                            {!! $errors->first() !!}
+                        </div>
+                    @endif
 
-                @if (Session::has("message")) 
-                    <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
-                        {!! Session::get("message") !!}
-                    </div>
-                @endif 
-                
-                <div class="row mb-3 justify-content-center ">  
-                    <div class="row align-items-start py-1">
+                    @if (Session::has("message")) 
+                        <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
+                            {!! Session::get("message") !!}
+                        </div>
+                    @endif 
+                    <div class="row justify-content-between d-flex g-1">
+                        <div class="row align-items-start py-1">
+                            <div class="col">
+                                <div class="mb-xl-3 mb-sm-5">
+                                        <label for="namaPengirim" class="form-label fs-4">Nama Pengirim</label>
+                                        <input type="text" class="form-control shadow-sm p-3" name="namaPengirim" id="namaPengirim" aria-describedby="namaPengirimText" placeholder="isi nama pengirim" value="{!! old('namaPengirim') !!}">
+                                    <div id="validationNamaPengirim" class="invalid-feedback">
+                                            @if (Session::has("namaPengirimError")) @endif
+                                </div>
+                            </div>
+                        </div>                    
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                    <label for="namaPengirim" class="form-label fs-4">Nama Pengirim</label>
-                                    <input type="text" class="form-control shadow-sm p-3" name="namaPengirim" id="namaPengirim" aria-describedby="namaPengirimText" placeholder="isi nama pengirim" value="{!! old('namaPengirim') !!}">
+                                <label for="nomorPengirim" class="form-label fs-4">Tlp Pengirim</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="nomorPengirim" id="nomorPengirim" aria-describedby="nomorPengirimText" placeholder="isi nomor pengirim" value="{!! old('nomorPengirim') !!}">
                                 <div id="validationNamaPengirim" class="invalid-feedback">
-                                        @if (Session::has("namaPengirimError")) @endif
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="nomorPengirim" class="form-label fs-4">Tlp Pengirim</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="nomorPengirim" id="nomorPengirim" aria-describedby="nomorPengirimText" placeholder="isi nomor pengirim" value="{!! old('nomorPengirim') !!}">
-                            <div id="validationNamaPengirim" class="invalid-feedback">
-                                @if (Session::has("nomorPengirimError")) @endif
+                                    @if (Session::has("nomorPengirimError")) @endif
                                 </div>
-                            </div> 
-                        </div> 
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>  
-            <label class="text-wrap fs-3 mb-2" id="pengiriman"><h2>IDENTITAS PENERIMA</h2></label>
+            </div>
+        </div>
+        <div class="row justify-content-between d-flex g-2">  
+            <label class="text-wrap g-5" id="pengiriman"><h2>IDENTITAS PENERIMA</h2></label>
             <div class="col-12 m-1 py-2 rounded-2 justify-content-center shadow-sm bg-dark text-light">
+                <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-1">
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
@@ -109,24 +111,34 @@
                             <div id="validationNamaPenerima" class="invalid-feedback">
                                 @if (Session::has("namaPenerimaError")) @endif
                             </div>
-                        </div>  
-                    </div> 
-
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                                    <label for="nomorPenerima" class="form-label fs-4">Tlp Penerima</label>
-                                    <input type="text" class="form-control shadow-sm p-3" name="nomorPenerima" id="nomorPenerima" aria-describedby="nomorPenerimaText" placeholder="isi nomor penerima" value="{!! old('nomorPenerima') !!}">
+                        </div>
+                    </div>   
+                        <div class="col">
+                            <div class="mb-xl-3 mb-sm-5">
+                                <label for="nomorPenerima" class="form-label fs-4">Tlp Penerima</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="nomorPenerima" id="nomorPenerima" aria-describedby="nomorPenerimaText" placeholder="isi nomor penerima" value="{!! old('nomorPenerima') !!}">
                                 <div id="validationNamaPenerima" class="invalid-feedback">
-                                        @if (Session::has("nomorPenerimaError")) @endif
+                                    @if (Session::has("nomorPenerimaError")) @endif
                                 </div>
-                            </div>  
-                         </div> 
-                    </div>  
-            </div>            
-            <label class="text-wrap fs-3 mb-2" id="pengiriman"><h2>INFORMASI BARANG</h2></label>            
-            <div class="col-12 m-1 py-2 rounded-2 justify-content-center shadow-sm bg-dark text-light">
-
-        </div>    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                    
+            <div class="row justify-content-between d-flex g-2">  
+                <label class="text-wrap g-5" id="pengiriman"><h2>INFORMASI BARANG</h2></label>
+                <div class="col-12 m-1 py-2 rounded-2 justify-content-center shadow-sm bg-dark text-light">
+                    <div class="row justify-content-between d-flex g-1">
+                    <div class="row align-items-start py-1">
+                        <div class="col">
+                            <div class="mb-xl-3 mb-sm-5">
+                                <label for="Tipe Item" class="form-label fs-4">Nama Penerima</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="namaPenerima" id="namaPenerima" aria-describedby="namaPenerimaText" placeholder="isi nama penerima" value="{!! old('namaPenerima') !!}">
+                                <div id="validationNamaPenerima" class="invalid-feedback">
+                                    @if (Session::has("namaPenerimaError")) @endif
+                                </div>
+                            </div>
+                        </div>       
 
     </form>
 </div>
@@ -138,8 +150,8 @@
 
 @section("script-body-bottom")
     <script>
-        $(document).ready(function(){ // IKI DIGAE NGANDANI LEK FUNGSI2 NANG NJERONE FUNGSI IKI BAKAL DIEKSEKUSI SAK MARINE HALAMAN E DI LOAD
-            $("#overlayLoading").css("visibility", "hidden"); // IKI NGGA SING DIGAE NGEHIDE 
+        $(document).ready(function(){ // Function stuck loading
+            $("#overlayLoading").css("visibility", "hidden"); 
         });
     </script>
 @endsection
