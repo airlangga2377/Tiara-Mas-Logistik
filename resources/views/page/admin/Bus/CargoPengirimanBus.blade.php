@@ -132,15 +132,30 @@
                     <div class="row align-items-start py-1">
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                <label for="Tipe Item" class="form-label fs-4">Nama Penerima</label>
-                                <input type="text" class="form-control shadow-sm p-3" name="namaPenerima" id="namaPenerima" aria-describedby="namaPenerimaText" placeholder="isi nama penerima" value="{!! old('namaPenerima') !!}">
-                                <div id="validationNamaPenerima" class="invalid-feedback">
-                                    @if (Session::has("namaPenerimaError")) @endif
+                                <label for="Tipe Item" class="form-label fs-4">Pilih Item</label>
+                                <select class="form-select shadow-sm p-3" name="tipeItem" id="tipeItem" aria-describedby="tipeItemText" value="{!! old('tipeItem') !!}">
+                                    <option selected>Pilih Item</option>
+                                </select>
+                                <div id="TipeItem" class="invalid-feedback">
+                                    @if (Session::has("tipeItemError")) @endif
                                 </div>
                             </div>
-                        </div>       
+                        </div>
+                        <div class="col">
+                            <div class="mb-xl-3 mb-sm-5">
+                                <label for="namaBarang" class="form-label fs-4">Nama Barang</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="namaBarang" id="namaBarang" aria-describedby="namaBarangText" placeholder="isi nama barang" value="{!! old('namaBarang') !!}">
+                                <div id="validationNamaPenerima" class="invalid-feedback">
+                                    @if (Session::has("namaBarangError")) @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>       
 
     </form>
+    </div>
 </div>
 @endsection
 
@@ -154,4 +169,4 @@
             $("#overlayLoading").css("visibility", "hidden"); 
         });
     </script>
-@endsection
+@endsection 
