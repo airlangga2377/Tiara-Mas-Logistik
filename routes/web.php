@@ -72,5 +72,5 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     // Wilayah Berdasarkan Kode
     Route::get('/barang/bus/wilayah', 'Bus\WilayahBusController@index');
     Route::post('/save-busarea', 'Bus\WilayahBusController@add_wilayah');
-    // Route::get('wilayahKota', [WilayahBusController::class, 'regencies'])->name('regencies.index');
+    
 });
