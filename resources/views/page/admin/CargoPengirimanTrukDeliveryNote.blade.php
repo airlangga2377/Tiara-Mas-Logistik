@@ -90,7 +90,12 @@
             border-collapse: collapse;
         } 
         table{
+<<<<<<< HEAD
             border-collapse: collapse; 
+=======
+            border-collapse: collapse;
+
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         }
     </style>
 </head>
@@ -124,6 +129,7 @@
                     </tbody> 
                 </table> 
             </div>
+<<<<<<< HEAD
             <div class="info-buyer">  
                 <table> 
                     <tbody>
@@ -138,6 +144,14 @@
                         </tr>   
                     </tbody> 
                 </table>  
+=======
+            <div class="info-buyer"> 
+                <p class="text">{{ $user->kota }}, {{ $detail->created }}</p>
+                <p class="text">Kepada Yth :</p>
+                <p class="text">Tuan / Toko {{ $detail->nama_pengirim }}</p>
+                <br>
+                <br>
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
             </div>
         </div>
         <div class="container-header-foot">
@@ -182,7 +196,11 @@
                         <tr>
                             @if (count($data) > $i) 
                                 <td style="text-align: center;">@if ($data[$i]) {{ $data[$i]->jumlah_barang }} @endif</td>
+<<<<<<< HEAD
                                 <td style="text-align: center;">@if ($data[$i]) {{ $data[$i]->code }} @endif</td>
+=======
+                                <td></td>
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                                 <td style="text-align: center;">@if ($data[$i]) {{ $data[$i]->jenis_barang }} @endif</td>
                                 <td style="text-align: center;">@if ($data[$i]) {{ $data[$i]->berat }} @endif</td>
                                 <td style="text-align: center;">@if ($data[$i]) {{ $data[$i]->biaya }} @endif</td>
@@ -198,19 +216,29 @@
                 </tbody>
                 <tfoot>
                     <tr>
+<<<<<<< HEAD
                         <td class="text" style="text-align: left; " colspan="2" >Nama Pengirim: {{ $detail->nama_pengirim }}</td>  
                         <td class="text" style="text-align: right; " colspan="2" >Jumlah Rp.</td>  
+=======
+                        <td class="text" style="text-align: right; " colspan="4" >Jumlah Rp.</td>  
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                         <td>
                             <p class="text title" style="text-align: start;">{{ number_format($detail->biaya,2,',','.') }}</p>
                         </td> 
                         <td class="text" style="text-align: start; border: 1px solid black;" rowspan="3">Keterangan: {{ $detail->keterangan }}</td> 
                     </tr>
                     <tr>
+<<<<<<< HEAD
                         <td class="text title" style="text-align: left; border: 1px black solid; color:white;" colspan="4">
                             //
                         </td>
                         <td> 
                         </td>   
+=======
+                        <td class="text title" style="text-align: left; border: 1px black solid; color:white" colspan="5">
+                            //
+                        </td>
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                     </tr>
                     <tr>
                         <td colspan="2" rowspan="2">
@@ -228,9 +256,13 @@
                         <td colspan="2">   
                             <p class="text" style="text-align: center; height: 50px; text-justify: auto;"> (........................................................) </p>
                         </td>  
+<<<<<<< HEAD
                         <td></td>
                         <td colspan="3" style="width: 100%;">  
                             <h3 style="text-align: center; border: 2px black solid; display: inline; padding: 10px; border-radius: 20px">ISI TIDAK DIPERIKSA</h3>
+=======
+                        <td colspan="4">  
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                         </td>   
                     </tr>  
                 </tfoot>

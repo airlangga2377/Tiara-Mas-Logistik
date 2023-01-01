@@ -4,12 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo\CargoPengirimanBarang;
 use App\Models\Cargo\Distributor;
+<<<<<<< HEAD
 use App\Http\Controllers\Controller;
 use App\Models\Cargo\CargoPengirimanDetail;
+=======
+use App\Http\Controllers\Controller; 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+<<<<<<< HEAD
+=======
+use function PHPSTORM_META\type;
+
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 class CargoPengirimanTrukController extends Controller
 { 
     /**
@@ -164,8 +173,11 @@ class CargoPengirimanTrukController extends Controller
         } 
 
         $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
+<<<<<<< HEAD
         $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + 1 : 1;
 
+=======
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
                 $jenisBarangValid++;
@@ -227,10 +239,24 @@ class CargoPengirimanTrukController extends Controller
             $request->jenisPengirim = (Distributor::findName($request->namaPengirim)) ? "distributor" : "umum"; 
 
             if($biaya){
+<<<<<<< HEAD
                 $pengiriman = new CargoPengirimanBarang([     
                     'jumlah_barang' => $request->jumlahBarang[$i],
                     'code' => $request->code[$i],
                     'jenis_barang' => $request->jenisBarang[$i],
+=======
+                $pengiriman = new CargoPengirimanBarang([
+                    'no_lmt' => $no_lmt,
+
+                    'nama_pengirim' => $request->namaPengirim,
+                    'nomor_pengirim' => $request->nomorPengirim,
+                    'nama_penerima' => $request->namaPenerima,
+                    'nomor_penerima' => $request->nomorPenerima,
+    
+                    'jenis_barang' => $request->jenisBarang[$i],
+                    'jumlah_barang' => $request->jumlahBarang[$i],
+                    'keterangan' => $request->keterangan[$i], 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     
                     'panjang' => $request->kubikasiPanjang[$i],
                     'lebar' => $request->kubikasiLebar[$i],
@@ -238,6 +264,21 @@ class CargoPengirimanTrukController extends Controller
                     'berat' => $request->berat[$i],
     
                     'biaya' => $biaya,
+<<<<<<< HEAD
+=======
+                    'is_lunas' => $request->isLunas, 
+                    // 'is_diterima' => $request->isDiterima[$i],
+    
+                    'is_pengecualian' => $isPengecualian,
+
+                    'jenis_pengirim' => $request->jenisPengirim?? 'umum',
+                    'jenis_pengiriman' => "truk",
+                    'jenis_biaya' => $request->jenisBiaya,
+    
+                    'tujuan' => $request->tujuan,
+    
+                    'id_user' => $request->user->id, 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                 ]);
                 array_push($dataValid, $pengiriman);
             }
@@ -245,6 +286,7 @@ class CargoPengirimanTrukController extends Controller
             sleep(0.3);
         }    
 
+<<<<<<< HEAD
         // add pengiriman detail
         $pengirimanDetail = new CargoPengirimanDetail([
             'no_resi' => $no_resi,
@@ -280,6 +322,16 @@ class CargoPengirimanTrukController extends Controller
             $request->no_lmt = encrypt($no_lmt);  
             return redirect()->back()->with(["message" => "Berhasil memasukkan data", "no_lmt" => $request->no_lmt]);
             // return redirect()->action("CargoPengirimanTrukController@storeTrukDeliveryNote", ["no_lmt" => $request->no_lmt]);
+=======
+        if(count($dataValid) == $jenisBarangValid){ 
+            for ($i=0; $i < $jenisBarangValid; $i++) { 
+                $dataValid[$i]->save();
+            }
+            
+            // return redirect()->back()->with("message", "Berhasil memasukkan data");
+            $request->no_lmt = encrypt($no_lmt);  
+            return redirect()->action("CargoPengirimanTrukController@storeTrukDeliveryNote", ["no_lmt" => $request->no_lmt]);
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         }
         $data = array();
         $data['message'] = 'Error pada input';
@@ -293,6 +345,7 @@ class CargoPengirimanTrukController extends Controller
      */
     public function storeTrukDeliveryNote(Request $request){   
         $data = array();
+<<<<<<< HEAD
         
         try { 
             $detail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->first();
@@ -306,6 +359,18 @@ class CargoPengirimanTrukController extends Controller
         // $created_at = $detail->created_at; 
         $detail->created = date_format(date_create($detail->created_at->toDateString(), timezone_open("Asia/Jakarta")), 'd F Y'); 
 
+=======
+        $data = CargoPengirimanBarang::
+            select(
+                'jenis_barang',
+                'jumlah_barang',
+                'berat',
+                'biaya',
+            )
+            ->where('no_lmt', decrypt($request->no_lmt))->get();
+        $detail = new CargoPengirimanBarang();
+        $detail->cargoDetailByNoLmT(decrypt($request->no_lmt)); 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         if(count($data) != 0 && $detail->no_lmt){  
             $pdf = PDF::loadView('page.admin.CargoPengirimanTrukDeliveryNote', ["data" => $data, "detail" => $detail, "user" => $request->user])
             ->SetPaper([0.0, 0.0, 708.66, 1000.63 / 2]) // a4 | portrait {widht: 708.66, height: 500.31500}
@@ -324,6 +389,29 @@ class CargoPengirimanTrukController extends Controller
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Generate a manfiest.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function storeTrukManifest(Request $request){   
+        $pdf = PDF::loadView('page.admin.CargoPengirimanTrukManifest')
+        ->SetPaper('a4') // a4 | portrait {widht: 708.66, height: 500.31500}
+
+        ->setOption([
+            'dpi' => 150, 
+            'defaultFont' => 'sans-serif', 
+            'isRemoteEnabled' => true, 
+            'chroot' => "logo.png",
+        ]);
+        
+        return $pdf->stream();
+        // return $pdf->download("tes.pdf");
+    }
+
+    /**
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
      * Display the specified resource.
      *
      * @param  \App\CargoPengirimanBarang  $cargoPengirimanBarang
@@ -348,7 +436,13 @@ class CargoPengirimanTrukController extends Controller
     /**
      * Update the specified resource in storage.
      *
+<<<<<<< HEAD
      * @param  \Illuminate\Http\Request  $request 
+=======
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\CargoPengirimanBarang  $cargoPengirimanBarang
+     * @return \Illuminate\Http\Response
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
      */
     public function update(Request $request)
     { 
@@ -361,15 +455,27 @@ class CargoPengirimanTrukController extends Controller
     /**
      * Update the specified resource in storage.
      *
+<<<<<<< HEAD
      * @param  \Illuminate\Http\Request  $request 
+=======
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\CargoPengirimanBarang  $cargoPengirimanBarang
+     * @return \Illuminate\Http\Response
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
      */
     public function updateDiterima(Request $request)
     {
         // by no resi
         if($request->no_lmt){
+<<<<<<< HEAD
             $cargoDetail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->update(array("is_diterima" => "diterima"));
         
             if($cargoDetail){ 
+=======
+            $cargoPengirimanBarang = CargoPengirimanBarang::where('no_lmt', decrypt($request->no_lmt))->update(array("is_diterima" => "diterima"));
+        
+            if($cargoPengirimanBarang){ 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                 return redirect('barang');
             }
         }
@@ -381,15 +487,27 @@ class CargoPengirimanTrukController extends Controller
     /**
      * Update the specified resource in storage.
      *
+<<<<<<< HEAD
      * @param  \Illuminate\Http\Request  $request 
+=======
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\CargoPengirimanBarang  $cargoPengirimanBarang
+     * @return \Illuminate\Http\Response
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
      */
     public function updateLunas(Request $request)
     {
         // by no resi
         if($request->no_lmt){
+<<<<<<< HEAD
             $cargoDetail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->update(array("is_lunas" => "lunas"));
             
             if($cargoDetail){ 
+=======
+            $cargoPengirimanBarang = CargoPengirimanBarang::where('no_lmt', decrypt($request->no_lmt))->update(array("is_lunas" => "lunas"));
+            
+            if($cargoPengirimanBarang){ 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                 return redirect('barang');
             }
         }
@@ -402,14 +520,24 @@ class CargoPengirimanTrukController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+<<<<<<< HEAD
      * @param  \Illuminate\Http\Request  $request 
+=======
+     * @param  \App\cargo_pengiriman_barang  $cargoPengirimanBarang
+     * @return \Illuminate\Http\Response
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
      */
     public function destroy(Request $request)
     { 
         // by no resix
         if($request->no_lmt){
+<<<<<<< HEAD
             $cargoDetail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->delete();
             if($cargoDetail){
+=======
+            $cargoPengirimanBarang = CargoPengirimanBarang::where('no_lmt', decrypt($request->no_lmt))->delete();
+            if($cargoPengirimanBarang){
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
                 return redirect('barang');
             }
         }

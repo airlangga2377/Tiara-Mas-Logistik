@@ -27,6 +27,24 @@ class CargoBarangController extends Controller
      */
     protected function indexDatatables(Request $request)
     {
+<<<<<<< HEAD
+=======
+        //
+        // $cargoArray = CargoPengirimanBarang::
+        //     selectRaw(
+        //         'no_resi, 
+
+        //         nama_pengirim, 
+        //         nama_penerima, 
+        //         jenis_barang, 
+        //         jumlah_barang,
+
+        //         keterangan,
+        //         DATE(created_at) as created',
+        //     )
+        //     ->get()
+        //     ;
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         $cargoArray = CargoPengirimanBarang::all(); 
         return response($cargoArray);
     }
@@ -38,7 +56,11 @@ class CargoBarangController extends Controller
      */
     protected function page(Request $request)
     {
+<<<<<<< HEAD
         $cargoArray = $request->user->pengirimanBarangs();
+=======
+        $cargoArray = $request->user->allCargoPengirimanBarang();
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         
         $data = array(
             'name' => $request->user->name,

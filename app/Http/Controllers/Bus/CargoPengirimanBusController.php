@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Bus;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use App\Models\Cargo\Bus\GoodsCategory;
 use App\Models\Cargo\Bus\PengirimanBus;
 use Dotenv\Regex\Success;
+=======
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 
 class CargoPengirimanBusController extends Controller
 {
@@ -15,6 +18,7 @@ class CargoPengirimanBusController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     protected function pagecreate(Request $request)
     {
         $pengiriman = new PengirimanBus(); 
@@ -69,6 +73,15 @@ class CargoPengirimanBusController extends Controller
         $categorys->save();
         return redirect('/barang/bus/category')->with('status','Data Telah Tersimpan');
     }
+=======
+    protected function page(Request $request)
+    {
+        $data = array(
+            'name' => $request->user->name 
+        ); 
+        return view('page.admin.Bus.CargoPengirimanBus', [], $data); 
+    } 
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     
     /**
      * Display a listing of the resource.

@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +25,10 @@
           z-index: 1;
       }
     </style>
+<<<<<<< HEAD
     @yield('style')
+=======
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     
 @section('title') 
     <title>Cargo aja</title>
@@ -35,6 +42,7 @@
   </head>
   <body>
     <div class="container-fluid p-0 h-100">
+<<<<<<< HEAD
       <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
         <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
           <span class="fs-1 visually-hidden">Loading...</span>
@@ -52,6 +60,19 @@
       @yield('content')
       
       @yield('footer')
+=======
+        <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
+          <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
+            <span class="fs-1 visually-hidden">Loading...</span>
+          </div>
+        </div>
+        
+        @yield('top-nav-bar')
+        
+        @yield('content')
+        
+        @yield('footer')
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->

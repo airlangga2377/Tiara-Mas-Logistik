@@ -11,8 +11,13 @@
     <title>Cargo aja</title>
 @endsection
 
+<<<<<<< HEAD
 @section('top-nav-bar') 
     @include('layouts.notloggednav')
+=======
+@section('top-nav-bar')
+    @include('layouts.nav')
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 @endsection
 
 @section('content') 

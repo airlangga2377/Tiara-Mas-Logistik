@@ -7,10 +7,17 @@
 
 @section('title') 
     <title>Cargo aja | Login</title>
+<<<<<<< HEAD
 @endsection 
 
 @section('top-nav-bar') 
     @include('layouts.notloggednav')
+=======
+@endsection
+
+@section('top-nav-bar')
+    @include('layouts.nav')
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 @endsection
 
 @section('content') 

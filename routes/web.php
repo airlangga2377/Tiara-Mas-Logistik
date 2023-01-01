@@ -13,7 +13,12 @@
 use Illuminate\Support\Facades\Route;  
 
 Route::get('/', function () { 
+<<<<<<< HEAD
     return view('page.guest.tracking'); 
+=======
+    return view('page.guest.tracking');
+    // return phpinfo();
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 });
 
 Route::get('/login', function () { 
@@ -32,6 +37,7 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
 
     Route::get('/barang', 'CargoBarangController@page');
     
+<<<<<<< HEAD
     Route::get('/barang/truk', function (){return abort(404);});  
 
     // MANIFEST TRUK CRUD 
@@ -49,6 +55,17 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     // BARANG INSERT
     Route::get('/barang/truk/insert', 'CargoPengirimanTrukController@page');
     Route::post('/barang/truk/insert', 'CargoPengirimanTrukController@storeTruk');
+=======
+    Route::get('/barang/truk/insert', 'CargoPengirimanTrukController@page');
+    Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
+
+    // BARANG CRUD 
+    Route::post('/barang/truk/insert', 'CargoPengirimanTrukController@storeTruk');
+    Route::get('/barang/truk/print', function (){return abort(404);});  
+    Route::get('/barang/truk/print/deliverynote', 'CargoPengirimanTrukController@storeTrukDeliveryNote');
+    Route::get('/barang/truk/print/manifest', 'CargoPengirimanTrukController@storeTrukManifest');
+
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     // BARANG UPDATE
     Route::post('/barang/update', function ()
     { 
@@ -58,6 +75,7 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/truk/update/lunas', 'CargoPengirimanTrukController@updateLunas');  
     // BARANG DELETE
     Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');   
+<<<<<<< HEAD
 
     //Pengiriman Bus    
     Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
@@ -73,4 +91,6 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/bus/wilayah', 'Bus\WilayahBusController@index');
     Route::post('/save-busarea', 'Bus\WilayahBusController@add_wilayah');
     // Route::get('wilayahKota', [WilayahBusController::class, 'regencies'])->name('regencies.index');
+=======
+>>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 });
