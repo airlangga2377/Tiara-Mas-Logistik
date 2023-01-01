@@ -135,6 +135,10 @@ return [
     */
 
     'providers' => [
+        /**
+         * PDF invoice
+         */
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Laravel Framework Service Providers...
@@ -189,6 +193,10 @@ return [
     */
 
     'aliases' => [
+        /**
+         * PDF invoice
+         */
+        'PDF' => Barryvdh\DomPDF\PDF::class,
 
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,

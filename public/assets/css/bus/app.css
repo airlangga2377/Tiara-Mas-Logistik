@@ -1,0 +1,45 @@
+.trms-line {
+    margin:5px 0;
+    height:2px;
+    background:
+      repeating-linear-gradient(90deg,red 0 5px,#0000 0 7px)
+      /*5px red then 2px transparent -> repeat this!*/
+  }
+  
+  .trms-line-1 {
+    margin:5px 0;
+    height:2px;
+    background:
+      repeating-linear-gradient(90deg,red 0 3px,#0000 0 7px)
+      /*3px red then 4px transparent -> repeat this!*/
+  }
+  
+  .trms-line-2 {
+    margin:5px 0;
+    height:2px;
+    background:
+      repeating-linear-gradient(90deg,red 0 10px,#0000 0 12px)
+      /*10px red then 2px transparent -> repeat this!*/
+  }
+  .trms-line-2-gray  {
+    margin:5px 0;
+    height:2px;
+    margin-top: 5%;
+    background:
+      repeating-linear-gradient(90deg,#808080 0 10px,#0000 0 12px)
+      /*10px red then 2px transparent -> repeat this!*/
+  }
+  .price-bus {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 155%;
+    font-size: 50px;
+    background: rgba(68, 68, 68, 0);
+    padding: 10px;
+    margin: 0;
+    color: rgb(0, 0, 0);
+  }
+  .select2-container {
+    display: block !important;
+}
