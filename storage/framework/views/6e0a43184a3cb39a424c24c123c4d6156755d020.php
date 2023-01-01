@@ -9,8 +9,8 @@
     <title>Cargo aja</title>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('top-nav-bar'); ?>
-    <?php echo $__env->make('layouts.nav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->startSection('top-nav-bar'); ?> 
+    <?php echo $__env->make('layouts.notloggednav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?> 

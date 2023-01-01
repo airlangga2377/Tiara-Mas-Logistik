@@ -5,10 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Cargo\CargoPengirimanBarang as CargoPengirimanBarang;
-<<<<<<< HEAD
 use App\Models\Cargo\CargoPengirimanDetail as CargoPengirimanDetail;
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
@@ -71,59 +68,35 @@ class User extends Authenticatable
     /**
      * Get the Pengiriman Cargo.
     */ 
-<<<<<<< HEAD
     public function pengirimanBarangs()
     {
         if($this->name == "superadmin"){
             $sql =  new CargoPengirimanDetail();
         } else {
             $sql =  $this->hasMany(CargoPengirimanDetail::class, "id_user"); 
-=======
-    public function allCargoPengirimanBarang()
-    {
-        if($this->name == "superadmin"){
-            $sql =  new CargoPengirimanBarang();
-        } else {
-            $sql =  $this->hasMany(CargoPengirimanBarang::class, "id_user"); 
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         }
         $data = $sql
         ->selectRaw(
             'id_cargo_pengiriman_barangs,
-<<<<<<< HEAD
             cargo_pengiriman_details.no_lmt,
             cargo_pengiriman_details.no_resi,
             nama_pengirim,
             nama_penerima,
             jenis_pengiriman,
-=======
-            no_lmt,
-            no_resi,
-            nama_pengirim,
-            nama_penerima,
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
             SUM(cargo_pengiriman_barangs.biaya) as biaya,
             SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
             keterangan,
             is_lunas,
             is_diterima,
-<<<<<<< HEAD
             DATE(cargo_pengiriman_barangs.created_at) as created',
         ) 
         ->leftJoin('cargo_pengiriman_barangs', 'cargo_pengiriman_barangs.no_lmt', 'cargo_pengiriman_details.no_lmt')
         ->orderByDesc('cargo_pengiriman_barangs.created_at') 
         ->groupBy("cargo_pengiriman_details.no_lmt")
-=======
-            DATE(created_at) as created',
-        ) 
-        ->orderByDesc('cargo_pengiriman_barangs.created_at') 
-        ->groupBy("no_lmt")
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         ->get()
         ; 
         return $data ? $data : array();
     }
-<<<<<<< HEAD
 
     /**
      * Get the Pengiriman manifest.
@@ -156,6 +129,4 @@ class User extends Authenticatable
         ; 
         return $data ? $data : array();
     } 
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 }

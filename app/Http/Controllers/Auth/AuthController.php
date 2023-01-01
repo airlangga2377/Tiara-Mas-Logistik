@@ -25,10 +25,6 @@ class AuthController extends Controller
         # Check apakah data user ada    
         if (
             Auth::attempt(['email' => $email, 'password' => $password, 'status_user' => 'aktif'], $request->checkBoxRememberMe)
-<<<<<<< HEAD
-=======
-            
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         ) {
             # Get data user
             $user = User::whereRaw('email = ? AND status_user = ?', [$email, 'aktif'])->first();

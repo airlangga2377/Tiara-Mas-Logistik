@@ -16,11 +16,8 @@ return array(
     'App\\Http\\Controllers\\Auth\\ResetPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ResetPasswordController.php',
     'App\\Http\\Controllers\\Auth\\VerificationController' => $baseDir . '/app/Http/Controllers/Auth/VerificationController.php',
     'App\\Http\\Controllers\\CargoBarangController' => $baseDir . '/app/Http/Controllers/CargoBarangController.php',
-<<<<<<< HEAD
     'App\\Http\\Controllers\\CargoManifestController' => $baseDir . '/app/Http/Controllers/CargoManifestController.php',
     'App\\Http\\Controllers\\CargoPengirimanDetailController' => $baseDir . '/app/Http/Controllers/CargoPengirimanDetailController.php',
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     'App\\Http\\Controllers\\CargoPengirimanTrukController' => $baseDir . '/app/Http/Controllers/CargoPengirimanTrukController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\DistributorController' => $baseDir . '/app/Http/Controllers/DistributorController.php',
@@ -36,10 +33,7 @@ return array(
     'App\\Http\\Middleware\\UserAuthenticated' => $baseDir . '/app/Http/Middleware/UserAuthenticated.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Models\\Cargo\\CargoPengirimanBarang' => $baseDir . '/app/Models/Cargo/CargoPengirimanBarang.php',
-<<<<<<< HEAD
     'App\\Models\\Cargo\\CargoPengirimanDetail' => $baseDir . '/app/Models/Cargo/CargoPengirimanDetail.php',
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
     'App\\Models\\Cargo\\Distributor' => $baseDir . '/app/Models/Cargo/Distributor.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
   <head>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,6 +21,7 @@
           z-index: 1;
       }
     </style>
+    <?php echo $__env->yieldContent('style'); ?>
     
 <?php $__env->startSection('title'); ?> 
     <title>Cargo aja</title>
@@ -35,17 +35,19 @@
   </head>
   <body>
     <div class="container-fluid p-0 h-100">
-        <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
-          <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
-            <span class="fs-1 visually-hidden">Loading...</span>
-          </div>
+      <div class="d-flex justify-content-center overlayLoading" style="z-index: 1;"  id="overlayLoading">
+        <div class="spinner-border text-center text-light inline-flex m-auto" role="status">
+          <span class="fs-1 visually-hidden">Loading...</span>
         </div>
-        
-        <?php echo $__env->yieldContent('top-nav-bar'); ?>
-        
-        <?php echo $__env->yieldContent('content'); ?>
-        
-        <?php echo $__env->yieldContent('footer'); ?>
+      </div>  
+      
+      <?php echo $__env->yieldContent('top-nav-bar'); ?>
+      
+       
+      
+      <?php echo $__env->yieldContent('content'); ?>
+      
+      <?php echo $__env->yieldContent('footer'); ?>
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->

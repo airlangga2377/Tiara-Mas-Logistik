@@ -493,11 +493,8 @@ class ComposerStaticInit75f03a3db6ec8a28bfca98f7caf4121c
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\CargoBarangController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargoBarangController.php',
-<<<<<<< HEAD
         'App\\Http\\Controllers\\CargoManifestController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargoManifestController.php',
         'App\\Http\\Controllers\\CargoPengirimanDetailController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargoPengirimanDetailController.php',
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         'App\\Http\\Controllers\\CargoPengirimanTrukController' => __DIR__ . '/../..' . '/app/Http/Controllers/CargoPengirimanTrukController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DistributorController' => __DIR__ . '/../..' . '/app/Http/Controllers/DistributorController.php',
@@ -513,10 +510,7 @@ class ComposerStaticInit75f03a3db6ec8a28bfca98f7caf4121c
         'App\\Http\\Middleware\\UserAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/UserAuthenticated.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Models\\Cargo\\CargoPengirimanBarang' => __DIR__ . '/../..' . '/app/Models/Cargo/CargoPengirimanBarang.php',
-<<<<<<< HEAD
         'App\\Models\\Cargo\\CargoPengirimanDetail' => __DIR__ . '/../..' . '/app/Models/Cargo/CargoPengirimanDetail.php',
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
         'App\\Models\\Cargo\\Distributor' => __DIR__ . '/../..' . '/app/Models/Cargo/Distributor.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

@@ -16,19 +16,15 @@ class CreateCargoPengirimanBarangsTable extends Migration
         Schema::create('cargo_pengiriman_barangs', function (Blueprint $table) {
             $table->bigIncrements('id_cargo_pengiriman_barangs'); 
 
-<<<<<<< HEAD
             // $table->index('no_manifest');
             // $table->string('no_manifest')->nullable(true); 
             
-=======
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
             $table->index('no_resi');
             $table->string('no_resi')->nullable(true); 
 
             $table->index('no_lmt');
             $table->integer('no_lmt')->nullable(true);  
 
-<<<<<<< HEAD
             // $table->string('nama_pengirim');
             // $table->string('nomor_pengirim');
             // $table->string('nama_penerima');
@@ -40,19 +36,6 @@ class CreateCargoPengirimanBarangsTable extends Migration
             // $table->string('sopir')->nullable(true);
             // $table->string('kernet')->nullable(true);
             // $table->string('no_pol')->nullable(true);
-=======
-            $table->string('nama_pengirim');
-            $table->string('nomor_pengirim');
-            $table->string('nama_penerima');
-            $table->string('nomor_penerima');
-
-            $table->string('jenis_barang');
-            $table->string('jumlah_barang');
-            $table->string('keterangan')->nullable(true);
-            $table->string('sopir')->nullable(true);
-            $table->string('kernet')->nullable(true);
-            $table->string('no_pol')->nullable(true);
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
 
             $table->string('panjang')->nullable(true);
             $table->string('lebar')->nullable(true);
@@ -61,7 +44,6 @@ class CreateCargoPengirimanBarangsTable extends Migration
 
             $table->string('biaya');
 
-<<<<<<< HEAD
             // $table->index('is_lunas');
             // $table->string('is_lunas')->nullable(true);
 
@@ -77,23 +59,6 @@ class CreateCargoPengirimanBarangsTable extends Migration
 
             // $table->index('id_user');
             // $table->string('id_user'); 
-=======
-            $table->index('is_lunas');
-            $table->string('is_lunas')->nullable(true);
-
-            $table->index('is_diterima');
-            $table->string('is_diterima')->nullable(true);
-
-            $table->string('is_pengecualian')->nullable(true);
-            $table->string('jenis_pengiriman')->default('truk');
-            $table->string('jenis_pengirim')->nullable(true)->default('umum');
-            $table->string('jenis_biaya')->default('kubikasi'); 
-
-            $table->string('tujuan'); 
-
-            $table->index('id_user');
-            $table->string('id_user'); 
->>>>>>> 96ef6381689b581a74f833bdac31cacd28e36f24
             $table->timestamps();
         });
     }
