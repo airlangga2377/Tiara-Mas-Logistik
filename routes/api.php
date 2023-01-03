@@ -19,4 +19,12 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/register', 'Auth\RegisterController@create'); 
-Route::post('/register/distributor', 'DistributorController@store'); 
+
+Route::group(['middleware' => 'authApi'], function ()
+{ 
+    Route::post('/register/distributor', 'DistributorController@store'); 
+    Route::post('/register/truk', 'TruckController@store'); 
+
+    // manifest
+    Route::post('/manifest/update', 'CargoManifestController@apiUpdateManifest'); 
+});

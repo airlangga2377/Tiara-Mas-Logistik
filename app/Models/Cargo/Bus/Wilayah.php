@@ -2,27 +2,56 @@
 
 namespace App\Models\Cargo\Bus;
 
+use App\Models\Regency;
 use Sofa\Eloquence\Eloquence;
 use Illuminate\Database\Eloquent\Model;
 
 class Wilayah extends Model
 {
+    /**
+    * The table associated with the model.
+    *
+    * @var string
+    */
     protected $table = 'area_bus';
-    
-    
-    use Eloquence;
 
-    protected $searchableColumns = ['kota'];
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id_area_bus';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['kota', 'alamat', 'kode_wilayah'];
-    
-    public function regencies()
+    protected $fillable = [ 
+        'kota',
+        'name',
+        'alamat',
+        'kode_wilayah' 
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [ 
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+    ];
+
+    public function Regency()
     {
-        return $this->hasMany(Regency::class);
+        return $this->belongsTo(Regency::class);
     }
 }

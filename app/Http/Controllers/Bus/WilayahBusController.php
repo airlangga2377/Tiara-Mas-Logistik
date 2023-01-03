@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 
 class WilayahBusController extends Controller
 {
-    protected function index()
+    protected function index(Request $request)
     {
-        $regencies = Regency::all();
-        $wilayah = Wilayah::all();
+        $regencyArray = $request->user->allKota();
+        $wilayahArray = $request->user->allWilayah();
         $q = DB::table('area_bus')->select(DB::raw('MAX(RIGHT(kode_wilayah,3))as kode'));
         $kd="";
         if($q->count()>0)
@@ -28,7 +28,13 @@ class WilayahBusController extends Controller
         {
             $kd = "001";
         }
-        return view('page.admin.Bus.Wilayah.index',compact('regencies','wilayah','kd'));
+        $data = array(
+            'name' => $request->user->name,
+            'allWilayah' => $wilayahArray,
+            'allKota' => $regencyArray,
+            'kd' => $kd
+        );
+        return view('page.admin.Bus.Wilayah.index', [], $data);
         
 
     } 

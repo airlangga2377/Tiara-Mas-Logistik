@@ -2,11 +2,13 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Regency;
+use App\Models\Cargo\Bus\Wilayah;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Cargo\CargoPengirimanBarang as CargoPengirimanBarang;
 use App\Models\Cargo\CargoPengirimanDetail as CargoPengirimanDetail;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -128,5 +130,45 @@ class User extends Authenticatable
         ->get()
         ; 
         return $data ? $data : array();
-    } 
+    }
+    public function allWilayah()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Wilayah();
+        } else {
+            $sql =  $this->hasMany(Wilayah::class, "id_area_bus");
+        }
+        $data =  $sql
+        ->selectRaw(
+            'id_area_bus,
+            kota,
+            name,
+            alamat,
+            kode_wilayah,
+            DATE(area_bus.created_at) as created',
+        )
+        ->orderByDesc('area_bus.created_at')
+        ->groupBy("kota")
+        ->get();
+        return $data ? $data : array();
+    }
+    public function allKota()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Regency();
+        } else {
+            $sql =  $this->hasMany(Regency::class, "id_regencies");
+        }
+        $data =  $sql
+        ->selectRaw(
+            'id,
+            name,
+            DATE(regencies.created_at) as created',
+        )
+        ->orderByDesc("regencies.created_at")
+        ->groupBy("name")
+        ->get();
+        return $data ? $data : array();
+    }
+ 
 }

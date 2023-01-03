@@ -58,7 +58,7 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/truk/update/lunas', 'CargoPengirimanTrukController@updateLunas');  
     // BARANG DELETE
     Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');   
-
+    
     //Pengiriman Bus    
     Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
     Route::post('/barang/bus/insert-save', 'Bus\CargoPengirimanBusController@pagecreate');

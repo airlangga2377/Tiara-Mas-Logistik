@@ -1,8 +1,11 @@
 @extends("layouts.app")
 
 @section("preload")
+        {{-- SELECT 2 --}}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.css" integrity="sha512-PO7TIdn2hPTkZ6DSc5eN2DyMpTn/ZixXUQMDLUx+O5d7zGy0h1Th5jgYt84DXvMRhF3N0Ucfd7snCyzlJbAHQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
         {{-- Datatables --}}
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
         <link href="{{ url('/assets/css/bus/app.css') }}" rel="stylesheet" />
 @endsection
 
@@ -74,8 +77,8 @@
           <div class="mb-3">
             <label for="city" class="col-form-label">Kota</label>            
             <select class="form-control kt-select2 city_area" name="city" id="wilayahKota">
-                @foreach ($regencies as $kota)
-                    <option value="{{ $kota->name }}">{{ $kota->name }}</option>
+                @foreach ($allKota as $data)
+                    <option value="{{ $data->name }}">{{ $data->name }}</option>
                 @endforeach
             </select>
           </div>
@@ -117,16 +120,20 @@
                         <thead>
                             <tr> 
                                 <th>Kota</th>
+                                <th>Name</th>
                                 <th>Alamat</th>
                                 <th>Kode</th>
                                 <th class="text text-center">Ubah</th>
                             </tr>
                         </thead>                        
                         <tbody>
-                            @foreach ($wilayah as $data)                               
+                            @foreach ($allWilayah as $data)                               
                             <tr>
                                 <td>
                                     {{ $data->kota }}
+                                </td>
+                                <td>
+                                    {{ $data->name }}
                                 </td>
                                 <td>
                                     {{ $data->alamat }}
@@ -149,6 +156,12 @@
 @endsection
 
 @section("script-body-bottom")
+{{-- SELECT 2 JS --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.full.js" integrity="sha512-Gu2OIWdShncC2h0KqZMOrDWTR0okm7pXBU3M1HuedqlVCDgMbz9BCQWx2AV72pvDAbPhyP9qR7hjk6pUXXj1xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{-- DATATABLE JQUERY --}}
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+{{-- Loading Jquery --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easy-loading/1.3.0/jquery.loading.js"></script>
 <script>
 $(document).ready(function () {
     $('#area_bus').DataTable();
@@ -158,7 +171,7 @@ $(document).ready(function () {
 <script>
 $(document).ready(function () {
     $('#wilayahKota').select2({
-        dropdownParent: '.modal',
+        dropdownParent: '#areabus',
         // .on('select2:open', () => {
         //     $(".select2-results:not(:has(a))").append(`<li style='list-style: none; padding: 10px;'><a style="width: 100%" href="/barang/bus/insert"
         //         class="btn btn-primary">+ {{ ('Add New Branch') }}</a> </li>`);

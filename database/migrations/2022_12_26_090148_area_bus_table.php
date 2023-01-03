@@ -16,6 +16,7 @@ class AreaBusTable extends Migration
         Schema::create('area_bus', function (Blueprint $table) {
             $table->bigIncrements('id_area_bus');  
             $table->string('kota'); 
+            $table->string('name'); 
             $table->string('alamat'); 
             $table->string('kode_wilayah');
             $table->timestamps();
