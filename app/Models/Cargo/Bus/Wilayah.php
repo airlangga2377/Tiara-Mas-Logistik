@@ -2,8 +2,6 @@
 
 namespace App\Models\Cargo\Bus;
 
-use App\Models\Regency;
-use Sofa\Eloquence\Eloquence;
 use Illuminate\Database\Eloquent\Model;
 
 class Wilayah extends Model
@@ -49,9 +47,4 @@ class Wilayah extends Model
      */
     protected $casts = [
     ];
-
-    public function Regency()
-    {
-        return $this->belongsTo(Regency::class);
-    }
 }

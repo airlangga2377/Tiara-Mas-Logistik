@@ -77,19 +77,23 @@
           <div class="mb-3">
             <label for="city" class="col-form-label">Kota</label>            
             <select class="form-control kt-select2 city_area" name="city" id="wilayahKota">
-                @foreach ($allKota as $data)
-                    <option value="{{ $data->name }}">{{ $data->name }}</option>
+                @foreach ($allKota as $item)
+                    <option value="{{ $item->name }}">{{ $item->name }}</option>
                 @endforeach
             </select>
+          </div>
+          <div class="mb-3">
+            <label for="name" class="col-form-label">Nama</label>
+            <input type="text"name="name" class="form-control" id="name">
           </div>
           <div class="mb-3">
             <label for="alamat" class="col-form-label">Alamat</label>
             <input type="text"name="alamat" class="form-control" id="alamat">
           </div>
-          <div class="mb-3">
-            <label for="kode" class="col-form-label" hidden>Kode Wilayah</label>
-            <input type="text" name="kode_wilayah" class="form-control" id="kode" value="{{ $kd }}" hidden>
-          </div>
+          {{-- <div class="mb-3">
+            <label for="kode" class="col-form-label">Kode Wilayah</label>
+            <input type="text" name="kode_wilayah" class="form-control" id="kode" value="{{ 'agen'.$kd }}" hidden>
+          </div> --}}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batalkan</button>

@@ -26,6 +26,8 @@
 <?php $__env->startSection('title'); ?> 
     <title>Cargo aja</title>
 <?php $__env->stopSection(); ?> 
+    
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <?php echo $__env->yieldContent('preload'); ?>
     
     <?php echo $__env->yieldContent('title'); ?>
@@ -59,7 +61,6 @@
     -->
     
     
-    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <?php echo $__env->yieldContent('script-body-bottom'); ?>
   </body>
 </html><?php /**PATH D:\Kargo Website\resources\views/layouts/app.blade.php ENDPATH**/ ?>

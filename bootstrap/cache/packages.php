@@ -1,14 +1,4 @@
 <?php return array (
-  'azishapidin/indoregion' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'AzisHapidin\\IndoRegion\\IndoRegionServiceProvider',
-    ),
-    'aliases' => 
-    array (
-    ),
-  ),
   'barryvdh/laravel-debugbar' => 
   array (
     'providers' => 

@@ -70,7 +70,7 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::post('/save-goodscategorybus', 'Bus\CargoPengirimanBusController@categorygoods');
 
     // Wilayah Berdasarkan Kode
-    Route::get('/barang/bus/wilayah', 'Bus\WilayahBusController@index');
+    Route::get('/barang/bus/wilayah', 'Bus\WilayahBusController@page');
     Route::post('/save-busarea', 'Bus\WilayahBusController@add_wilayah');
     
 });

@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Models\Regency;
+use App\Models\Cargo\Bus\Regency;
 use App\Models\Cargo\Bus\Wilayah;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
@@ -131,6 +131,26 @@ class User extends Authenticatable
         ; 
         return $data ? $data : array();
     }
+
+    public function allRegencies()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Regency();
+        } else {
+            $sql =  $this->hasMany(Regency::class, "id_wilayah");
+        }
+        $data =  $sql
+        ->selectRaw(
+            'id_wilayah,
+            name,
+            DATE(wilayah.created_at) as created',
+        )
+        ->orderByDesc('wilayah.id_wilayah')
+        ->groupBy("name")
+        ->get();
+        return $data ? $data : array();
+    }
+
     public function allWilayah()
     {
         if($this->name == "superadmin"){
@@ -139,36 +159,10 @@ class User extends Authenticatable
             $sql =  $this->hasMany(Wilayah::class, "id_area_bus");
         }
         $data =  $sql
-        ->selectRaw(
-            'id_area_bus,
-            kota,
-            name,
-            alamat,
-            kode_wilayah,
-            DATE(area_bus.created_at) as created',
-        )
-        ->orderByDesc('area_bus.created_at')
-        ->groupBy("kota")
+        ->orderByDesc('created_at')
         ->get();
         return $data ? $data : array();
     }
-    public function allKota()
-    {
-        if($this->name == "superadmin"){
-            $sql =  new Regency();
-        } else {
-            $sql =  $this->hasMany(Regency::class, "id_regencies");
-        }
-        $data =  $sql
-        ->selectRaw(
-            'id,
-            name,
-            DATE(regencies.created_at) as created',
-        )
-        ->orderByDesc("regencies.created_at")
-        ->groupBy("name")
-        ->get();
-        return $data ? $data : array();
-    }
+    
  
 }
