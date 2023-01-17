@@ -9,73 +9,19 @@
 
 <?php $__env->startSection('title'); ?> 
     <title>Cargo aja</title>
+<?php $__env->stopSection(); ?> 
+
+<?php $__env->startSection('top-nav-bar'); ?> 
+    <?php echo $__env->make('layouts.loggednav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startSection('top-nav-bar'); ?>
-<nav class="navbar navbar-light shadow-sm"> 
-    <div class="container-fluid"> 
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="dropdown">
-            <a class="ms-2 me-2 fs-5 text-dark text-decoration-none" href="<?php echo e(url('home')); ?>">Beranda</a>
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <?php echo e($name); ?>
-
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="<?php echo e(url('logout')); ?>">Keluar</a></li> 
-            </ul>
-        </div>
-
-        <div class="offcanvas offcanvas-start text-bg-light" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
-            <div class="offcanvas-header">    
-                
-                <button type="button" class="btn-close offcanvas-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body"> 
-                <div class="list-group list-group-flush"> 
-                    <a role="button" class="fs-5 fw-bold list-group-item list-group-item-action" href="<?php echo e(url('barang')); ?>">Barang</a>  
-                    <a role="button" class="fs-5 list-group-item list-group-item-action" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Pengiriman</a>
-                </div>
-            </div>
-        </div> 
-    </div>
-</nav> 
-<?php $__env->stopSection(); ?>
-
-<?php $__env->startSection('content'); ?>   
+<?php $__env->startSection('content'); ?>    
     
     <?php if($errors->any()): ?>
         <script>
             alert($errors->first()); 
         </script>
-    <?php endif; ?>
-<!-- Modal -->
-<div class="modal fade" id="modalManifest" tabindex="-1" aria-labelledby="modalManifestLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="modalManifestLabel">Cetak Manifest</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="barang/truk/print/manifest" method="get">
-            <div class="modal-body">
-                <label for="no pol" class="form-label fs-5">No Pol</label>  
-                <select class="form-select" aria-label="no pol" id="selectBoxNoPol" data-live-search="true" name="noPol">
-                    <option disabled selected value>Pilih No Pol</option>
-                    <option value="1312D">1312D</option> 
-                </select>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-        </form>
-      </div>
-    </div>
-  </div>
+    <?php endif; ?> 
     <div class="container"> 
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -85,6 +31,11 @@
         </nav>
     </div>
     <div class="container-fluid"> 
+        <div class="row justify-content-center align-items-center g-2">
+            <div class="col">
+                <p class="fs-1 text text-center">Semua Barang</p>
+            </div> 
+        </div>
         <div class="row justify-content-center align-items-start">
             <div class="col-auto shadow-sm p-3 float-start">
                 <div class="row-auto justify-content-center align-items-center">
@@ -95,8 +46,7 @@
                         <a role="button" class="fs-5 btn btn-success" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Tambah Pengiriman</a>
                     </div>  
                     <div class="col-12 pt-2 ">
-                        
-                        <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/truk/print/manifest')); ?>" target="_blank">Cetak Manifest</a>
+                        <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest')); ?>">Manifest</a>
                     </div>  
                 </div>
             </div>
@@ -105,11 +55,11 @@
                     <thead>
                         <tr> 
                             <th></th>
-                            <th>Nama Pengirim</th>
-                            <th>Nama Penerima</th>
+                            <th>Pengirim</th>
+                            <th>Penerima</th>
                             <th>Harga</th>
                             <th>Jumlah</th>
-                            <th>No Resi</th>
+                            <th>Resi</th>
 
                             <th>Tanggal</th>
 
@@ -118,8 +68,8 @@
                     </thead>
                     <tbody>
                         <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
-                            <tr class="<?php if($barang->is_lunas && $barang->is_diterima): ?> bg-success text-white <?php endif; ?>">
-                                <td><?php echo e($loop->index + 1); ?></td> 
+                            <tr>
+                                <td class="<?php if($barang->is_lunas && $barang->is_diterima): ?> bg-success text-white <?php endif; ?>" data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman <?php echo e($barang->jenis_pengiriman); ?>"><?php echo e($loop->index + 1); ?></td> 
                                 <td><?php echo e(explode(" ", $barang->nama_pengirim)[0]); ?></td> 
                                 <td><?php echo e(explode(" ", $barang->nama_penerima)[0]); ?></td> 
                                 <td><?php echo e($barang->biaya); ?></td>  
@@ -130,7 +80,7 @@
                                 <td><?php echo e($barang->created); ?></td>  
 
                                 <td>
-                                    <div class="row justify-content-start align-items-center g-2">
+                                    <div class="row justify-content-start align-items-center g-2 px-3">
                                         <div class="col-6 text-center">
                                             <?php if(!$barang->is_diterima): ?> 
                                                 <form action="<?php echo e(url("barang/truk/update/diterima")); ?>" method="get">
@@ -142,6 +92,19 @@
                                             <?php endif; ?>
                                         </div>
                                         <div class="col-6 text-center">
+                                         <?php if(Auth::user()->is_user_superadmin!=2): ?>
+                                            <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
+                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
+                                            </form>
+                                            <?php else: ?>
+                                            <form action="<?php echo e(url("barang/bus/print/resi")); ?>" method="get" target="_blank">
+                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_resi)); ?>" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
+                                            </form>
+                                        <?php endif; ?>
+                                        </div>
+                                        <div class="col-6 text-center">
                                             <?php if(!$barang->is_lunas): ?> 
                                                 <form action="<?php echo e(url("barang/truk/update/lunas")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
@@ -151,12 +114,6 @@
                                                 <button type="button" class="btn btn-secondary disabled" style="width: 75px">Lunas</button> 
                                             <?php endif; ?>
                                         </div>  
-                                        <div class="col-6 text-center">
-                                            <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
-                                            </form>
-                                        </div> 
                                         <div class="col-6 text-center">
                                             <?php if(!$barang->is_diterima && !$barang->is_lunas): ?> 
                                                 <form action="<?php echo e(url("barang/truk/delete")); ?>" method="get">
@@ -185,8 +142,7 @@
 <?php $__env->startSection('script-body-bottom'); ?>  
     <script> 
         $(document).ready( function () {
-            var table = $('#tableId').DataTable({ 
-                // 
+            var table = $('#tableId').DataTable({  
                 pageLength: 10,
             });
 

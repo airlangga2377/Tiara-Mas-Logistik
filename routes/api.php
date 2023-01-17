@@ -22,9 +22,9 @@ Route::post('/register', 'Auth\RegisterController@create');
 
 Route::group(['middleware' => 'authApi'], function ()
 { 
+    Route::post('/register/kodekota', 'KodeKotaController@store'); 
     Route::post('/register/distributor', 'DistributorController@store'); 
     Route::post('/register/truk', 'TruckController@store'); 
-
-    // manifest
-    Route::post('/manifest/update', 'CargoManifestController@apiUpdateManifest'); 
+    Route::post('/register/statuspembayaran', 'StatusPembayaranController@store'); 
+    Route::post('/register/messagetracking', 'MessageTrackingController@store'); 
 });

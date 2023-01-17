@@ -18,7 +18,7 @@ class CargoPengirimanBarang extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id_cargo_pengiriman_barangs';
+    protected $primaryKey = 'id_cargo_pengiriman_barang';
 
     /**
      * The attributes that are mass assignable.

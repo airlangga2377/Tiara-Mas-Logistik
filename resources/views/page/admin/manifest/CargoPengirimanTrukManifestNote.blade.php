@@ -59,7 +59,7 @@
     <p class="title text" style="padding-bottom: 20px;">Pertokoan Sulung Mas Blok A 22 Surabaya Telp./Fax. (031) 3529402</p>
   </div>
   <div style="padding-bottom: 20px">
-    <p class="text" style="display:inline; margin-right: 50px">Tolong terima paket via Truck "LANCAR JAYA ABADI" EA {{ $truck->no_pol }} 123124214</p>
+    <p class="text" style="display:inline; margin-right: 50px">Tolong terima paket via Truck "LANCAR JAYA ABADI" {{ $truck->no_pol }} 123124214</p>
     <p class="text" style="width: 100px; border: 1px black solid; display:inline-block; text-align: center;">{{ $truck->no_manifest }}</p>
   </div>
     <table style="padding-bottom: 20px;"> 
@@ -74,10 +74,13 @@
       <thead>
         <tr>
           <th class="title text" style="width: 10px;">No.</p></th>
-          <th class="title text">Nama Pengirim</th>
-          <th class="title text">Nama Penerima</th>
-          <th class="title text">Jenis Barang</th>
-          <th class="title text">Jumlah (no.lmt)</th>
+          <th class="title text">Pengirim</th>
+          <th class="title text">Penerima</th>
+          <th class="title text">Jenis</th>
+          <th class="title text">Biaya</th>
+          <th class="title text">Koli</th>
+          <th class="title text">no.lmt</th>
+          <th class="title text">Pembayaran</th>
           <th class="title text">Keterangan</th>
         </tr>
       </thead>
@@ -88,11 +91,17 @@
               <td class="text" style="text-align: center">{{ $i + 1 }}</td>
               <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->nama_pengirim }} @endif</td>
               <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->nama_penerima }} @endif</td>
-              <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->jenis_barang }} @endif</td>
-              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->jumlah_barang . "(" . $detail[$i]->no_lmt . ")"  }} @endif</td>
+              <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->jenis_barang_detail }} @endif</td>
               <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->biaya }} @endif</td>
+              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->jumlah_barang  }} @endif</td>
+              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->no_lmt }} @endif</td>
+              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->pesan }} @endif</td> 
+              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->Keterangan }} @endif</td>
             @else
               <td class="text" style="text-align: center; color: white">/</td>
+              <td class="text"></td>
+              <td class="text"></td>
+              <td class="text"></td>
               <td class="text"></td>
               <td class="text"></td>
               <td class="text"></td>
@@ -103,24 +112,30 @@
         @endfor
           <tr>
             <td></td>
-            <td class="text">Jumlah Total</td>
+            <td class="text" style="text-align: right" colspan="2">Jumlah Total</td>
             <td></td>
+            <td style="text-align: right;">@if ($resume->totalBiaya) {{ $resume->totalBiaya }} @endif</td>
+            <td style="text-align: right;">@if ($resume->jumlah_barang) {{ $resume->jumlah_barang }} @endif</td>
             <td></td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td style="border: 0px;"></td>
-            <td class="text" style="border: 0px;">Penerima,</td>
-            <td class="text" style="border: 0px;">Sopir,</td>
+            <td class="text" style="border: 0px;" colspan="2">Penerima,</td>
+            <td class="text" style="border: 0px;" colspan="2">Sopir,</td>
             <td class="text" style="border: 0px;">Kernet,</td> 
+            <td class="text" style="border: 0px;"></td>
             <td class="text" style="border: 0px; text-align: right;" colspan="2">,.............................</td>
           </tr>
           <tr>
             <td style="border: 0px;"></td>
             <td style="border: 0px;"></td>
+            <td style="border: 0px;"></td>
             <td style="border: 0px;">{{ $truck->sopir ? $truck->sopir : $truck->sopir_utama }}</td>
+            <td style="border: 0px;"></td>
             <td style="border: 0px;">{{ $truck->kernet ? $truck->kernet : "-" }}</td>
+            <td style="border: 0px;"></td>
             <td style="border: 0px;"></td>
             <td class="text" style="border: 0px;">Pengirim</td>
           </tr>

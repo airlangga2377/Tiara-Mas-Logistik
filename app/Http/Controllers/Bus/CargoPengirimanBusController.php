@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers\Bus;
 
-use App\Http\Controllers\Controller;
+use DB;
+use Milon\Barcode\DNS1D;
+use Milon\Barcode\DNS2D;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Cargo\Bus\Wilayah;
+use App\Models\Cargo\Distributor;
+use App\Http\Controllers\Controller;
+use Milon\Barcode\Facades\DNS1DFacade;
 use App\Models\Cargo\Bus\GoodsCategory;
 use App\Models\Cargo\Bus\PengirimanBus;
 use App\Models\Cargo\CargoPengirimanBarang;
-use App\Models\Cargo\Bus\Wilayah;
+use App\Models\Cargo\CargoPengirimanDetail;
 
 class CargoPengirimanBusController extends Controller
 {
@@ -18,23 +25,135 @@ class CargoPengirimanBusController extends Controller
      */
     protected function pagecreate(Request $request)
     {
-        $pengiriman = new CargoPengirimanBarang(); 
-        $pengiriman->nama_pengirim = $request->input('namaPengirim');
-        $pengiriman->nomor_pengirim = $request->input('nomorPengirim');
-        $pengiriman->nama_penerima = $request->input('namaPenerima');
-        $pengiriman->nomor_penerima = $request->input('nomorPenerima');
-        // $pengiriman->asal = $request->input('pickup');
-        $pengiriman->tujuan = $request->input('dropoff');
-        $pengiriman->jenis_barang = $request->input('jenisBarang');
-        $pengiriman->nama_barang = $request->input('namaBarang');
-        $pengiriman->berat = $request->input('beratBarang');
-        $pengiriman->jumlah_barang = $request->input('jumlahBarang');
-        $pengiriman->panjang = $request->input('panjangBarang');
-        $pengiriman->lebar = $request->input('lebarBarang');
-        $pengiriman->tinggi = $request->input('tinggiBarang');
-        $pengiriman->biaya = $request->input('biayaBarang');
-        $pengiriman->save();
-        return redirect('/barang/bus/insert')->with('status','Data Telah Tersimpan'); 
+        $dataValid = array();
+        $jenisBarangValid = 0;
+
+        // $validator = $this->validatorMany($request);
+        // if($validator){
+        //     return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
+        // } 
+        $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
+        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + + 1 : 1;
+
+        for ($i=0; $i < count($request->jenisBarang); $i++) {    
+            if($request->jenisBarang[$i]){
+                $jenisBarangValid++;
+            }
+
+            $kubikasi = 0;
+            $berat = 0;
+    
+            // rumus kubikasi
+            if(
+                $request->panjangBarang[$i]
+                && $request->lebarBarang[$i]
+                && $request->tinggiBarang[$i]
+            ){
+                $kubikasi = 
+                $request->panjangBarang[$i]
+                * $request->lebarBarang[$i]
+                * $request->tinggiBarang[$i]
+                * 450000
+                ;
+            }
+
+            // rumus berat
+            if(
+                $request->jenisBarang
+                && $request->berat[$i] 
+            ){ 
+                if($request->jenisBarang[$i] == "besi"){
+                    $berat = $request->berat[$i]  * 1000;
+                } else if($request->jenisBarang[$i] == "tidak besi"){
+                    $berat = $request->berat[$i]  * 800;
+                }
+            }  
+            $request->jenisBiaya = "kubikasi";
+    
+            // menentukan label jenis biaya yang digunakan
+            if($kubikasi < $berat){
+                $request->jenisBiaya = "berat"; 
+            }   
+    
+            $biaya = 0;
+            $isPengecualian = null;
+
+            // jika tidak kosong dan pengecualian tidak kosong
+            // menentukan biaya yang digunakan  
+            if($request->biaya[$i]){
+                $isPengecualian = 'pengecualian';
+                $biaya = $request->biaya[$i]; 
+            }
+            
+            if(!$request->biaya[$i] && $kubikasi < $berat){ 
+                $biaya = $berat;
+            }  
+            else if(!$request->biaya[$i]){
+                $biaya = $kubikasi; 
+            }   
+
+            $request->jenisPengirim = (Distributor::findName($request->namaPengirim)) ? "distributor" : "umum"; 
+
+            if($biaya){
+                
+                $pengiriman = new CargoPengirimanBarang([     
+                    'jumlah_barang' => $request->jumlahBarang[$i],
+                    // 'code' => $request->code[$i],
+                    'jenis_barang' => $request->jenisBarang[$i],
+                     
+                    
+                    'panjang' => $request->panjangBarang[$i],
+                    'lebar' => $request->lebarBarang[$i],
+                    'tinggi' => $request->tinggiBarang[$i],
+                    'berat' => $request->berat[$i],
+    
+                    'biaya' => $biaya,
+                ]);
+                array_push($dataValid, $pengiriman);
+            }
+
+            sleep(0.3);
+        }    
+
+        // add pengiriman detail
+        $pengirimanDetail = new CargoPengirimanDetail([
+            'no_resi' => $no_resi,
+            'no_lmt' => $no_lmt,
+
+            'keterangan' => $request->keterangan,
+            'nama_pengirim' => $request->namaPengirim,
+            'nomor_pengirim' => $request->nomorPengirim,
+            'nama_penerima' => $request->namaPenerima,
+            'nomor_penerima' => $request->nomorPenerima,
+            'is_lunas' => $request->isLunas, 
+
+            'is_pengecualian' => $isPengecualian,
+
+            'jenis_pengirim' => $request->jenisPengirim?? 'umum',
+            'jenis_pengiriman' => "bus",
+            'jenis_paket' => $request->jenisPaket,
+            'jenis_biaya' => $request->jenisBiaya,
+            'asal' => $request->pickup,
+            'tujuan' => $request->dropoff,
+
+            'id_user' => $request->user->id, 
+        ]);
+
+        if(count($dataValid) == $jenisBarangValid && $pengirimanDetail){ 
+            for ($i=0; $i < $jenisBarangValid; $i++) { 
+                $dataValid[$i]->no_resi = $pengirimanDetail->no_resi;
+                $dataValid[$i]->no_lmt = $pengirimanDetail->no_lmt;
+                $dataValid[$i]->save();
+            }
+            $pengirimanDetail->save(); 
+            
+            $request->no_lmt = encrypt($no_lmt);  
+            return redirect()->back()->with(["message" => "Berhasil memasukkan data", "no_lmt" => $request->no_lmt]);
+            // return redirect()->action("CargoPengirimanTrukController@storeTrukDeliveryNote", ["no_lmt" => $request->no_lmt]);
+        }
+        $data = array();
+        $data['message'] = 'Error pada input';
+        return redirect()->back()->withErrors($data)->withInput(); 
     }
     protected function validator(Request $request)
     {
@@ -47,11 +166,12 @@ class CargoPengirimanBusController extends Controller
 
             'jenisPengiriman' => ['required', 'string'],  
             
-            'tujuan' => ['required', 'string'],  
+            'pickup' => ['required', 'string'],  
+            'dropoff' => ['required', 'string'],  
 
             'jenisBarang' => ['required', 'string'],  
             'jumlahBarang' => ['required', 'numeric', 'min:1'],  
-            'keterangan' => ['max:255'],   
+            'namaBarang' => ['max:255'],   
 
             'biaya' => ['numeric', 'min:1'],  
         ],
@@ -87,6 +207,38 @@ class CargoPengirimanBusController extends Controller
             'biaya.min' => "Minimal biaya berisi 1 rupiah",
         ]
         );
+    }
+
+    public function storeBusResi(Request $request){   
+        $data = array();
+        
+        try { 
+            $detail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->first();
+        } catch (\Throwable $th) {
+            return abort(404);  
+        }
+
+        $data = $detail->barangs($request->no_lmt);
+        $detail->summary($request->no_lmt);
+
+        // $created_at = $detail->created_at; 
+        $detail->created = date_format(date_create($detail->created_at->toDateString(), timezone_open("Asia/Jakarta")), 'd F Y'); 
+
+        if(count($data) != 0 && $detail->no_lmt){  
+            $pdf = PDF::loadView('page.admin.Bus.Resi.CargoPengirimanBusResi', ["data" => $data, "detail" => $detail, "user" => $request->user])
+            ->SetPaper([0.0, 0.0, 708.66, 920.63 / 2]) // a4 | portrait {widht: 708.66, height: 610.000}
+
+            ->setOption([
+                'dpi' => 150, 
+                'defaultFont' => 'sans-serif', 
+                'isRemoteEnabled' => true, 
+                'chroot' => "logo.png",
+            ]);
+            
+            return $pdf->stream();
+        }
+        return abort(404);
+        // return $pdf->download("tes.pdf");
     }
 
     protected function page(Request $request)
@@ -127,6 +279,16 @@ class CargoPengirimanBusController extends Controller
         $categorys->save();
         return redirect('/barang/bus/category')->with('status','Data Telah Tersimpan');
     }
+
+    // protected function getTujuan(Request $request)
+    // {
+    //     $nama_wilayah = $request->name;
+    //     $kotas = Tujuan::where('nama_wilayah', $nama_wilayah)->get;
+        
+    //     foreach ($kotas as $kota ){
+    //         echo "<option value='{{ $kota->name }}'>{{ $kota->name }}</option>";
+    //     }
+    // }
 
    
 

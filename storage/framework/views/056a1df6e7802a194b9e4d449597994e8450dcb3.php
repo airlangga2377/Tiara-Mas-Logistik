@@ -11,8 +11,11 @@
     <title>Cargo aja</title>
 <?php $__env->stopSection(); ?> 
 
-<?php $__env->startSection('content'); ?>   
+<?php $__env->startSection('top-nav-bar'); ?> 
+    <?php echo $__env->make('layouts.loggednav', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopSection(); ?>
 
+<?php $__env->startSection('content'); ?>    
     
     <?php if($errors->any()): ?>
         <script>
@@ -39,9 +42,11 @@
                     <div class="col-12">
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
-                    <div class="col-12 pt-2">
-                        <a role="button" class="fs-5 btn btn-success" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Tambah Pengiriman</a>
-                    </div>  
+                    <?php if($kodeKota->kota == "surabaya" || $name == "superadmin"): ?>
+                        <div class="col-12 pt-2">
+                            <a role="button" class="fs-5 btn btn-success" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Tambah Pengiriman</a>
+                        </div>  
+                    <?php endif; ?>
                     <div class="col-12 pt-2 ">
                         <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest')); ?>">Manifest</a>
                     </div>  
@@ -74,43 +79,49 @@
 
                                 <td><?php echo e($barang->no_resi); ?></td>  
 
-                                <td><?php echo e($barang->created); ?></td>  
+                                
+                                <td><?php echo e($barang->no_manifest); ?></td>  
 
                                 <td>
                                     <div class="row justify-content-start align-items-center g-2 px-3">
                                         <div class="col-6 text-center">
-                                            <?php if(!$barang->is_diterima): ?> 
+                                            
+                                            <?php if(!$barang->is_diterima && $barang->no_manifest && $barang->last_id_message_tracking == 3 && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")): ?> 
                                                 <form action="<?php echo e(url("barang/truk/update/diterima")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                     <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
                                                 </form>
-                                            <?php elseif($barang->is_diterima && !$barang->is_lunas): ?>
+                                            <?php elseif(!$barang->no_manifest || $barang->last_id_message_tracking < 3): ?>
                                                 <button type="button" class="btn btn-secondary disabled">Terima</button>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="col-6 text-center">
+                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-auto"); ?> text-center">
                                             <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
                                                 <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
                                             </form>
                                         </div> 
                                         <div class="col-6 text-center">
-                                            <?php if(!$barang->is_lunas): ?> 
+                                            <?php
+                                                $isBayarTujuan = $barang->id_status_pembayaran == 1;
+                                                $isPiutang = $barang->id_status_pembayaran == 3;
+                                            ?>
+                                            <?php if($barang->no_manifest && !$barang->is_lunas && ($isBayarTujuan || $isPiutang)): ?> 
                                                 <form action="<?php echo e(url("barang/truk/update/lunas")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                     <button type="submit" class="btn btn-primary" style="width: 75px">Lunas</button>
                                                 </form>
-                                            <?php elseif($barang->is_lunas && !$barang->is_diterima): ?>
+                                            <?php elseif(!$barang->is_lunas || !$barang->is_diterima): ?>
                                                 <button type="button" class="btn btn-secondary disabled" style="width: 75px">Lunas</button> 
                                             <?php endif; ?>
                                         </div>  
                                         <div class="col-6 text-center">
-                                            <?php if(!$barang->is_diterima && !$barang->is_lunas): ?> 
+                                            <?php if(!$barang->no_manifest && !$barang->is_lunas && !$barang->last_id_message_tracking): ?>  
                                                 <form action="<?php echo e(url("barang/truk/delete")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                     <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
                                                 </form>
-                                            <?php else: ?>
+                                            <?php elseif(!$barang->is_lunas || !$barang->is_diterima): ?>
                                                 <button type="button" class="btn btn-danger disabled" style="width: 75px">Hapus</button>
                                             <?php endif; ?>
                                         </div>   

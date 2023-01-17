@@ -176,10 +176,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#wilayahKota').select2({
         dropdownParent: '#areabus',
-        // .on('select2:open', () => {
-        //     $(".select2-results:not(:has(a))").append(`<li style='list-style: none; padding: 10px;'><a style="width: 100%" href="/barang/bus/insert"
-        //         class="btn btn-primary">+ {{ ('Add New Branch') }}</a> </li>`);
-        // }) 
+        
             // ajax: {
             //     url: "/wilayahKota",
             //     processResults: function({data}){
@@ -194,6 +191,10 @@ $(document).ready(function () {
             //     }
             // }
         });
+        // .on('select2:open', () => {
+        //     $(".select2-results:not(:has(a))").append(`<li style='list-style: none; padding: 10px;'><a style="width: 100%" href="/barang/bus/insert"
+        //         class="btn btn-primary">+ {{ ('Add New Branch') }}</a> </li>`);
+        // }) 
     }); 
 </script>
 @endsection 

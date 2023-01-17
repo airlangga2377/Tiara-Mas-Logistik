@@ -106,40 +106,71 @@
                 <div class="row justify-content-center align-items-center g-2"> 
                     <div class="row justify-content-center align-items-center g-2"> 
                         <div class="col-12"> 
+                            @if ($isUserSuperadmin)
+                            <div class="mb-xl-3 mb-sm-5 p-3 w-60"> 
+                                <label for="asal" class="form-label fs-4">Asal</label>  
+                                <select class="form-select" aria-label="Pilih asal" id="selectBoxAsal" data-live-search="true" name="asal">
+                                    <option disabled @if (old("asal") == null || old() == null) selected @endif value>Semua Asal</option>
+                                    <option value="surabaya" @if (old("asal") == "surabaya") selected @endif>Surabaya</option>
+                                    <option value="taliwang" @if (old("asal") == "taliwang") selected @endif>Taliwang</option>
+                                    <option value="bima" @if (old("asal") == "bima") selected @endif>Bima</option>
+                                    <option value="sumbawa" @if (old("asal") == "sumbawa") selected @endif>Sumbawa</option>
+                                    <option value="mataram" @if (old("asal") == "mataram") selected @endif>Mataram</option>
+                                </select>
+                                <div id="validationasal" class="invalid-feedback">
+                                    @if (Session::has("asalError")) @endif
+                                </div> 
+                            </div>
+                            @endif
                             <div class="mb-xl-3 mb-sm-5 p-3 w-60"> 
                                 <label for="tujuan" class="form-label fs-4">Tujuan</label>  
                                 <select class="form-select" aria-label="Pilih tujuan" id="selectBoxTujuan" data-live-search="true" name="tujuan">
                                     <option disabled @if (old("tujuan") == null || old() == null) selected @endif value>Semua Tujuan</option>
-                                    <option value="taliwang" @if (old("tujuan") == "taliwang") selected @endif>Taliwang</option>
-                                    <option value="bima" @if (old("tujuan") == "bima") selected @endif>Bima</option>
-                                    <option value="sumbawa" @if (old("tujuan") == "sumbawa") selected @endif>Sumbawa</option>
-                                    <option value="mataram" @if (old("tujuan") == "mataram") selected @endif>Mataram</option>
+                                    @if ($kodeKota->kota != "surabaya" || $isUserSuperadmin) <option value="surabaya" @if (old("tujuan") == "surabaya") selected @endif>Surabaya</option> @endif
+                                    @if ($kodeKota->kota != "taliwang" || $isUserSuperadmin) <option value="taliwang" @if (old("tujuan") == "taliwang") selected @endif>Taliwang</option> @endif
+                                    @if ($kodeKota->kota != "bima" || $isUserSuperadmin) <option value="bima" @if (old("tujuan") == "bima") selected @endif>Bima</option> @endif
+                                    @if ($kodeKota->kota != "sumbawa" || $isUserSuperadmin) <option value="sumbawa" @if (old("tujuan") == "sumbawa") selected @endif>Sumbawa</option> @endif
+                                    @if ($kodeKota->kota != "mataram" || $isUserSuperadmin) <option value="mataram" @if (old("tujuan") == "mataram") selected @endif>Mataram</option> @endif
                                 </select>
                                 <div id="validationtujuan" class="invalid-feedback">
                                     @if (Session::has("tujuanError")) @endif
                                 </div> 
                             </div>
                         </div> 
-                        <div class="col"> 
+                        <div class="col-6"> 
                             <div class="mb-xl-3 mb-sm-5 p-3 w-60"> 
-                                <label for="lunas" class="form-label fs-4">Lunas</label> 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="isLunas" name="isLunas" value="Lunas">
-                                    <label class="form-check-label">Lunas</label>
-                                </div>
+                                <label for="statusPembayaran" class="form-label fs-4">Status Pembayaran</label>  
+                                <select class="form-select" aria-label="Pilih Status Pembayaran" id="selectBoxStatusPembayaran" data-live-search="true" name="statusPembayaran">
+                                    <option disabled @if (old("statusPembayaran") == null || old() == null) selected @endif value>Pilih Status Pembayaran</option>
+                                    <option value="1" @if (old("statusPembayaran") == "1") selected @endif>Bayar Tujuan</option>
+                                    <option value="2" @if (old("statusPembayaran") == "2") selected @endif>Lunas Kantor Surabaya</option>
+                                    <option value="3" @if (old("statusPembayaran") == "3") selected @endif>Piutang</option> 
+                                </select>
+                                <div id="validationtujuan" class="invalid-feedback">
+                                    @if (Session::has("statusPembayaranError")) @endif
+                                </div> 
                             </div> 
                         </div> 
                         
-                        <div class="col">
+                        <div class="col-6">
                             <div class="mb-xl-3 mb-sm-5">
                                 <label for="keterangan" class="form-label fs-4">Keterangan</label>
                                 <input type="text" class="form-control shadow-sm p-3" name="keterangan" id="keterangan" aria-describedby="keteranganText" placeholder="isi keterangan" value="{!! old('keterangan') !!}">
-                                <div id="validationNamaPenerima" class="invalid-feedback">
+                                <div id="validationKeterangan" class="invalid-feedback">
                                     @if (Session::has("keteranganError")) @endif
                                 </div>
                             </div>  
                         </div> 
-                    </div> 
+                        <div class="col">
+                            <div class="mb-xl-3 mb-sm-5">
+                                <label for="jenisDetail" class="form-label fs-4">Jenis (untuk manifest)</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="jenisDetail" id="jenisDetail" aria-describedby="jenisDetailText" placeholder="isi jenis (untuk manifest)" value="{!! old('jenisDetail') !!}">
+                                <div id="validationjenisDetail" class="invalid-feedback">
+                                    @if (Session::has("jenisDetailError")) @endif
+                                </div>
+                            </div>  
+                        </div> 
+                    </div>  
                 </div> 
             </div> 
             
@@ -343,6 +374,9 @@
             var nomorPenerima = $("#nomorPenerima").val();
 
             var tujuan = $('#selectBoxTujuan').find(":selected").val();
+            var statusPembayaran = $('#selectBoxStatusPembayaran').find(":selected").val();
+
+            var jenisDetail = $("#jenisDetail").val();
 
             if(
                 namaPengirim === ""
@@ -353,11 +387,15 @@
 
                 || namaPenerima === ""
                 || namaPenerima === undefined
+
+                || jenisDetail === ""
+                || jenisDetail === undefined
                 
                 || nomorPenerima === ""
                 || nomorPenerima === undefined
                 
                 || tujuan === ""
+                || statusPembayaran === ""
             ){
                 $( "#btnSubmit" ).prop( "disabled", true ); 
             }
@@ -372,6 +410,9 @@
             var nomorPenerima = $("#nomorPenerima").val();
 
             var tujuan = $('#selectBoxTujuan').find(":selected").val();
+            var statusPembayaran = $('#selectBoxStatusPembayaran').find(":selected").val();
+
+            var jenisDetail = $("#jenisDetail").val();
 
             if(
                 namaPengirim === ""
@@ -382,21 +423,25 @@
 
                 || namaPenerima === ""
                 || namaPenerima === undefined
+
+                || jenisDetail === ""
+                || jenisDetail === undefined
                 
                 || nomorPenerima === ""
                 || nomorPenerima === undefined
                 
                 || tujuan === ""
+                || statusPembayaran === ""
             ){
+                console.log("disabled");
                 $( "#btnSubmit" ).prop( "disabled", true ); 
             }else{
+                console.log("disabled false");
                 $( "#btnSubmit" ).prop( "disabled", false ); 
-
             }
         }
 
         $(document).ready(function(){
-
             $("#overlayLoading").css("visibility", "hidden");  
 
             $('#tableId tbody').on('click', 'tr', disableSubmitButtonTable); 
@@ -407,7 +452,14 @@
             $("#nomorPengirim").change(disableSubmitButton);
             $("#namaPenerima").change(disableSubmitButton);
             $("#nomorPenerima").change(disableSubmitButton);
-            $('#selectBoxTujuan').find(":selected").change(disableSubmitButton);
+            $("#jenisDetail").change(disableSubmitButton);
+
+            $('#selectBoxTujuan').change(function (e) { 
+                disableSubmitButton();
+            });
+            $('#selectBoxStatusPembayaran').change(function (e) { 
+                disableSubmitButton();
+            });
         });
     </script>
 @endsection

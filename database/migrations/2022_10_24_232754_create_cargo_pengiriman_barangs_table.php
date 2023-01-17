@@ -14,7 +14,7 @@ class CreateCargoPengirimanBarangsTable extends Migration
     public function up()
     {
         Schema::create('cargo_pengiriman_barangs', function (Blueprint $table) {
-            $table->bigIncrements('id_cargo_pengiriman_barangs'); 
+            $table->bigIncrements('id_cargo_pengiriman_barang'); 
 
             // $table->index('no_manifest');
             // $table->string('no_manifest')->nullable(true); 

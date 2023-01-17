@@ -20,7 +20,7 @@ class CargoPengirimanDetail extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id_cargo_pengiriman_details';
+    protected $primaryKey = 'id_cargo_pengiriman_detail';
 
     /**
      * The attributes that are mass assignable.
@@ -53,10 +53,15 @@ class CargoPengirimanDetail extends Model
 
         // apakah menggunakan biaya kubikasi atau biaya berat, dicek paling menguntungkan pihak tiara
         'jenis_biaya', 
+        
+        // pembayaran untuk sorting agar lebih cepat
+        'id_status_pembayaran', 
 
+        'asal',
         'tujuan', 
         
         'keterangan', 
+        'jenis_barang_detail', 
 
         'id_user',
     ];

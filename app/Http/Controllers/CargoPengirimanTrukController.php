@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cargo\CargoPengirimanDetail;
+use App\Models\Cargo\TruckTracking;
 use App\Models\Cargo\CargoPengirimanBarang;
 use App\Models\Cargo\Distributor;
 use App\Http\Controllers\Controller;
-use App\Models\Cargo\CargoPengirimanDetail;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -19,9 +20,14 @@ class CargoPengirimanTrukController extends Controller
      */
     protected function page(Request $request)
     {
+        $kodeKota = $request->user->kodeKota(); 
         $data = array(
-            'name' => $request->user->name 
-        ); 
+            'name' => $request->user->name,
+            
+            'isUserSuperadmin' => $request->user->is_user_superadmin,
+
+            'kodeKota' => $kodeKota,
+        );  
         return view('page.admin.CargoPengirimanTruk', [], $data); 
     } 
     
@@ -111,6 +117,8 @@ class CargoPengirimanTrukController extends Controller
             'nomorPenerima' => ['required', 'numeric', 'min:1'],   
             
             'tujuan' => ['required', 'string'],  
+
+            'jenisDetail' => ['required', 'string'],  
         ],
         [ 
             'namaPengirim.required' => "Nama pengirim kosong",
@@ -129,6 +137,9 @@ class CargoPengirimanTrukController extends Controller
 
             'tujuan.required' => "Tujuan kosong",
             'tujuan.string' => "Tujuan tidak boleh angka",
+
+            'jenisDetail.required' => "Jenis detail kosong",
+            'jenisDetail.string' => "Jenis detail tidak boleh angka",
         ]
         );
         if($validator->fails()){ 
@@ -155,6 +166,13 @@ class CargoPengirimanTrukController extends Controller
      */
     public function storeTruk(Request $request)
     {
+        // superadmin
+        if($request->user->is_user_superadmin && !$request->asal){
+            $data = array();
+            $data['asalError'] = 'Asal kosong';
+            return redirect()->back()->withErrors($data)->withInput();
+        }
+
         $dataValid = array();
         $jenisBarangValid = 0;
 
@@ -243,7 +261,7 @@ class CargoPengirimanTrukController extends Controller
             }
 
             sleep(0.3);
-        }    
+        }     
 
         // add pengiriman detail
         $pengirimanDetail = new CargoPengirimanDetail([
@@ -255,16 +273,20 @@ class CargoPengirimanTrukController extends Controller
             'nama_penerima' => $request->namaPenerima,
             'nomor_penerima' => $request->nomorPenerima,
 
-            'is_lunas' => $request->isLunas, 
+            // 2 pembayaran di kantor surabaya
+            'is_lunas' => ($request->statusPembayaran == 2) ? "lunas" : null, 
 
             'is_pengecualian' => $isPengecualian,
 
             'jenis_pengirim' => $request->jenisPengirim?? 'umum',
             'jenis_pengiriman' => "truk",
             'jenis_biaya' => $request->jenisBiaya,
+            'id_status_pembayaran' => $request->statusPembayaran,
 
+            'asal' => $request->user->is_user_superadmin == 1 ? $request->asal : $request->user->kodeKota()->kota,
             'tujuan' => $request->tujuan,
             'keterangan' => $request->keterangan, 
+            'jenis_barang_detail' => $request->jenisDetail, 
 
             'id_user' => $request->user->id, 
         ]);
@@ -275,6 +297,7 @@ class CargoPengirimanTrukController extends Controller
                 $dataValid[$i]->no_lmt = $pengirimanDetail->no_lmt;
                 $dataValid[$i]->save();
             }
+
             $pengirimanDetail->save(); 
             
             $request->no_lmt = encrypt($no_lmt);  
@@ -367,9 +390,35 @@ class CargoPengirimanTrukController extends Controller
     {
         // by no resi
         if($request->no_lmt){
-            $cargoDetail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->update(array("is_diterima" => "diterima"));
-        
-            if($cargoDetail){ 
+            $cargoDetail = CargoPengirimanDetail::
+            select(
+                "cargo_pengiriman_details.no_lmt",
+                "is_lunas",
+                "is_diterima",
+                "message_trackings.id_message_tracking",
+                "status_pembayarans.id_status_pembayaran",
+                "cargo_pengiriman_details.created_at",
+            )
+            ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
+            ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
+            ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran")
+            ->groupBy("message_trackings.id_message_tracking") 
+            ->orderBy('message_trackings.id_message_tracking', 'desc')
+            ->where('cargo_pengiriman_details.no_lmt', decrypt($request->no_lmt))
+            ->first()
+            ; 
+
+            // id_message_tracking = 3 = "barang sudah sampai tujuan"
+            if($cargoDetail->is_diterima == null && $cargoDetail->id_message_tracking == 3){ 
+                CargoPengirimanDetail::where("no_lmt", $cargoDetail->no_lmt)->update(['is_diterima' => "diterima"]); 
+            
+                $tracking = new TruckTracking();
+                $tracking->no_lmt = $cargoDetail->no_lmt;
+                $tracking->id_message_tracking = 4;
+                $tracking->id_status_pembayaran = $cargoDetail->is_lunas ? null : $cargoDetail->id_status_pembayaran;
+                $tracking->id_user = $request->user->id;
+                $tracking->save();
+
                 return redirect('barang');
             }
         }
@@ -387,9 +436,42 @@ class CargoPengirimanTrukController extends Controller
     {
         // by no resi
         if($request->no_lmt){
-            $cargoDetail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->update(array("is_lunas" => "lunas"));
+            $cargoDetail = CargoPengirimanDetail::
+            select(
+                "cargo_pengiriman_details.no_lmt",
+                "is_lunas",
+                "asal",
+                "tujuan",
+                "message_trackings.id_message_tracking",
+                "status_pembayarans.id_status_pembayaran",
+                "cargo_pengiriman_details.created_at",
+            )
+            ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
+            ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
+            ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran")  
+            ->where('cargo_pengiriman_details.no_lmt', decrypt($request->no_lmt))
+            ->first()
+            ; 
+
+            $isBayarTujuan = $cargoDetail->id_status_pembayaran == 1;
+            $isPiutang = $cargoDetail->id_status_pembayaran == 3; 
             
-            if($cargoDetail){ 
+            if($cargoDetail && !$cargoDetail->is_lunas && ($isBayarTujuan || $isPiutang)){ 
+                CargoPengirimanDetail::where("no_lmt", $cargoDetail->no_lmt)->update(['is_lunas' => "lunas"]); 
+                
+                $tracking = new TruckTracking();
+                $tracking->no_lmt = $cargoDetail->no_lmt;
+                $tracking->id_message_tracking = $cargoDetail->id_message_tracking;
+
+                if($isBayarTujuan && $request->user->kodeKota()->kota == $cargoDetail->tujuan){
+                    $tracking->id_status_pembayaran = 6;
+                } 
+                else if($isPiutang && ($request->user->kodeKota()->kota == $cargoDetail->asal || $request->user->name == "superadmin")){
+                    $tracking->id_status_pembayaran = 5;
+                }
+                
+                $tracking->id_user = $request->user->id;
+                $tracking->save();
                 return redirect('barang');
             }
         }

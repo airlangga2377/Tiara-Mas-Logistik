@@ -18,7 +18,7 @@ class Distributor extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_distributor';
 
     /**
      * The attributes that are mass assignable.

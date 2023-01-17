@@ -128,7 +128,7 @@
                 <table> 
                     <tbody>
                         <tr>
-                            <td class="text" style="font-size: 30px">{{ $user->kota }}, {{ $detail->created }}</td>  
+                            <td class="text" style="font-size: 30px">{{ ucfirst($user->kodeKota()->kota) }}, {{ $detail->created }}</td>  
                         </tr> 
                         <tr> 
                             <td class="text">Kepada Yth :</td>
@@ -151,7 +151,7 @@
             <div>
                 <a style="display: inline-block; width: 450px;" class="text">Sopir: {{ $detail->sopir }}</a>
                 <a style="display: inline-block; width: 450px;" class="text">No. Pol.: {{ $detail->no_pol }}</a>
-                <a style="display: inline-block; width: 450px;" class="text">Tujuan: {{ $detail->tujuan }}</a>
+                <a style="display: inline-block; width: 450px;" class="text">Tujuan: {{ ucfirst($detail->tujuan) }}</a>
             </div>
         </div>
     </div>

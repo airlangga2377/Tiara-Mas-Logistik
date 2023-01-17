@@ -53,9 +53,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'kota' => ['string'],
-            'wilayah' => ['string'],
+            'id_kode_kota' => ['required', 'string', 'min:1', 'confirmed'], 
         ]);
     }
 
@@ -67,13 +65,13 @@ class RegisterController extends Controller
      */
     protected function create(Request $request)
     {    
-        if(validator([$request])){ 
+        if(validator([$request])){  
             User::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
-                'kota' => $request['kota'],
-                'wilayah' => $request['wilayah'],
+                'is_user_superadmin' => $request['is_user_superadmin'] ? $request['is_user_superadmin'] : 0, 
+                'id_kode_kota' => $request['id_kode_kota'], 
             ]); 
             return response(['message' => 'Akun telah dibuat']);
         }

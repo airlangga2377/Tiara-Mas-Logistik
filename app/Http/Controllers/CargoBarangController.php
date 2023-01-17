@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cargo\CargoPengirimanBarang;
 use App\Http\Controllers\Controller;
+use App\Models\Cargo\KodeKota;
 use Illuminate\Http\Request;
 
 class CargoBarangController extends Controller
@@ -38,10 +39,14 @@ class CargoBarangController extends Controller
      */
     protected function page(Request $request)
     {
-        $cargoArray = $request->user->pengirimanBarangs();
+        $kodeKota = $request->user->kodeKota(); 
         
+        $cargoArray = $request->user->pengirimanBarangs($kodeKota->kota);
+
         $data = array(
             'name' => $request->user->name,
+
+            'kodeKota' => $kodeKota,
 
             'allCargo' => $cargoArray
         ); 

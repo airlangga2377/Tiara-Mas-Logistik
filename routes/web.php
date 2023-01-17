@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 use Illuminate\Support\Facades\Route;  
 
 Route::get('/', function () { 
@@ -36,9 +37,16 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
 
     // MANIFEST TRUK CRUD 
     Route::get('/barang/manifest', 'CargoManifestController@page');  
-    Route::get('/barang/manifest/update', 'CargoManifestController@pageCreateManifest');  
-    Route::post('/barang/manifest/update', 'CargoManifestController@updateManifest');  
-    Route::get('/barang/manifest/print', 'CargoManifestController@storeTrukManifestNote');
+    Route::get('/barang/manifest/create', 'CargoManifestController@pageCreateManifest');  
+    Route::post('/barang/manifest/create', 'CargoManifestController@createManifest');  
+    Route::get('/barang/manifest/print', 'CargoManifestController@storeTrukManifestNote'); 
+    Route::post('/barang/manifest/get', 'CargoManifestController@getManifest'); 
+    Route::post('/barang/manifest/tracking', 'CargoManifestController@getManifestTracking'); 
+
+    Route::get('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
+    Route::post('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
+    
+    Route::get('/barang/manifest/sampai', 'CargoManifestController@updateSampai');  
 
     // BARANG TRUK CRUD 
     Route::get('/barang/truk/print', function (){return abort(404);});  
@@ -57,20 +65,23 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/truk/update/diterima', 'CargoPengirimanTrukController@updateDiterima');  
     Route::get('/barang/truk/update/lunas', 'CargoPengirimanTrukController@updateLunas');  
     // BARANG DELETE
-    Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');   
-    
-    //Pengiriman Bus    
+    Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');
+        
+    // PENGIRIMAN BUS    
     Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
     Route::post('/barang/bus/insert-save', 'Bus\CargoPengirimanBusController@pagecreate');
-    // Route::get('/barang', 'Bus\CargoPengirimanBusController@barang');
+    Route::get('/barang/bus/print/resi', 'Bus\CargoPengirimanBusController@storeBusResi');
+    Route::get('/barang/bus', function (){return abort(404);});  
 
-
-    // Kategori Bus
+    // KATEGORI BUS
     Route::get('/barang/bus/category', 'Bus\CargoPengirimanBusController@index');
     Route::post('/save-goodscategorybus', 'Bus\CargoPengirimanBusController@categorygoods');
 
-    // Wilayah Berdasarkan Kode
+    // WILAYAH BERDASARKAN KODE
     Route::get('/barang/bus/wilayah', 'Bus\WilayahBusController@page');
-    Route::post('/save-busarea', 'Bus\WilayahBusController@add_wilayah');
-    
+    Route::post('/save-busarea', 'WilayahBusController@add_wilayah');
+    // Route::get('/barang/bus/print/resi', 'CargoPengirimanTrukController@DeliveryNote');
+
+    // MANIFEST BUS
+   
 });

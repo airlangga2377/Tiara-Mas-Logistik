@@ -14,7 +14,7 @@ class CreateDistributorsTable extends Migration
     public function up()
     {
         Schema::create('distributors', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id_distributor');
             $table->string('name');
             $table->index('name');
             $table->timestamps();

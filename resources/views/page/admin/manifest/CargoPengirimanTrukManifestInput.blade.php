@@ -35,7 +35,7 @@
         </ol>
     </nav>
 
-    <form action="{{ url("barang/manifest/update") }}" method="post">
+    <form action="{{ url("barang/manifest/create") }}" method="post">
         @csrf  
         <div class="row justify-content-center align-items-center g-2">
             <div class="col">
@@ -65,10 +65,11 @@
                         <label for="tujuan" class="form-label fs-4">Tujuan</label>  
                         <select class="form-select" aria-label="Pilih tujuan" id="selectBoxTujuan" data-live-search="true" name="tujuan">
                             <option disabled @if (old("tujuan") == null || old() == null) selected @endif value>Semua Tujuan</option>
-                            <option value="taliwang" @if (old("tujuan") == "taliwang") selected @endif>Taliwang</option>
-                            <option value="bima" @if (old("tujuan") == "bima") selected @endif>Bima</option>
-                            <option value="sumbawa" @if (old("tujuan") == "sumbawa") selected @endif>Sumbawa</option>
-                            <option value="mataram" @if (old("tujuan") == "mataram") selected @endif>Mataram</option>
+                            @if ($kodeKota->kota != "surabaya" || $isUserSuperadmin) <option value="surabaya" @if (old("tujuan") == "surabaya") selected @endif>Surabaya</option> @endif
+                            @if ($kodeKota->kota != "taliwang" || $isUserSuperadmin) <option value="taliwang" @if (old("tujuan") == "taliwang") selected @endif>Taliwang</option> @endif
+                            @if ($kodeKota->kota != "bima" || $isUserSuperadmin) <option value="bima" @if (old("tujuan") == "bima") selected @endif>Bima</option> @endif
+                            @if ($kodeKota->kota != "sumbawa" || $isUserSuperadmin) <option value="sumbawa" @if (old("tujuan") == "sumbawa") selected @endif>Sumbawa</option> @endif
+                            @if ($kodeKota->kota != "mataram" || $isUserSuperadmin) <option value="mataram" @if (old("tujuan") == "mataram") selected @endif>Mataram</option> @endif
                         </select>
                     </div>   
                 </div> 
@@ -79,6 +80,8 @@
                                 <th></th>
                                 <th>Nama Pengirim</th>
                                 <th>No Resi</th>
+
+                                <th>Pembayaran</th>
     
                                 <th>Tanggal</th>
                                 
@@ -136,12 +139,12 @@
             var table = $('#tableId').DataTable({ 
                 processing: true,
                 ajax: {
-                    url: '/api/manifest/update',
+                    url: '/barang/manifest/get',
                     type: 'POST',
                     dataType: "json",
-                    contentType: "application/json; charset=utf-8;",
-                    beforeSend: function(jqXHR){
-                        jqXHR.setRequestHeader('Authorization', 'Bearer {{ $api_token }}')
+                    contentType: "application/json; charset=utf-8;", 
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     "data": function ( d ) {
                         d.tujuan = $('#selectBoxTujuan').find(":selected").val();
@@ -154,6 +157,7 @@
                     {data: "nama_pengirim"}, 
 
                     {data: "no_lmt"}, 
+                    {data: "pesan"}, 
                     {data: "created"},  
                     {
                         data: "no_lmt",

@@ -15,6 +15,8 @@ class CreateTrucksTable extends Migration
     {
         Schema::create('trucks', function (Blueprint $table) {
             $table->bigIncrements('id_truck');
+            
+            $table->index('no_pol');
             $table->string('no_pol')->nullable(false);
             $table->string('sopir_utama');
             $table->timestamps();
