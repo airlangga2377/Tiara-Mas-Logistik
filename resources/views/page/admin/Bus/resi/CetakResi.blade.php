@@ -68,8 +68,8 @@
             padding-bottom: 50px;
         }
         .tanda-terima{
-            padding-left: 300px;
-            font-size: 30px;
+            padding-left: 150px;
+            font-size: 45px;
          }
         .barcode{
             padding-left: 200px;
@@ -265,7 +265,7 @@
                                             <tbody>                                    
                                                 <tr> 
                                                     <td style="font-size: 189%;">
-                                                        Bayar Tujuan
+                                                        {{ ucfirst($detail->pesan) }} 
                                                     </td>
                                                 </tr>   
                                             </tbody>
@@ -429,7 +429,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th style="padding-bottom: 125px;padding-top: 25px;">
-                                                        {{ Auth::user()->wilayah }} Tgl {{ date_format(date_create($detail->created_at->toDateString(), timezone_open("Asia/Jakarta")), 'd F Y') }}
+                                                        {{ ucfirst($user->kodeKota()->kota) }}, {{ $detail->created }}
                                                     </th>
                                                 </tr>
                                             </tbody>

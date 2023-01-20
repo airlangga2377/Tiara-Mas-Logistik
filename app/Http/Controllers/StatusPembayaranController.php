@@ -47,7 +47,10 @@ class StatusPembayaranController extends Controller
         //
         StatusPembayaran::create([
             'pesan' => "piutang toko",
-        ]);   
+        ]);
+        StatusPembayaran::create([
+            'pesan' => "lunas",
+        ]);     
         return response(['message' => 'Status Pembayaran telah dibuat']);
     }
 

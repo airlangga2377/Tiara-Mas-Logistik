@@ -70,7 +70,10 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     // PENGIRIMAN BUS    
     Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
     Route::post('/barang/bus/insert-save', 'Bus\CargoPengirimanBusController@pagecreate');
+
+    // RESI BUS
     Route::get('/barang/bus/print/resi', 'Bus\CargoPengirimanBusController@storeBusResi');
+    Route::get('/barang/bus/print/barang', 'Bus\CargoPengirimanBusController@storeBusBarang');
     Route::get('/barang/bus', function (){return abort(404);});  
 
     // KATEGORI BUS

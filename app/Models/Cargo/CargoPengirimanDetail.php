@@ -52,7 +52,9 @@ class CargoPengirimanDetail extends Model
         'jenis_pengirim', 
 
         // apakah menggunakan biaya kubikasi atau biaya berat, dicek paling menguntungkan pihak tiara
-        'jenis_biaya', 
+        'jenis_biaya',
+
+        'jenis_paket', 
         
         // pembayaran untuk sorting agar lebih cepat
         'id_status_pembayaran', 
@@ -109,7 +111,7 @@ class CargoPengirimanDetail extends Model
         return $data ? $data : array();
     }
 
-    /**
+    /**re
      * Get the Pengiriman Cargo.
     */ 
     public function summary($no_lmt)
@@ -119,20 +121,32 @@ class CargoPengirimanDetail extends Model
         ->selectRaw(
             'SUM(biaya) as biaya,
             SUM(jumlah_barang) as jumlah_barang,
-            cargo_pengiriman_details.keterangan, 
+            cargo_pengiriman_details.keterangan,
+            code, 
+            berat, 
+            jenis_barang, 
+            asal, 
+            status_pembayarans.pesan, 
             DATE(cargo_pengiriman_details.created_at) as created',
         )
         ->leftJoin("cargo_pengiriman_details", "cargo_pengiriman_details.no_lmt", "cargo_pengiriman_barangs.no_lmt")
+        ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran")
         ->where("cargo_pengiriman_details.no_lmt", ($no_lmt ? decrypt($no_lmt) : $this->no_lmt))
         ->orderByDesc('cargo_pengiriman_details.created_at') 
         ->groupBy("cargo_pengiriman_details.no_lmt")
         ->first()
         ;  
         $this->biaya = $data->biaya;
+        $this->jumlah_barang = $data->jumlah_barang;
+        $this->id_status_pembayaran = $data->id_status_pembayaran;
+        $this->pesan = $data->pesan;
+        $this->code = $data->code;
+        $this->berat = $data->berat;
+        $this->jenis_barang = $data->jenis_barang;
+        $this->asal = $data->asal;
         $this->keterangan = $data->keterangan; 
         return $data;
-    }
-    
+    }    
     /**
      * Get the Pengiriman Cargo.
     */ 
@@ -150,4 +164,5 @@ class CargoPengirimanDetail extends Model
         ;
         return $data;
     }
+
 }

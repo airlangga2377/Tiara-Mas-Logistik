@@ -10,6 +10,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Cargo\Bus\Wilayah;
 use App\Models\Cargo\Distributor;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Cargo\StatusPembayaran;
 use Milon\Barcode\Facades\DNS1DFacade;
 use App\Models\Cargo\Bus\GoodsCategory;
 use App\Models\Cargo\Bus\PengirimanBus;
@@ -18,6 +20,7 @@ use App\Models\Cargo\CargoPengirimanDetail;
 
 class CargoPengirimanBusController extends Controller
 {
+    public static $path = "page.admin.Bus.resi.";
     /**
      * Display a page pengiriman
      *
@@ -25,6 +28,7 @@ class CargoPengirimanBusController extends Controller
      */
     protected function pagecreate(Request $request)
     {
+        
         $dataValid = array();
         $jenisBarangValid = 0;
 
@@ -33,7 +37,7 @@ class CargoPengirimanBusController extends Controller
         //     return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
         // } 
         $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
-        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + + 1 : 1;
+        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + 1 : 1;
 
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
@@ -125,12 +129,14 @@ class CargoPengirimanBusController extends Controller
             'nomor_pengirim' => $request->nomorPengirim,
             'nama_penerima' => $request->namaPenerima,
             'nomor_penerima' => $request->nomorPenerima,
-            'is_lunas' => $request->isLunas, 
+            // 2 pembayaran di kantor surabaya
+            'is_lunas' => ($request->statusPembayaran == 4) ? "lunas" : null,
 
             'is_pengecualian' => $isPengecualian,
 
             'jenis_pengirim' => $request->jenisPengirim?? 'umum',
             'jenis_pengiriman' => "bus",
+            'id_status_pembayaran' => $request->statusPembayaran,
             'jenis_paket' => $request->jenisPaket,
             'jenis_biaya' => $request->jenisBiaya,
             'asal' => $request->pickup,
@@ -212,6 +218,40 @@ class CargoPengirimanBusController extends Controller
     public function storeBusResi(Request $request){   
         $data = array();
         
+        try {
+            $detail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->first();
+        } catch (\Throwable $th) {
+            return abort(404);  
+        }
+        $data = $detail->barangs($request->no_lmt);
+        $detail->summary($request->no_lmt);
+
+        $detail->created = date_format(date_create($detail->created_at->toDateString(), timezone_open("Asia/Jakarta")), 'd F Y'); 
+
+        if(count($data) != 0 && $detail->no_lmt){  
+            $pdf = PDF::loadView(CargoPengirimanBusController::$path .'CetakResi', [
+                "data" => $data, 
+                "detail" => $detail,
+                "user" => $request->user
+            ])
+            ->SetPaper([0.0, 0.0, 708.66, 920.63 / 2]) // a4 | portrait {widht: 708.66, height: 610.000}
+
+            ->setOption([
+                'dpi' => 150, 
+                'defaultFont' => 'sans-serif', 
+                'isRemoteEnabled' => true, 
+                'chroot' => "logo.png",
+            ]);
+            
+            return $pdf->stream();
+        }
+        return abort(404);
+        // return $pdf->download("tes.pdf");
+    }
+
+    public function storeBusBarang(Request $request){   
+        $data = array();
+        
         try { 
             $detail = CargoPengirimanDetail::where('no_lmt', decrypt($request->no_lmt))->first();
         } catch (\Throwable $th) {
@@ -225,8 +265,12 @@ class CargoPengirimanBusController extends Controller
         $detail->created = date_format(date_create($detail->created_at->toDateString(), timezone_open("Asia/Jakarta")), 'd F Y'); 
 
         if(count($data) != 0 && $detail->no_lmt){  
-            $pdf = PDF::loadView('page.admin.Bus.Resi.CargoPengirimanBusResi', ["data" => $data, "detail" => $detail, "user" => $request->user])
-            ->SetPaper([0.0, 0.0, 708.66, 920.63 / 2]) // a4 | portrait {widht: 708.66, height: 610.000}
+            $pdf = PDF::loadView(CargoPengirimanBusController::$path . 'CetakBarang', [
+                "data" => $data, 
+                "detail" => $detail, 
+                "user" => $request->user
+            ])
+            ->SetPaper('A6','portrait') // a4 | portrait {widht: 377.95275591, height: 566.92913386}
 
             ->setOption([
                 'dpi' => 150, 
@@ -243,7 +287,7 @@ class CargoPengirimanBusController extends Controller
 
     protected function page(Request $request)
     {
-        $cargoArray = $request->user->pengirimanBarangs();
+        $cargoArray = $request->user->kodeKota();
         $wilayahArray = $request->user->allWilayah();
         $data = array(
             'name' => $request->user->name,

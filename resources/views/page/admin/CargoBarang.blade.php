@@ -103,10 +103,22 @@
                                             @endif
                                         </div>
                                         <div class="{{ (!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-auto" }} text-center">
+                                            @if (Auth::user()->is_user_superadmin!=0)
                                             <form action="{{ url("barang/truk/print/deliverynote") }}" method="get" target="_blank">
                                                 <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
                                             </form>
+                                            @else
+                                            <form action="{{ url("barang/bus/print/resi") }}" method="get" target="_blank">
+                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Resi</button>
+                                            </form>
+                                            <br>
+                                            <form action="{{ url("barang/bus/print/barang") }}" method="get" target="_blank">
+                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Barang</button>
+                                            </form>
+                                        @endif
                                         </div> 
                                         <div class="col-6 text-center">
                                             @php

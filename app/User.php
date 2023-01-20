@@ -2,11 +2,14 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Cargo\Bus\Tujuan;
+use App\Models\Cargo\Bus\Regency;
+use App\Models\Cargo\Bus\Wilayah;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Cargo\KodeKota as KodeKota;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Cargo\CargoPengirimanBarang as CargoPengirimanBarang;
 use App\Models\Cargo\CargoPengirimanDetail as CargoPengirimanDetail;
-use App\Models\Cargo\KodeKota as KodeKota;
 
 class User extends Authenticatable
 {
@@ -80,6 +83,7 @@ class User extends Authenticatable
                 nama_penerima,
                 asal,
                 tujuan,
+                jenis_paket,
                 jenis_pengiriman,
                 SUM(cargo_pengiriman_barangs.biaya) as biaya,
                 SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
@@ -111,6 +115,7 @@ class User extends Authenticatable
                 nama_penerima,
                 asal,
                 tujuan,
+                jenis_paket,
                 jenis_pengiriman,
                 SUM(cargo_pengiriman_barangs.biaya) as biaya,
                 SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
@@ -185,5 +190,56 @@ class User extends Authenticatable
         )
         ->first();
         return $data ? $data : new KodeKota();
+    }
+    public function allRegencies()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Regency();
+        } else {
+            $sql =  $this->hasMany(Regency::class, "id_wilayah");
+        }
+        $data =  $sql
+        ->selectRaw(
+            'id_wilayah,
+            name,
+            DATE(wilayah.created_at) as created',
+        )
+        ->orderByDesc('wilayah.id_wilayah')
+        ->groupBy("name")
+        ->get();
+        return $data ? $data : array();
+    }
+
+    public function allTujuan()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Tujuan();
+        } else {
+            $sql =  $this->hasMany(Tujuan::class, "wilayah_asal");
+        }
+        $data =  $sql
+        ->selectRaw(
+            'id_tujuan,
+            wilayah_asal,
+            name,
+            DATE(tujuan.created_at) as created',
+        )
+        ->orderByDesc('tujuan.id_tujuan')
+        ->groupBy("wilayah_asal")
+        ->get();
+        return $data ? $data : array();
+    }
+
+    public function allWilayah()
+    {
+        if($this->name == "superadmin"){
+            $sql =  new Wilayah();
+        } else {
+            $sql =  $this->hasMany(Wilayah::class, "id_area_bus");
+        }
+        $data =  $sql
+        ->orderByDesc('created_at')
+        ->get();
+        return $data ? $data : array();
     }
 }
