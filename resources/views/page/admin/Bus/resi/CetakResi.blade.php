@@ -78,16 +78,22 @@
             font-size: 30px;
         }
         .table-jenisbarang th, .table-jenisbarang td{
-            width: 470px;
+            width: 456px;
             border: 2px solid black;
             text-align: center;
             font-size: 30px;
         }
+        .table-jenisbarang td{
+            padding: 10px 10px;
+        }
         .table-asal th, .table-asal td{
-            width: 709px;
+            width: 694px;
             border: 2px solid black;
             text-align: center;
             font-size: 30px;
+        }
+        .table-asal td{
+            padding: 10px 10px;
         }
         .table-ttd th, .table-ttd td{
             width: 470px;
