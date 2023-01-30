@@ -16,6 +16,36 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>    
+    <!-- Modal tracking -->
+    <div class="modal fade modal-dialog-scrollable" id="modalTracking" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+            
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="parentTableIdTracking"> 
+                <table id="tableIdTracking" class="display">
+                    <thead>
+                        <tr> 
+                            <th>Deskripsi Tracking</th> 
+                            <th>Status Pembayaran</th> 
+
+                            <th>Tanggal</th> 
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            
+            
+            </div>
+        </div>
+        </div>
+    </div>
+
     
     <?php if($errors->any()): ?>
         <script>
@@ -92,10 +122,10 @@
                                                 <button type="button" class="btn btn-secondary disabled">Terima</button>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-auto"); ?> text-center">
+                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12"); ?> text-center">
                                             <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
                                                 <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
+                                                <button type="submit" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" style="width: 75px">Cetak</button>
                                             </form>
                                         </div> 
                                         <div class="col-6 text-center">
@@ -119,8 +149,11 @@
                                                     <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
                                                 </form>
                                             <?php elseif(!$barang->is_lunas || !$barang->is_diterima): ?>
-                                                <button type="button" class="btn btn-danger disabled" style="width: 75px">Hapus</button>
+                                                <button type="button" class="btn btn-secondary disabled" style="width: 75px">Hapus</button>
                                             <?php endif; ?>
+                                        </div> 
+                                        <div class="<?php echo e(($barang->is_lunas && $barang->is_diterima) ? "col-12" : "col-6"); ?> text-center" data-bs-toggle="modal" data-bs-target="#modalTracking">
+                                            <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" value="<?php echo e(encrypt($barang->no_lmt)); ?>" style="width: 75px">Lacak</button>
                                         </div>   
                                     </div> 
                                 </td>  
@@ -152,7 +185,44 @@
                 });
             }).draw();
 
-            
+            $('#tableId tbody').on('click', '#btnGetTracking', function () {
+                $("#overlayLoading").css("visibility", "visible");   
+
+                var value = $(this).val(); 
+
+                $('#parentTableIdTracking').empty();
+                $('#parentTableIdTracking').append("<table id='tableIdTracking' class='display'><thead><tr><th>Deskripsi Tracking</th><th>Status Pembayaran</th><th>Tanggal</th></tr></thead><tbody></tbody></table>");
+                
+                $('#tableIdTracking').DataTable({ 
+                    processing: true,
+                    ajax: {
+                        url: '/barang/tracking',
+                        type: 'POST',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8;", 
+                        headers: {
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                        },
+                        "data": function ( d ) {
+                            d.no_lmt = value;
+                            return JSON.stringify( d );
+                        },
+                        statusCode: {
+                            404: function() {
+                                alert( "Tidak ditemukan" );
+                            }
+                        },
+                    },
+                    columns: [   
+                        {data: "pesan"}, 
+                        {data: "pembayaran"},  
+                        {data: "created"},  
+                    ],  
+                    pageLength: 10,
+                });
+
+                $("#overlayLoading").css("visibility", "hidden");   
+            }); 
   
             $('#overlayLoading').css('visibility', 'hidden');
             

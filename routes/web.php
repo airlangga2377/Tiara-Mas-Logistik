@@ -13,9 +13,9 @@
 
 use Illuminate\Support\Facades\Route;  
 
-Route::get('/', function () { 
-    return view('page.guest.tracking'); 
-});
+Route::get('/', 'HomeController@pageGuest'); 
+
+Route::post('/', 'HomeController@pageTrackingGuest'); 
 
 Route::get('/login', function () { 
     return view('auth.login');
@@ -42,7 +42,7 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/manifest/print', 'CargoManifestController@storeTrukManifestNote'); 
     Route::post('/barang/manifest/get', 'CargoManifestController@getManifest'); 
     Route::post('/barang/manifest/tracking', 'CargoManifestController@getManifestTracking'); 
-
+    
     Route::get('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
     Route::post('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
     
@@ -66,7 +66,8 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/truk/update/lunas', 'CargoPengirimanTrukController@updateLunas');  
     // BARANG DELETE
     Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');
-        
+
+    Route::post('/barang/tracking', 'CargoPengirimanTrukController@getResiTracking');
     // PENGIRIMAN BUS    
     Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
     Route::post('/barang/bus/insert-save', 'Bus\CargoPengirimanBusController@pagecreate');
@@ -86,5 +87,8 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     // Route::get('/barang/bus/print/resi', 'CargoPengirimanTrukController@DeliveryNote');
 
     // MANIFEST BUS
-   
+    Route::get('/barang/manifest/bus/create', 'Bus\ManifestBusController@pageCreateManifest');  
+    Route::post('/barang/manifest-bus/create', 'Bus\ManifestBusController@createManifest');  
+    Route::post('/barang/manifest-bus/get', 'Bus\ManifestBusController@getManifest'); 
+    Route::get('/barang/manifest-bus/print', 'Bus\ManifestBusController@storeCetakManifestBus');  
 });

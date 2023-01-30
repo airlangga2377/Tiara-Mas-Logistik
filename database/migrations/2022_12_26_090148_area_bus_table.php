@@ -14,11 +14,20 @@ class AreaBusTable extends Migration
     public function up()
     {
         Schema::create('area_bus', function (Blueprint $table) {
-            $table->bigIncrements('id_area_bus');  
-            $table->string('kota'); 
-            $table->string('name'); 
-            $table->string('alamat'); 
+            $table->bigIncrements('id_area_bus');
+
+            $table->string('kota');
+            
+            $table->index('kode_kota');
+            $table->string('kode_kota');
+            
+            $table->string('wilayah');
+
+            $table->index('kode_wilayah');
             $table->string('kode_wilayah');
+
+            $table->string('alamat');
+
             $table->timestamps();
         });
     }

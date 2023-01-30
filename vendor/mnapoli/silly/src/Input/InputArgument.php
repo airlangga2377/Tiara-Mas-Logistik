@@ -16,7 +16,7 @@ class InputArgument extends \Symfony\Component\Console\Input\InputArgument
         $this->description = $description;
     }
 
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description ?: parent::getDescription();
     }

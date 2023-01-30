@@ -75,10 +75,16 @@
             @endif
 
             @if (Session::has("message")) 
-                <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
-                    {!! Session::get("message") !!}
-                </div>
-            @endif 
+                    <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
+                        {!! Session::get("message") !!} 
+                        <script>
+                            window.open("/barang/bus/print/resi?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
+                        </script>
+                        <script>
+                            window.open("/barang/bus/print/barang?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
+                        </script>
+                    </div>
+                @endif 
             <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-1">
                     <div class="col">
@@ -123,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
             <style>
                 .container-fluid{
                     /* background-color:#f5f5f5; */
@@ -166,26 +172,14 @@
             </style>
             <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-5 md-15">
-                    @if (Auth::user()->is_user_superadmin!=0)
-                        <div class="col">
-                            <div class="mb-xl-3 mb-sm-5">
-                                <label hidden for="pickup" class="form-label fs-4">Asal Barang</label>
-                                <select hidden type="option" id="" class="form-control select-pickup shadow-sm p-3" name="pickup" id="pickup" aria-describedby="pickupText" value="{!! old('pickup') !!}">
-                                <option value="{{ Auth::user()->wilayah }}" selected>{{ Auth::user()->wilayah }}</option>
-                                </select>
-                                <div id="validationpickup" class="invalid-feedback">
-                                    @if (Session::has("pickupError")) @endif
-                                </div>
-                            </div>
-                        </div>
-                    @else
+                    @if ($isUserSuperadmin)
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">                             
                                 <label for="pickup" class="form-label fs-4">Asal Barang</label>
                                 <select type="option" id="pickup" class="form-control select-pickup shadow-sm p-3" name="pickup" id="pickup" aria-describedby="pickupText" value="{!! old('pickup') !!}">
-                                    <option value="">Silahkan Pilih Asal</option>
-                                @foreach ($allWilayah as $wilayah)
-                                    <option value="{{ $wilayah->name }}">{{ $wilayah->name }}</option>
+                                    <option value="" disabled selected>Silahkan Pilih Asal</option>
+                                @foreach ($allCargo as $wilayah)
+                                    <option value="{{ $wilayah->wilayah }}">{{ $wilayah->wilayah }}</option>
                                 @endforeach
                                 </select>
                                 <div id="validationpickup" class="invalid-feedback">
@@ -193,14 +187,15 @@
                                 </div>
                             </div>
                         </div>
+                        @else
                     @endif
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
                             <label for="dropoff" class="form-label fs-4">Tujuan Barang</label>
                             <select type="option" id="dropoff" class="form-control" name="dropoff" id="tujuanBarang" aria-describedby="tujuanBarangText" value="{!! old('tujuanBarang') !!}">
                                 <option value=""> Silahkan Pilih Tujuan </option>
-                                @foreach ($allWilayah as $kota)
-                                    <option value="{{ $kota->name }}">{{ $kota->name }}</option>
+                                @foreach ($allCargo as $kota)
+                                    <option value="{{ $kota->wilayah }}">{{ $kota->wilayah }}</option>
                                 @endforeach
                             </select>
                             <div id="validationTujuanBarang" class="invalid-feedback">
@@ -242,23 +237,23 @@
                     <div class="row align-items-start py-1">
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                <label for="tipePaket" class="form-label fs-4">Pilih Tipe Paket</label>                                                                            
-                                <select class="form-select shadow-sm p-3" name="jenisPaket" id="tipePaket" aria-describedby="tipePaketText" value="{!! old('tipePaket')[$i] !!}">                                        
+                                <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
+                                <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="{!! old('jenisBarang')[$i] !!}">                                        
                                         <option value="barang">Barang</option>
                                         <option value="dokumen">Dokumen</option>
                                         <option value="cairan">Cairan</option>
                                 </select>
-                                <div id="validationTipePaket" class="invalid-feedback">
-                                    @if (Session::has("tipePaketError")) @endif
+                                <div id="validationJenisBarang" class="invalid-feedback">
+                                    @if (Session::has("jenisBarangError")) @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                <label for="jenisBarang" class="form-label fs-4">Jenis Barang</label>
-                                <input type="text" class="form-control shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" placeholder="isi jenis barang" value="{!! old('jenisBarang')[$i] !!}">
-                                <div id="validationJenisBarang" class="invalid-feedback">
-                                    @if (Session::has("jenisBarangError")) @endif
+                                <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="{!! old('jenisPaket') !!}">
+                                <div id="validationJenisPaket" class="invalid-feedback">
+                                    @if (Session::has("jenisPaketError")) @endif
                                 </div>
                             </div>
                         </div>
@@ -332,23 +327,23 @@
                 <div class="row align-items-start py-1">
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
-                            <label for="tipePaket" class="form-label fs-4">Pilih Tipe Paket</label>                                                                            
-                            <select class="form-select shadow-sm p-3" name="jenisPaket" id="tipePaket" aria-describedby="tipePaketText" value="">                                        
+                            <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
+                            <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="">                                        
                                     <option value="barang">Barang</option>
                                     <option value="dokumen">Dokumen</option>
                                     <option value="cairan">Cairan</option>
                             </select>
-                            <div id="validationTipePaket" class="invalid-feedback">
-                                @if (Session::has("tipePaketError")) @endif
+                            <div id="validationJenisBarang" class="invalid-feedback">
+                                @if (Session::has("jenisBarangError")) @endif
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
-                            <label for="jenisBarang" class="form-label fs-4">Jenis Barang</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" placeholder="isi jenis barang" value="">
-                            <div id="validationJenisBarang" class="invalid-feedback">
-                                @if (Session::has("jenisBarangError")) @endif
+                            <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
+                            <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="">
+                            <div id="validationJenisPaket" class="invalid-feedback">
+                                @if (Session::has("jenisPaketError")) @endif
                             </div>
                         </div>
                     </div>

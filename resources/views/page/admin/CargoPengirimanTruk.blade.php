@@ -54,7 +54,7 @@
                     <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
                         {!! Session::get("message") !!} 
                         <script>
-                            window.open("http://127.0.0.1:8000/barang/truk/print/deliverynote?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
+                            window.open("/barang/truk/print/deliverynote?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
                         </script>
                     </div>
                 @endif 
@@ -143,8 +143,9 @@
                                 <select class="form-select" aria-label="Pilih Status Pembayaran" id="selectBoxStatusPembayaran" data-live-search="true" name="statusPembayaran">
                                     <option disabled @if (old("statusPembayaran") == null || old() == null) selected @endif value>Pilih Status Pembayaran</option>
                                     <option value="1" @if (old("statusPembayaran") == "1") selected @endif>Bayar Tujuan</option>
-                                    <option value="2" @if (old("statusPembayaran") == "2") selected @endif>Lunas Kantor Surabaya</option>
+                                    <option value="2" @if (old("statusPembayaran") == "2") selected @endif>Lunas Kantor Pengirim</option>
                                     <option value="3" @if (old("statusPembayaran") == "3") selected @endif>Piutang</option> 
+                                    <option value="4" @if (old("statusPembayaran") == "3") selected @endif>Lunas Kantor Tujuan</option> 
                                 </select>
                                 <div id="validationtujuan" class="invalid-feedback">
                                     @if (Session::has("statusPembayaranError")) @endif

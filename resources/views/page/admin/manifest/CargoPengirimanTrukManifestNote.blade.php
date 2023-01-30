@@ -66,7 +66,7 @@
         <tbody> 
           <tr>
             <td colspan="3"><p class="text">Sopir: {{ $truck->sopir ? $truck->sopir : $truck->sopir_utama }}</p></td>
-            <td colspan="3"><p class="text">Kernet: {{ $truck->kernet ? $truck->kernet : "-" }}</p></td>
+            <td colspan="3"><p class="text">Kernet: {{ $truck->kernet ? ucfirst($truck->kernet) : "-" }}</p></td>
           </tr>
       </tbody> 
     </table> 
@@ -79,7 +79,7 @@
           <th class="title text">Jenis</th>
           <th class="title text">Biaya</th>
           <th class="title text">Koli</th>
-          <th class="title text">no.lmt</th>
+          <th class="title text">Resi</th>
           <th class="title text">Pembayaran</th>
           <th class="title text">Keterangan</th>
         </tr>
@@ -89,14 +89,14 @@
           <tr> 
             @if (count($detail) > $i) 
               <td class="text" style="text-align: center">{{ $i + 1 }}</td>
-              <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->nama_pengirim }} @endif</td>
-              <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->nama_penerima }} @endif</td>
+              <td style="text-align: left;">@if ($detail[$i]) {{ explode(" ", $detail[$i]->nama_pengirim)[0] }} @endif</td>
+              <td style="text-align: left;">@if ($detail[$i]) {{ explode(" ", $detail[$i]->nama_penerima)[0] }} @endif</td>
               <td style="text-align: center;">@if ($detail[$i]) {{ $detail[$i]->jenis_barang_detail }} @endif</td>
               <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->biaya }} @endif</td>
               <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->jumlah_barang  }} @endif</td>
               <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->no_lmt }} @endif</td>
-              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->pesan }} @endif</td> 
-              <td style="text-align: right;">@if ($detail[$i]) {{ $detail[$i]->Keterangan }} @endif</td>
+              <td style="text-align: left; font-size: 20px">@if ($detail[$i]) {{ ucfirst($detail[$i]->pesan) }} @endif</td> 
+              <td style="text-align: left;">@if ($detail[$i]) {{ $detail[$i]->Keterangan }} @endif</td>
             @else
               <td class="text" style="text-align: center; color: white">/</td>
               <td class="text"></td>

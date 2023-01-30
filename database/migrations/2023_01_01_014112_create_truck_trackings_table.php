@@ -19,7 +19,7 @@ class CreateTruckTrackingsTable extends Migration
             $table->index('no_lmt');
             $table->string('no_lmt')->nullable(false);
 
-            $table->index('id_message_tracking');
+            $table->index('id_message_tracking')->nullable(false);
             $table->string('id_message_tracking')->nullable(false);
 
             $table->index('id_status_pembayaran')->nullable(false);

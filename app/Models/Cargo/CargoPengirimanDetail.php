@@ -40,6 +40,7 @@ class CargoPengirimanDetail extends Model
         'sopir',
         'kernet', 
         'no_pol', 
+        'jenis_paket', 
 
         'is_lunas', 
         'is_diterima', 
@@ -52,9 +53,7 @@ class CargoPengirimanDetail extends Model
         'jenis_pengirim', 
 
         // apakah menggunakan biaya kubikasi atau biaya berat, dicek paling menguntungkan pihak tiara
-        'jenis_biaya',
-
-        'jenis_paket', 
+        'jenis_biaya', 
         
         // pembayaran untuk sorting agar lebih cepat
         'id_status_pembayaran', 
@@ -111,7 +110,7 @@ class CargoPengirimanDetail extends Model
         return $data ? $data : array();
     }
 
-    /**re
+    /**
      * Get the Pengiriman Cargo.
     */ 
     public function summary($no_lmt)
@@ -119,17 +118,20 @@ class CargoPengirimanDetail extends Model
         $sql = $this->hasMany(CargoPengirimanBarang::class, "no_lmt", "no_lmt"); 
         $data = $sql
         ->selectRaw(
-            'SUM(biaya) as biaya,
-            SUM(jumlah_barang) as jumlah_barang,
-            cargo_pengiriman_details.keterangan,
-            code, 
+            'code, 
             berat, 
-            jenis_barang, 
-            asal, 
-            status_pembayarans.pesan, 
+            jenis_barang,
+            cargo_pengiriman_details.asal, 
+            status_pembayarans.pesan,
+            area_bus.kode_wilayah, 
+            area_bus.kode_kota,
+            SUM(biaya) as biaya,
+            SUM(jumlah_barang) as jumlah_barang,
+            cargo_pengiriman_details.keterangan, 
             DATE(cargo_pengiriman_details.created_at) as created',
         )
         ->leftJoin("cargo_pengiriman_details", "cargo_pengiriman_details.no_lmt", "cargo_pengiriman_barangs.no_lmt")
+        ->leftJoin("area_bus", "area_bus.wilayah", "cargo_pengiriman_details.asal")
         ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran")
         ->where("cargo_pengiriman_details.no_lmt", ($no_lmt ? decrypt($no_lmt) : $this->no_lmt))
         ->orderByDesc('cargo_pengiriman_details.created_at') 
@@ -141,12 +143,15 @@ class CargoPengirimanDetail extends Model
         $this->id_status_pembayaran = $data->id_status_pembayaran;
         $this->pesan = $data->pesan;
         $this->code = $data->code;
+        $this->kode_kota_asal = $data->kode_kota;
+        $this->kode_wilayah_asal = $data->kode_wilayah;
         $this->berat = $data->berat;
         $this->jenis_barang = $data->jenis_barang;
         $this->asal = $data->asal;
         $this->keterangan = $data->keterangan; 
         return $data;
-    }    
+    }
+    
     /**
      * Get the Pengiriman Cargo.
     */ 
@@ -164,5 +169,18 @@ class CargoPengirimanDetail extends Model
         ;
         return $data;
     }
-
+    public function bus($no_manifest)
+    {   
+        $sql = $this->hasOne(Bus::class, "no_pol", "no_pol"); 
+        $data = $sql
+        ->selectRaw(
+            'no_pol,
+            sopir',
+        )
+        ->where("no_manifest", $no_manifest)
+        ->groupBy("no_manifest")
+        ->first()
+        ;
+        return $data;
+    }
 }

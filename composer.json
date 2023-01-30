@@ -14,7 +14,7 @@
         "fideloper/proxy": "^4.4",
         "laravel/framework": "^6.20.26",
         "laravel/tinker": "^2.5",
-        "milon/barcode": "^6.0|^9.0",
+        "milon/barcode": "6",
         "swiftmailer/swiftmailer": "^6.3"
     },
     "require-dev": {

@@ -81,7 +81,11 @@
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
                     <div class="col-12 pt-2"> 
+                        @if (Auth::user()->jenis_user == "bus")
+                        <a role="button" class="fs-5 btn btn-success w-100" href="{{ url('/barang/manifest/bus/create') }}">Tambah Manifest</a>
+                        @elseif (Auth::user()->jenis_user == "truk")
                         <a role="button" class="fs-5 btn btn-success w-100" href="{{ url('barang/manifest/create') }}">Tambah Manifest</a>
+                        @endif
                     </div>   
                 </div>
             </div>
@@ -100,6 +104,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @if (Auth::user()->jenis_user == "truk")
                     @foreach ($allCargo as $barang) 
                         @if ($barang->no_manifest) 
                             <tr>
@@ -112,41 +117,82 @@
 
                                 <td>
                                     <div class="row justify-content-start align-items-center g-2 px-3">
+                                        @if ($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->kota || $name == "superadmin")) 
                                         <div class="col-6 text-center">
-                                            @if ($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->kota || $name == "superadmin")) 
                                                 <form action="{{ url("barang/manifest/berangkat") }}" method="post">
                                                     @csrf
                                                     <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
                                                     <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
-                                                </form>
-                                            @else
-                                                <button type="button" class="btn btn-primary disabled" style="width: 95px">Berangkat</button>
-                                            @endif
+                                                </form> 
                                         </div>  
+                                        @endif
                                         <div class="col-6 text-center">
                                             <form action="{{ url("barang/manifest/print") }}" method="get" target="_blank">
                                                 <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
                                             </form>
                                         </div>   
+                                            @if (($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->kota || $name == "superadmin")) 
                                             <div class="col-6 text-center">
-                                                @if (($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->kota || $name == "superadmin")) 
                                                     <form action="{{ url("barang/manifest/sampai") }}" method="get">
                                                         <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
                                                         <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
-                                                    </form>
-                                                @else
-                                                    <button type="button" class="btn btn-primary disabled" style="width: 95px">Sampai</button>
-                                                @endif
+                                                    </form> 
                                             </div>    
+                                            @endif
                                         <div class="col-6 text-center">
-                                            <button type="button" class="btn btn-primary" id="btnGetTracking" style="width: 95px" value="{{ encrypt($barang->no_manifest) }}" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" style="width: 95px" value="{{ encrypt($barang->no_manifest) }}" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
                                         </div>  
                                     </div>   
                                 </td>  
                             </tr>
                         @endif
                     @endforeach 
+                    @elseif (Auth::user()->jenis_user == "bus")
+                    @foreach ($allWilayah as $barang)
+                        @if ($barang->no_manifest) 
+                            <tr>
+                                <td data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman {{ $barang->jenis_pengiriman }}">{{ $loop->index + 1 }}</td> 
+                                <td>{{ $barang->no_manifest }}</td>  
+                                <td>{{ $barang->no_pol }}</td>   
+                                <td>{{ $barang->sopir ? $barang->sopir : $barang->sopir_utama }}</td>  
+
+                                <td>{{ \Carbon\Carbon::parse($barang->created)->format('d-M-y') }}</td>  
+
+                                <td>
+                                    <div class="row justify-content-start align-items-center g-2 px-3">
+                                        @if ($barang->last_id_message_tracking == 1  && ($barang->asal == $wilayah->wilayah || $name == "superadmin")) 
+                                        <div class="col-6 text-center">
+                                                <form action="{{ url("barang/manifest/berangkat") }}" method="post">
+                                                    @csrf
+                                                    <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
+                                                </form> 
+                                        </div>  
+                                        @endif
+                                        <div class="col-6 text-center">
+                                            <form action="{{ url("/barang/manifest-bus/print") }}" method="get" target="_blank">
+                                                <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
+                                            </form>
+                                        </div>   
+                                            @if (($barang->last_id_message_tracking == 2) && ($barang->tujuan == $wilayah->wilayah || $name == "superadmin")) 
+                                            <div class="col-6 text-center">
+                                                    <form action="{{ url("barang/manifest/sampai") }}" method="get">
+                                                        <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
+                                                    </form> 
+                                            </div>    
+                                            @endif
+                                        <div class="col-6 text-center">
+                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" style="width: 95px" value="{{ encrypt($barang->no_manifest) }}" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+                                        </div>  
+                                    </div>   
+                                </td>  
+                            </tr>
+                        @endif
+                    @endforeach 
+                    @endif
                     </tbody>
                 </table>
             </div> 
@@ -155,7 +201,7 @@
 @endsection
 
 @section('footer')
-    @include('layouts.footer') 
+    @include("layouts.footerAdmin") 
 @endsection
 
 @section('script-body-bottom')  

@@ -43,12 +43,7 @@
             border-collapse: collapse;
             padding-left: 2px;
             width: 282px;
-        }
-        .table-asal th{
             text-align: center;
-        }
-        .table-asal td{
-            padding-bottom: 40px;
         }
     </style>
   </head>
@@ -69,7 +64,7 @@
                 </tbody>
             </table>
         </div>
-        <b><caption style="width:550px;text-align:center;">ini adalah kode agen</caption></b>
+        <b><caption style="width:550px;text-align:center;">{{ $detail->kode_kota_asal }}-{{ $detail->kode_wilayah_asal }}-{{ $detail->id_user }}</caption></b>
         <div class="row">
             <div class="col metode-pembayaran">
                 <table class="table-metode-pembayaran">
@@ -110,11 +105,11 @@
                     </thead>
                     <tbody>                    
                         <tr>
-                            <td style="border-left-style: hidden;">
-                                {{ explode(" ", $detail->nama_pengirim)[0]}}
+                            <td style="border-left-style: hidden;padding-top:20px;padding-bottom:20px;">
+                                {{ $detail->nama_pengirim }}
                             </td>
-                            <td>
-                                {{ explode(" ", $detail->nama_penerima)[0]}}
+                            <td style="padding-top:20px;padding-bottom:20px;">
+                                {{ $detail->nama_penerima }}
                             </td>
                         </tr>
                     </tbody>
@@ -139,13 +134,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="border-left-style: hidden;padding-top: 35px;padding-bottom: 35px;">
+                            <td style="border-left-style: hidden;padding-top: 20px;padding-bottom: 20px;">
                                 {{ $detail->jenis_paket }}
                             </td>
-                            <td>
+                            <td style="padding-top: 20px;padding-bottom: 20px;">
                                 {{ $detail->jenis_barang }}
                             </td>
-                            <td style="border-right-style: hidden;">
+                            <td style="border-right-style: hidden;padding-top: 20px;padding-bottom: 20px;">
                                 {{ $detail->jumlah_barang }} {{ $detail->code }}
                             </td>
                         </tr>
@@ -174,7 +169,7 @@
                             <td style="border-left-style:hidden;">
                                 {{ $i + 1 }}
                             </td>
-                            <td style="padding-top: 35px;padding-bottom: 35px;">
+                            <td style="padding-top: 10px;padding-bottom: 10px;">
                                 {{ $detail->berat }} Kg
                             </td>
                             <td style="border-right-style: hidden;">
@@ -200,10 +195,10 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="border-left-style: hidden;">
+                            <td style="border-left-style: hidden;padding-bottom:35px;padding-top:35px;">
                                 {{ $detail->asal }}
                             </td>
-                            <td style="border-right-style: hidden;">
+                            <td style="border-right-style: hidden;padding-bottom:35px;padding-top:35px;">
                                 {{ $detail->tujuan }}
                             </td>
                         </tr>

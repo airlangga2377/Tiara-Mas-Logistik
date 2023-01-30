@@ -37,7 +37,7 @@ class CargoPengirimanBusController extends Controller
         //     return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
         // } 
         $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
-        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + 1 : 1;
+        $no_resi = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
 
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
@@ -139,7 +139,7 @@ class CargoPengirimanBusController extends Controller
             'id_status_pembayaran' => $request->statusPembayaran,
             'jenis_paket' => $request->jenisPaket,
             'jenis_biaya' => $request->jenisBiaya,
-            'asal' => $request->pickup,
+            'asal' => $request->user->is_user_superadmin == 1 ? $request->pickup : $request->user->wilayah()->wilayah,
             'tujuan' => $request->dropoff,
 
             'id_user' => $request->user->id, 
@@ -287,12 +287,12 @@ class CargoPengirimanBusController extends Controller
 
     protected function page(Request $request)
     {
-        $cargoArray = $request->user->kodeKota();
-        $wilayahArray = $request->user->allWilayah();
+        $kodeKota = $request->user->wilayah();
+        $cargoArray = $request->user->allWilayah($kodeKota->kota);
         $data = array(
+            'isUserSuperadmin' => $request->user->is_user_superadmin,
             'name' => $request->user->name,
-            'allCargo' => $cargoArray,
-            'allWilayah' => $wilayahArray
+            'allCargo' => $cargoArray
         );
         return view('page.admin.Bus.CargoPengirimanBus', [], $data); 
     }

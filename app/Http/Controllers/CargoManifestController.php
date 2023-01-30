@@ -20,17 +20,21 @@ class CargoManifestController extends Controller
      */
     protected function page(Request $request)
     {
-        $kodeKota = $request->user->kodeKota(); 
+        $kodeKota = $request->user->kodeKota();
+        $wilayah = $request->user->Wilayah(); 
 
         $cargoArray = $request->user->truckManifests($kodeKota->kota);
+        $wilayahArray = $request->user->busManifests($wilayah->wilayah);
         
         $data = array(
             'name' => $request->user->name, 
 
             'kodeKota' => $kodeKota,
+            'wilayah' => $wilayah,
 
             'allCargo' => $cargoArray,
-        );  
+            'allWilayah' => $wilayahArray,
+        );
         return view(CargoManifestController::$path . 'CargoPengirimanTrukManifest', [], $data);
     }
 
@@ -48,7 +52,7 @@ class CargoManifestController extends Controller
             'isUserSuperadmin' => $request->user->is_user_superadmin,
 
             'kodeKota' => $kodeKota,
-        );   
+        );
         return view(CargoManifestController::$path . 'CargoPengirimanTrukManifestInput', [], $data);
     }
 

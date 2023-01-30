@@ -181,8 +181,7 @@ class CargoPengirimanTrukController extends Controller
             return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
         } 
 
-        $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
-        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + 1 : 1;
+        $no_resi = $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
 
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
@@ -274,7 +273,7 @@ class CargoPengirimanTrukController extends Controller
             'nomor_penerima' => $request->nomorPenerima,
 
             // 2 pembayaran di kantor surabaya
-            'is_lunas' => ($request->statusPembayaran == 2) ? "lunas" : null, 
+            'is_lunas' => ($request->statusPembayaran == 2 || $request->statusPembayaran == 4) ? "lunas" : null, 
 
             'is_pengecualian' => $isPengecualian,
 
@@ -409,7 +408,7 @@ class CargoPengirimanTrukController extends Controller
             ; 
 
             // id_message_tracking = 3 = "barang sudah sampai tujuan"
-            if($cargoDetail->is_diterima == null && $cargoDetail->id_message_tracking == 3){ 
+            if($cargoDetail->is_diterima == null && ($cargoDetail->id_message_tracking == 3 || $cargoDetail->id_message_tracking == 5 || $cargoDetail->id_message_tracking == 6)){ 
                 CargoPengirimanDetail::where("no_lmt", $cargoDetail->no_lmt)->update(['is_diterima' => "diterima"]); 
             
                 $tracking = new TruckTracking();
@@ -437,14 +436,14 @@ class CargoPengirimanTrukController extends Controller
         // by no resi
         if($request->no_lmt){
             $cargoDetail = CargoPengirimanDetail::
-            select(
-                "cargo_pengiriman_details.no_lmt",
-                "is_lunas",
-                "asal",
-                "tujuan",
-                "message_trackings.id_message_tracking",
-                "status_pembayarans.id_status_pembayaran",
-                "cargo_pengiriman_details.created_at",
+            selectRaw(
+                "cargo_pengiriman_details.no_lmt,
+                is_lunas,
+                asal,
+                tujuan,
+                MAX(message_trackings.id_message_tracking) as id_message_tracking_last,
+                status_pembayarans.id_status_pembayaran,
+                cargo_pengiriman_details.created_at",
             )
             ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
             ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
@@ -453,21 +452,24 @@ class CargoPengirimanTrukController extends Controller
             ->first()
             ; 
 
-            $isBayarTujuan = $cargoDetail->id_status_pembayaran == 1;
-            $isPiutang = $cargoDetail->id_status_pembayaran == 3; 
+            $isBayarTujuan = $cargoDetail->id_message_tracking_last == 1;
+            $isPiutang = $cargoDetail->id_message_tracking_last == 3; 
             
             if($cargoDetail && !$cargoDetail->is_lunas && ($isBayarTujuan || $isPiutang)){ 
                 CargoPengirimanDetail::where("no_lmt", $cargoDetail->no_lmt)->update(['is_lunas' => "lunas"]); 
                 
                 $tracking = new TruckTracking();
                 $tracking->no_lmt = $cargoDetail->no_lmt;
-                $tracking->id_message_tracking = $cargoDetail->id_message_tracking;
 
-                if($isBayarTujuan && $request->user->kodeKota()->kota == $cargoDetail->tujuan){
-                    $tracking->id_status_pembayaran = 6;
+                if($request->user->kodeKota()->kota == $cargoDetail->tujuan){
+                    // add more strict && 
+                    $tracking->id_message_tracking = 6;
+                    $tracking->id_status_pembayaran = 4;
                 } 
-                else if($isPiutang && ($request->user->kodeKota()->kota == $cargoDetail->asal || $request->user->name == "superadmin")){
-                    $tracking->id_status_pembayaran = 5;
+                else if($request->user->kodeKota()->kota == $cargoDetail->asal || $request->user->name == "superadmin"){
+                    // add more strict && 
+                    $tracking->id_message_tracking = 5;
+                    $tracking->id_status_pembayaran = 2;
                 }
                 
                 $tracking->id_user = $request->user->id;
@@ -499,5 +501,37 @@ class CargoPengirimanTrukController extends Controller
         $data['message'] = 'Barang tidak ditemukan';
         
         return redirect()->back()->withErrors($data);
+    }
+
+    /**
+     * get resi for tracking
+     *
+     * @param  \Illuminate\Http\Request  $request 
+     */
+    public function getResiTracking(Request $request)
+    { 
+        try {
+            $no_lmt = decrypt($request->no_lmt); 
+    
+            // Untuk membuat manifest
+            $data = CargoPengirimanDetail::
+            selectRaw(
+                '
+                message_trackings.pesan,  
+                status_pembayarans.pesan as pembayaran,  
+                DATE(truck_trackings.created_at) as created',
+            ) 
+            ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
+            ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
+            ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "truck_trackings.id_status_pembayaran") 
+            ->leftJoin("trucks", "trucks.no_pol", "cargo_pengiriman_details.no_pol") 
+            ->where('cargo_pengiriman_details.no_lmt', $no_lmt)
+            ->get();
+        } catch (\Throwable $th) {
+            return abort(404);  
+        }
+
+        return response()->json(["data" => $data]);
+
     }
 }

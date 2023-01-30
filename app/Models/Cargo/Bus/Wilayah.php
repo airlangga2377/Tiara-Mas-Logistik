@@ -25,11 +25,12 @@ class Wilayah extends Model
      *
      * @var array
      */
-    protected $fillable = [ 
-        'kota',
-        'name',
-        'alamat',
-        'kode_wilayah' 
+    protected $fillable = [
+        'kota',  
+        'kode_kota',  
+        'wilayah',
+        'kode_wilayah',  
+        'alamat',  
     ];
 
     /**
@@ -47,4 +48,36 @@ class Wilayah extends Model
      */
     protected $casts = [
     ];
+
+    /**
+     * Get by kota by kode.
+    */ 
+    public static function findByKode($kode_kota)
+    { 
+        return Wilayah::class::where('kode_kota', $kode_kota)->get();
+    }
+
+    /**
+     * Get by kota.
+    */ 
+    public static function findByKota($kota)
+    { 
+        return Wilayah::class::where('kota', $kota)->get();
+    }
+
+    /**
+     * Get by wilayah by kode wilayah.
+    */ 
+    public static function findByKodeWilayah($kode_wilayah)
+    { 
+        return Wilayah::class::where('kode_wilayah', $kode_wilayah)->get();
+    }
+
+    /**
+     * Get by kota by wilayah.
+    */ 
+    public static function findByWilayah($wilayah)
+    { 
+        return Wilayah::class::where('wilayah', $wilayah)->get();
+    }
 }
