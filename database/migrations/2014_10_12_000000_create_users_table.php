@@ -23,9 +23,14 @@ class CreateUsersTable extends Migration
             $table->string('status_user')->default("aktif");
 
             $table->string('is_user_superadmin')->default("0");
+            $table->string('jenis_user');
             
             $table->index('id_kode_kota');
-            $table->string('id_kode_kota')->nullable(true); 
+            $table->string('id_kode_kota')->nullable(true);
+            
+            $table->index('id_area_bus');
+            $table->string('id_area_bus')->nullable(true);
+
             $table->rememberToken();
             $table->string('api_token')->nullable(true);
             $table->timestamps();
