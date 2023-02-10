@@ -25,19 +25,37 @@
                     <div class="accordion accordion-flush" id="accordionFlushNav">
                         <div class="accordion-item">
                         <h2 class="accordion-header" id="flushHadingNav">
-                            <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+                            <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsPengiriman" aria-expanded="true" aria-controls="flush-collapseOne">
                             Pengiriman
                             </button>
                         </h2>
-                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flushHadingNav" data-bs-parent="#accordionFlushNav">
+                        <div id="flush-collapsPengiriman" class="accordion-collapse collapse" aria-labelledby="flushHadingNav" data-bs-parent="#accordionFlushNav">
                             <div class="accordion-body">
-                            <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/bis/insert#pengiriman')); ?>">Bis</a>
-                            <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Truk</a>
+                                <?php if(Auth::user()->is_user_superadmin): ?>
+                                    <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Truk</a>
+                                    <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/bus/insert#pengiriman')); ?>">Bus</a>
+                                <?php else: ?>
+                                    <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/' . $jenisUser .'/insert#pengiriman')); ?>"><?php echo e(ucfirst($jenisUser)); ?></a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         </div>
                     </div>
-                    <a role="button" class="fs-5 fw-bold list-group-item list-group-item-action" href="<?php echo e(url('barang/manifest')); ?>">Manifest</a>  
+                    <div class="accordion accordion-flush" id="accordionFlushNav">
+                        <div class="accordion-item">
+                        <h2 class="accordion-header" id="flushHadingNav">
+                            <button class="fs-5 accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsManifest" aria-expanded="true" aria-controls="flush-collapseOne">
+                            Manifest
+                            </button>
+                        </h2>
+                        <div id="flush-collapsManifest" class="accordion-collapse collapse" aria-labelledby="flushHadingNav" data-bs-parent="#accordionFlushNav">
+                            <div class="accordion-body">
+                            <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/manifest')); ?>">Lihat</a>
+                            <a role="button" class="fs-5 list-group-item list-group-item-action border-0" href="<?php echo e(url('barang/manifest/create')); ?>">Buat</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
     
                     <?php echo $__env->yieldContent('top-nav-bar-custom'); ?>
                 </div>

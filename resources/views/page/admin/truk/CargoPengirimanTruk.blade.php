@@ -54,7 +54,7 @@
                     <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
                         {!! Session::get("message") !!} 
                         <script>
-                            window.open("/barang/truk/print/deliverynote?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
+                            window.open("http://127.0.0.1:8000/barang/truk/print/deliverynote?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
                         </script>
                     </div>
                 @endif 

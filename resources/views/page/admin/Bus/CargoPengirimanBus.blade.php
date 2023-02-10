@@ -31,7 +31,6 @@
         {{ csrf_field() }}
         <div class="row justify-content-between d-flex g-3">
             @if (Session::has("message")) 
-<<<<<<< HEAD
                 <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
                     {!! Session::get("message") !!} 
                     <script>
@@ -63,63 +62,10 @@
                             <input type="text" class="form-control shadow-sm p-3" name="nomorPengirim" id="nomorPengirim" aria-describedby="nomorPengirimText" placeholder="isi nomor pengirim" value="{!! old('nomorPengirim') !!}">
                             <div id="validationNamaPengirim" class="invalid-feedback">
                                 @if (Session::has("nomorPengirimError")) @endif
-=======
-                    <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
-                        {!! Session::get("message") !!} 
-                        <script>
-                            window.open("/barang/bus/print/resi?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
-                        </script>
-                        <script>
-                            window.open("/barang/bus/print/barang?no_lmt={!! Session::get('no_lmt') !!}", "_blank")
-                        </script>
-                    </div>
-                @endif 
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-1">
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                                <label for="namaPengirim" class="form-label fs-4">Nama Pengirim</label>
-                                <input type="text" class="form-control shadow-sm p-3" name="namaPengirim" id="namaPengirim" aria-describedby="namaPengirimText" placeholder="isi nama pengirim" value="{!! old('namaPengirim') !!}">
-                            <div id="validationNamaPengirim" class="invalid-feedback">
-                                    @if (Session::has("namaPengirimError")) @endif
-                            </div>
-                        </div>
-                    </div>                 
-                <div class="col">
-                    <div class="mb-xl-3 mb-sm-5">
-                        <label for="nomorPengirim" class="form-label fs-4">Tlp Pengirim</label>
-                        <input type="text" class="form-control shadow-sm p-3" name="nomorPengirim" id="nomorPengirim" aria-describedby="nomorPengirimText" placeholder="isi nomor pengirim" value="{!! old('nomorPengirim') !!}">
-                        <div id="validationNamaPengirim" class="invalid-feedback">
-                            @if (Session::has("nomorPengirimError")) @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <label class="text-wrap g-5 border-bottom" id="pengiriman"><h2>IDENTITAS PENERIMA</h2></label>
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-1">
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="namaPenerima" class="form-label fs-4">Nama Penerima</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="namaPenerima" id="namaPenerima" aria-describedby="namaPenerimaText" placeholder="isi nama penerima" value="{!! old('namaPenerima') !!}">
-                            <div id="validationNamaPenerima" class="invalid-feedback">
-                                @if (Session::has("namaPenerimaError")) @endif
-                            </div>
-                        </div>
-                    </div>   
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="nomorPenerima" class="form-label fs-4">Tlp Penerima</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="nomorPenerima" id="nomorPenerima" aria-describedby="nomorPenerimaText" placeholder="isi nomor penerima" value="{!! old('nomorPenerima') !!}">
-                            <div id="validationNomorPenerima" class="invalid-feedback">
-                                @if (Session::has("nomorPenerimaError")) @endif
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </div>
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
             </div>
             <label class="text-wrap g-5 border-bottom" id="pengiriman"><h2>IDENTITAS PENERIMA</h2></label>
                 <div class="row justify-content-between d-flex g-1">
@@ -227,79 +173,6 @@
                                 <div id="validationTujuanBarang" class="invalid-feedback">
                                     @if (Session::has("tujuanBarangError")) @endif
                                 </div>
-=======
-            </div>  
-            <style>
-                .container-fluid{
-                    /* background-color:#f5f5f5; */
-                    background-color:#fff;
-                    display: inherit;
-                }
-                .row.justify-content-between.d-flex.g-3{
-                    background-color: #e9ecef;
-                }
-                .select2-container .select2-selection--single{
-                    height: 57.7983px;
-                    /* inline-size: 524.048px; */
-                    text-align: center;
-                    padding-top: 10px;
-                    font-size: 24px;
-                    
-                }
-                .select2-container--default .select2-selection--single .select2-selection__rendered{
-                    display: block !important;
-                    color: rgb(0, 0, 0);
-                    height: 57.7983px;
-                    width: 100%;
-                    /* inline-size: 524.048px; */
-                }
-
-                .select2-container--default .select2-selection--single .select2-selection__arrow b{
-                    display: block;
-                    
-                } 
-                
-                .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b{
-                    display: block;
-                }
-
-                .statusPembayaran{
-                    height: 57.7983px;
-                    width: 100%;
-                }
-                
-            </style>
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-5 md-15">
-                    @if ($isUserSuperadmin)
-                        <div class="col">
-                            <div class="mb-xl-3 mb-sm-5">                             
-                                <label for="pickup" class="form-label fs-4">Asal Barang</label>
-                                <select type="option" id="pickup" class="form-control select-pickup shadow-sm p-3" name="pickup" id="pickup" aria-describedby="pickupText" value="{!! old('pickup') !!}">
-                                    <option value="" disabled selected>Silahkan Pilih Asal</option>
-                                @foreach ($allCargo as $wilayah)
-                                    <option value="{{ $wilayah->wilayah }}">{{ $wilayah->wilayah }}</option>
-                                @endforeach
-                                </select>
-                                <div id="validationpickup" class="invalid-feedback">
-                                    @if (Session::has("pickupError")) @endif
-                                </div>
-                            </div>
-                        </div>
-                        @else
-                    @endif
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="dropoff" class="form-label fs-4">Tujuan Barang</label>
-                            <select type="option" id="dropoff" class="form-control" name="dropoff" id="tujuanBarang" aria-describedby="tujuanBarangText" value="{!! old('tujuanBarang') !!}">
-                                <option value=""> Silahkan Pilih Tujuan </option>
-                                @foreach ($allCargo as $kota)
-                                    <option value="{{ $kota->wilayah }}">{{ $kota->wilayah }}</option>
-                                @endforeach
-                            </select>
-                            <div id="validationTujuanBarang" class="invalid-feedback">
-                                @if (Session::has("tujuanBarangError")) @endif
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </div>
                         </div>
                     </div>
@@ -426,35 +299,23 @@
                     <div class="row align-items-start py-1">
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-<<<<<<< HEAD
                                 <label for="tipePaket" class="form-label fs-4">Pilih Tipe Paket</label>                                                                            
                                 <select class="form-select shadow-sm p-3" name="jenisPaket" id="tipePaket" aria-describedby="tipePaketText" value="">                                        
-=======
-                                <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
-                                <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="{!! old('jenisBarang')[$i] !!}">                                        
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                                         <option value="barang">Barang</option>
                                         <option value="dokumen">Dokumen</option>
                                         <option value="cairan">Cairan</option>
                                 </select>
-                                <div id="validationJenisBarang" class="invalid-feedback">
-                                    @if (Session::has("jenisBarangError")) @endif
+                                <div id="validationTipePaket" class="invalid-feedback">
+                                    @if (Session::has("tipePaketError")) @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-<<<<<<< HEAD
                                 <label for="jenisBarang" class="form-label fs-4">Jenis Barang</label>
                                 <input type="text" class="form-control shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" placeholder="isi jenis barang" value="">
                                 <div id="validationJenisBarang" class="invalid-feedback">
                                     @if (Session::has("jenisBarangError")) @endif
-=======
-                                <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
-                                <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="{!! old('jenisPaket') !!}">
-                                <div id="validationJenisPaket" class="invalid-feedback">
-                                    @if (Session::has("jenisPaketError")) @endif
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                                 </div>
                             </div>
                         </div>
@@ -522,104 +383,9 @@
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
         @endif
         @endfor
         <button type="submit" class="btn btn-primary" id="btnSubmit">Tambah Pengiriman</button>
-=======
-            @else
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-1">
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
-                            <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="">                                        
-                                    <option value="barang">Barang</option>
-                                    <option value="dokumen">Dokumen</option>
-                                    <option value="cairan">Cairan</option>
-                            </select>
-                            <div id="validationJenisBarang" class="invalid-feedback">
-                                @if (Session::has("jenisBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="">
-                            <div id="validationJenisPaket" class="invalid-feedback">
-                                @if (Session::has("jenisPaketError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-1">
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="berat" class="form-label fs-4">Berat</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="berat[]" id="kubikasiBerat" aria-describedby="kubikasiBeratText" placeholder="isi berat" data-toggle="tooltip" data-placement="top" title="Berat Barang" value="">
-                            <div id="validationBerat" class="invalid-feedback">
-                                @if (Session::has("beratError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="jumlahBarang" class="form-label fs-4">Jumlah Barang</label>
-                            <input type="number" class="form-control shadow-sm p-3" name="jumlahBarang" id="jumlahBarang" aria-describedby="jumlahBarangText" placeholder="isi jumlah barang" value="">                            
-                            <div id="validationJumlahBarang" class="invalid-feedback">
-                                @if (Session::has("jumlahBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="panjangBarang" class="form-label fs-4">Panjang</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="panjangBarang[]" id="panjangBarang" aria-describedby="panjangBarangText" placeholder="isi panjang barang" value="">
-                            <div id="validationPanjangBarang" class="invalid-feedback">
-                                @if (Session::has("panjangBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="lebarBarang" class="form-label fs-4">Lebar</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="lebarBarang[]" id="lebarBarang" aria-describedby="lebarBarangText" placeholder="isi lebar barang" value="">
-                            <div id="validationLebarBarang" class="invalid-feedback">
-                                @if (Session::has("lebarBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="tinggiBarang" class="form-label fs-4">Tinggi</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="tinggiBarang[]" id="tinggiBarang" aria-describedby="tinggiBarangText" placeholder="isi tinggi barang" value="">
-                            <div id="validationTinggiBarang" class="invalid-feedback">
-                                @if (Session::has("tinggiBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-between d-flex g-1">
-                <div class="row align-items-start py-1">
-                    <div class="col">
-                        <div class="mb-xl-3 mb-sm-5">
-                            <label for="biayaBarang" class="form-label fs-4">Biaya Barang</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="biaya[]" id="biaya" aria-describedby="biayaText" placeholder="isi biaya" value="">
-                            <div id="validationBiayaBarang" class="invalid-feedback">
-                                @if (Session::has("biayaBarangError")) @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    @endif
-    @endfor
-    <button type="submit" class="btn btn-primary" id="btnSubmit">Tambah Pengiriman</button>
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 </form>
 @endsection
 

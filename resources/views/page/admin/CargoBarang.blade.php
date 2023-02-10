@@ -54,16 +54,7 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     {{-- Error handler --}} 
-=======
-    {{-- Error handler --}}
-    @if ($errors->any())
-        <script>
-            alert($errors->first()); 
-        </script>
-    @endif 
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     <div class="container"> 
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -84,7 +75,6 @@
                     <div class="col-12">
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
-<<<<<<< HEAD
                     <div class="col-12 pt-2"> 
                         @if (Auth::user()->is_user_superadmin)
                             <div class="dropdown dropend">
@@ -99,13 +89,6 @@
                             </div>
                         @else
                             <a role="button" class="fs-5 btn btn-success" href="{{ url('barang/' . $jenisUser .'/insert#pengiriman') }}">Tambah Pengiriman</a>
-=======
-                    <div class="col-12 pt-2">
-                        @if (Auth::user()->jenis_user == "truk")
-                            <a role="button" class="fs-5 btn btn-success" href="{{ url('barang/truk/insert#pengiriman') }}">Tambah Pengiriman</a>
-                        @elseif (Auth::user()->jenis_user == "bus")
-                            <a role="button" class="fs-5 btn btn-success" href="{{ url('barang/bus/insert#pengiriman') }}">Tambah Pengiriman</a>
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                         @endif
                     </div>  
                     <div class="col-12 pt-2 ">
@@ -136,7 +119,6 @@
                         </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
                         @foreach ($allCargo as $barang) 
                             @if (!($barang->jenis_pengiriman != $jenisUser && !Auth::user()->is_user_superadmin))
                                 <tr>
@@ -145,22 +127,11 @@
                                     <td>{{ explode(" ", $barang->nama_penerima)[0]}}</td> 
                                     <td>{{ $barang->biaya }}</td>  
                                     <td>{{ $barang->jumlah_barang }}</td>  
-=======
-                        @if(Auth::user()->jenis_user == "truk")
-                        @foreach ($allCargo as $barang)
-                            <tr>
-                                <td class="@if ($barang->is_lunas && $barang->is_diterima) bg-success text-white @endif" data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman {{ $barang->jenis_pengiriman }}">{{ $loop->index + 1 }}</td> 
-                                <td>{{ $barang->nama_pengirim }}</td> 
-                                <td>{{ $barang->nama_penerima }}</td> 
-                                <td>{{ $barang->biaya }}</td>  
-                                <td>{{ $barang->jumlah_barang }}</td>  
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 
                                     <td>{{ $barang->no_resi }}</td>  
 
                                     <td>{{ $barang->last_id_message_tracking }}</td>  
 
-<<<<<<< HEAD
                                     <td>
                                         <div class="row justify-content-start align-items-center g-2 px-3">
                                             @if (!$barang->is_diterima && $barang->no_manifest && $barang->last_id_message_tracking == 3 && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")) 
@@ -193,53 +164,6 @@
                                                     </div>
                                                 @endif
                                             </div> 
-=======
-                                <td>
-                                    <div class="row justify-content-start align-items-center g-2 px-3">
-                                        <div class="col-6 text-center">
-                                            {{-- 
-                                                last_id_message_tracking = "sampai tujuan" 
-                                            --}}
-                                            @if(Auth::user()->jenis_user == "truk")
-                                                @if (!$barang->is_diterima && $barang->no_manifest && ($barang->last_id_message_tracking == 3 || $barang->last_id_message_tracking == 5 || $barang->last_id_message_tracking == 6) && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")) 
-                                                    <form action="{{ url("barang/truk/update/diterima") }}" method="get">
-                                                        <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
-                                                    </form>
-                                                @elseif(!$barang->no_manifest || $barang->last_id_message_tracking < 3)
-                                                    <button type="button" class="btn btn-secondary disabled">Terima</button>
-                                                @endif
-                                            @elseif(Auth::user()->jenis_user == "bus")
-                                                @if (!$barang->is_diterima && $barang->no_manifest && ($barang->last_id_message_tracking == 3 || $barang->last_id_message_tracking == 5 || $barang->last_id_message_tracking == 6) && ($wilayah->wilayah == $barang->tujuan || $name == "superadmin")) 
-                                                    <form action="{{ url("barang/truk/update/diterima") }}" method="get">
-                                                        <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
-                                                    </form>
-                                                @elseif(!$barang->no_manifest || $barang->last_id_message_tracking < 3)
-                                                    <button type="button" class="btn btn-secondary disabled">Terima</button>
-                                                @endif
-                                            @endif
-                                        </div>
-                                        <div class="{{ (!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12" }} text-center">
-                                            @if (Auth::user()->jenis_user == "bus")
-                                            <form action="{{ url("barang/bus/print/resi") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Resi</button>
-                                            </form>
-                                            <br>
-                                            <form action="{{ url("barang/bus/print/barang") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Barang</button>
-                                            </form>
-                                            @else
-                                            <form action="{{ url("barang/truk/print/deliverynote") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
-                                            </form>
-                                            @endif
-                                        </div> 
-                                        <div class="col-6 text-center">
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                                             @php
                                                 $isBayarTujuan = $barang->id_status_pembayaran == 1;
                                                 $isPiutang = $barang->id_status_pembayaran == 3;
@@ -253,7 +177,6 @@
                                                 </div>  
                                             @endif
                                             @if (!$barang->no_manifest && !$barang->is_lunas && !$barang->last_id_message_tracking)  
-<<<<<<< HEAD
                                                 <div class="col-6 text-center">
                                                         <form action="{{ url("barang/delete") }}" method="get">
                                                             <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
@@ -269,108 +192,6 @@
                                 </tr>
                             @endif
                         @endforeach 
-=======
-                                                <form action="{{ url("barang/truk/delete") }}" method="get">
-                                                    <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                    <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
-                                                </form> 
-                                            @endif
-                                        </div> 
-                                        <div class="{{ ($barang->is_lunas && $barang->is_diterima) ? "col-12" : "col-6" }} text-center" data-bs-toggle="modal" data-bs-target="#modalTracking">
-                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" value="{{ encrypt($barang->no_lmt) }}" style="width: 75px">Lacak</button>
-                                        </div>   
-                                    </div> 
-                                </td>
-                            </tr>
-                        @endforeach
-                        @elseif(Auth::user()->jenis_user == "bus")
-                        @foreach ($allWilayah as $barang)
-                            <tr>
-                                <td class="@if ($barang->is_lunas && $barang->is_diterima) bg-success text-white @endif" data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman {{ $barang->jenis_pengiriman }}">{{ $loop->index + 1 }}</td> 
-                                <td>{{ $barang->nama_pengirim }}</td> 
-                                <td>{{ $barang->nama_penerima }}</td> 
-                                <td>{{ $barang->biaya }}</td>  
-                                <td>{{ $barang->jumlah_barang }}</td>  
-
-                                <td>{{ $barang->no_resi }}</td>  
-
-                                <td>{{ \Carbon\Carbon::parse($barang->created)->format('d-M-y') }}</td>  
-
-                                <td>
-                                    <div class="row justify-content-start align-items-center g-2 px-3">
-                                        <div class="col-6 text-center">
-                                            {{-- 
-                                                last_id_message_tracking = "sampai tujuan" 
-                                            --}}
-                                            @if(Auth::user()->jenis_user == "truk")
-                                                @if (!$barang->is_diterima && $barang->no_manifest && ($barang->last_id_message_tracking == 3 || $barang->last_id_message_tracking == 5 || $barang->last_id_message_tracking == 6) && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")) 
-                                                    <form action="{{ url("barang/truk/update/diterima") }}" method="get">
-                                                        <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
-                                                    </form>
-                                                @elseif(!$barang->no_manifest || $barang->last_id_message_tracking < 3)
-                                                    <button type="button" class="btn btn-secondary disabled">Terima</button>
-                                                @endif
-                                            @elseif(Auth::user()->jenis_user == "bus")
-                                                @if (!$barang->is_diterima && $barang->no_manifest && ($barang->last_id_message_tracking == 3 || $barang->last_id_message_tracking == 5 || $barang->last_id_message_tracking == 6) && ($wilayah->wilayah == $barang->tujuan || $name == "superadmin")) 
-                                                    <form action="{{ url("barang/truk/update/diterima") }}" method="get">
-                                                        <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
-                                                    </form>
-                                                @elseif(!$barang->no_manifest || $barang->last_id_message_tracking < 3)
-                                                    <button type="button" class="btn btn-secondary disabled">Terima</button>
-                                                @endif
-                                            @endif
-                                        </div>
-                                        <div class="{{ (!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12" }} text-center">
-                                            @if (Auth::user()->jenis_user == "bus")
-                                            <form action="{{ url("barang/bus/print/resi") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Resi</button>
-                                            </form>
-                                            <br>
-                                            <form action="{{ url("barang/bus/print/barang") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_resi) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Barang</button>
-                                            </form>
-                                            @else
-                                            <form action="{{ url("barang/truk/print/deliverynote") }}" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
-                                            </form>
-                                            @endif
-                                        </div> 
-                                        <div class="col-6 text-center">
-                                            @php
-                                                $isBayarTujuan = $barang->id_status_pembayaran == 1;
-                                                $isPiutang = $barang->id_status_pembayaran == 3;
-                                            @endphp
-                                            @if ($barang->no_manifest && !$barang->is_lunas && ($isBayarTujuan || $isPiutang)) 
-                                                <form action="{{ url("barang/truk/update/lunas") }}" method="get">
-                                                    <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                    <button type="submit" class="btn btn-primary" style="width: 75px">Lunas</button>
-                                                </form>
-                                            @elseif(!$barang->is_lunas || !$barang->is_diterima)
-                                                <button type="button" class="btn btn-secondary disabled" style="width: 75px">Lunas</button> 
-                                            @endif
-                                        </div>  
-                                        <div class="col-6 text-center">
-                                            @if (!$barang->no_manifest && !$barang->is_lunas && !$barang->last_id_message_tracking)  
-                                                <form action="{{ url("barang/truk/delete") }}" method="get">
-                                                    <input type="text" name="no_lmt" value="{{ encrypt($barang->no_lmt) }}" hidden>
-                                                    <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
-                                                </form> 
-                                            @endif
-                                        </div> 
-                                        <div class="{{ ($barang->is_lunas && $barang->is_diterima) ? "col-12" : "col-6" }} text-center" data-bs-toggle="modal" data-bs-target="#modalTracking">
-                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" value="{{ encrypt($barang->no_lmt) }}" style="width: 75px">Lacak</button>
-                                        </div>   
-                                    </div> 
-                                </td>
-                            </tr>
-                        @endforeach
-                        @endif 
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                     </tbody>
                 </table>
             </div> 
@@ -407,10 +228,7 @@
                 
                 $('#tableIdTracking').DataTable({ 
                     processing: true,
-<<<<<<< HEAD
                     order: [[2,'desc']],
-=======
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                     ajax: {
                         url: '/barang/tracking',
                         type: 'POST',

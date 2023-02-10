@@ -26,7 +26,8 @@ class CreateKodeKotasTable extends Migration
             $table->index('kode_wilayah');
             $table->string('kode_wilayah');
 
-            $table->tinyText('jenis');
+            $table->index('jenis');
+            $table->string('jenis');
             $table->timestamps();
         });
     }

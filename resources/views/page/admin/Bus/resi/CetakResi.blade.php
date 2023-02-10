@@ -7,10 +7,6 @@
     <title>{{ $detail->nama_pengirim }}_{{ $detail->created }}_{{ $user->kota }}_{{ (new DateTime(null, new DateTimeZone('Asia/Jakarta')))->getTimestamp() }}</title>
 
     <!-- Bootstrap CSS --><!-- CSS only -->
-<<<<<<< HEAD
-=======
-
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     <?php  
 	function penyebut($nilai) {
 		$nilai = abs($nilai);
@@ -134,11 +130,7 @@
                             </td>
                             <td style="padding-top: 10px;">
                                 @php
-<<<<<<< HEAD
                                     echo '<img src="data:image/png;base64,' . DNS2D::getBarcodePNG( env('APP_URL') . ":" . env('APP_PORT') . "/?r=" . encrypt($detail->no_resi), "QRCODE") . '" alt="barcode" width="100" height="100"   />';
-=======
-                                    echo '<img src="data:image/png;base64,' . DNS2D::getBarcodePNG($detail->no_resi, "QRCODE") . '" alt="barcode" width="100" height="100"   />';
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                                 @endphp
                                 <br>
                                 {{ $detail->no_resi }}
@@ -197,11 +189,7 @@
                                 Berat
                             </th>
                             <th style="border-bottom-style: hidden;">
-<<<<<<< HEAD
                                 Biaya Kirim 
-=======
-                                Biaya Kirim
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </th>
                             <th rowspan="2" style="border-right-style: hidden;border-left-style: hidden;text-align:left;padding-left:10px;">
                                 <p style="border-style: solid;padding:2px 2px;width:700px">{{ terbilang($angka) }} rupiah</p>
@@ -211,7 +199,6 @@
                     <tbody style="border-bottom-style: hidden;border-left-style: hidden;">
                         <tr>
                             <td>
-<<<<<<< HEAD
                                 {{ $data->jumlah_barang }} Koli
                             </td>
                             <td>
@@ -219,15 +206,6 @@
                             </td>
                             <td style="font-size: 30px;">
                                 Rp. {{ number_format($data->biaya) }}
-=======
-                                {{ $detail->jumlah_barang }} Koli
-                            </td>
-                            <td>
-                                {{ $detail->berat }} Kg
-                            </td>
-                            <td style="font-size: 30px;">
-                                Rp. {{ number_format($detail->biaya) }}
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </td>
                         </tr>
                     </tbody>
@@ -253,17 +231,10 @@
                     <tbody>
                         <tr>
                             <td>
-<<<<<<< HEAD
                                 {{ $data->jenis_barang  }}
                             </td>
                             <td>
                                 {{ $data->jenis_paket }}
-=======
-                                {{ $detail->jenis_barang  }}
-                            </td>
-                            <td>
-                                {{ $detail->jenis_paket }}
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </td>
                             <td>
                                 {{ $detail->keterangan }}
@@ -289,11 +260,7 @@
                     <tbody>
                         <tr>
                             <td>
-<<<<<<< HEAD
                                 {{ $asal }}
-=======
-                                {{ $detail->asal }}
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </td>
                             <td>
                                 {{ $detail->tujuan }}
@@ -315,11 +282,7 @@
                                 Acc. Pengiriman
                             </th>
                             <th style="padding-bottom: 100px;padding-top: 30px;">
-<<<<<<< HEAD
                                 {{ ucfirst($detail->user->kota) }}, {{ $detail->created }}
-=======
-                                {{ ucfirst($user->Wilayah()->kota) }}, {{ $detail->created }}
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                             </th>
                         </tr>
                     </thead>
