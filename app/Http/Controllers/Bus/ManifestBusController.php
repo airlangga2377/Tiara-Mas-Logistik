@@ -137,10 +137,6 @@ class ManifestBusController extends Controller
         return redirect()->back()->with(["message" => "Berhasil memasukkan data", "no_manifest" => $no_manifest, "sopir" => $sopir]); 
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     /**
      * Generate a manfiest.
      *

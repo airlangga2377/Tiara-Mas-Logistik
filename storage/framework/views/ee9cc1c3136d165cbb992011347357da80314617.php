@@ -177,7 +177,7 @@
                                 <?php echo e($i + 1); ?>
 
                             </td>
-                            <td style="padding-top: 10px;padding-bottom: 10px;">
+                            <td style="padding-top: 35px;padding-bottom: 35px;">
                                 <?php echo e($detail->berat); ?> Kg
                             </td>
                             <td style="border-right-style: hidden;">

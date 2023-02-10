@@ -31,7 +31,6 @@ class HomeController extends Controller
     protected function pageGuest(Request $request)
     {
         $data = array();
-<<<<<<< HEAD
         if($request->r){
             try {
                 $no_lmt = decrypt($request->r); 
@@ -63,9 +62,6 @@ class HomeController extends Controller
             ); 
         }
         return view('page.guest.tracking', [], $data);
-=======
-        return view('page.guest.tracking', [], [$data]);
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     }
     
     /**
@@ -83,17 +79,10 @@ class HomeController extends Controller
             selectRaw(
                 '
                 message_trackings.pesan,  
-<<<<<<< HEAD
                 DATE(trackings.created_at) as created',
             ) 
             ->leftJoin("trackings", "trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
             ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "trackings.id_message_tracking") 
-=======
-                DATE(truck_trackings.created_at) as created',
-            ) 
-            ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
-            ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
             ->leftJoin("trucks", "trucks.no_pol", "cargo_pengiriman_details.no_pol") 
             ->where('cargo_pengiriman_details.no_lmt', $no_lmt)
             ->skip(0)->take(3)

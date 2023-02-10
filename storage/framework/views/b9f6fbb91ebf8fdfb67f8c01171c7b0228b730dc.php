@@ -73,15 +73,9 @@
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
                     <div class="col-12 pt-2"> 
-<<<<<<< HEAD
                         <?php if(Auth::user()->is_user_superadmin!=0): ?>
                         <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('/barang/manifest/bus/create')); ?>">Tambah Manifest</a>
                         <?php else: ?>
-=======
-                        <?php if(Auth::user()->jenis_user == "bus"): ?>
-                        <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('/barang/manifest/bus/create')); ?>">Tambah Manifest</a>
-                        <?php elseif(Auth::user()->jenis_user == "truk"): ?>
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                         <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest/create')); ?>">Tambah Manifest</a>
                         <?php endif; ?>
                     </div>   
@@ -102,7 +96,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php if(Auth::user()->jenis_user == "truk"): ?>
                     <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                         <?php if($barang->no_manifest): ?> 
                             <tr>
@@ -146,51 +139,6 @@
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
-                    <?php elseif(Auth::user()->jenis_user == "bus"): ?>
-                    <?php $__currentLoopData = $allWilayah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if($barang->no_manifest): ?> 
-                            <tr>
-                                <td data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman <?php echo e($barang->jenis_pengiriman); ?>"><?php echo e($loop->index + 1); ?></td> 
-                                <td><?php echo e($barang->no_manifest); ?></td>  
-                                <td><?php echo e($barang->no_pol); ?></td>   
-                                <td><?php echo e($barang->sopir ? $barang->sopir : $barang->sopir_utama); ?></td>  
-
-                                <td><?php echo e(\Carbon\Carbon::parse($barang->created)->format('d-M-y')); ?></td>  
-
-                                <td>
-                                    <div class="row justify-content-start align-items-center g-2 px-3">
-                                        <?php if($barang->last_id_message_tracking == 1  && ($barang->asal == $wilayah->wilayah || $name == "superadmin")): ?> 
-                                        <div class="col-6 text-center">
-                                                <form action="<?php echo e(url("barang/manifest/berangkat")); ?>" method="post">
-                                                    <?php echo csrf_field(); ?>
-                                                    <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
-                                                </form> 
-                                        </div>  
-                                        <?php endif; ?>
-                                        <div class="col-6 text-center">
-                                            <form action="<?php echo e(url("/barang/manifest-bus/print")); ?>" method="get" target="_blank">
-                                                <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
-                                            </form>
-                                        </div>   
-                                            <?php if(($barang->last_id_message_tracking == 2) && ($barang->tujuan == $wilayah->wilayah || $name == "superadmin")): ?> 
-                                            <div class="col-6 text-center">
-                                                    <form action="<?php echo e(url("barang/manifest/sampai")); ?>" method="get">
-                                                        <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
-                                                    </form> 
-                                            </div>    
-                                            <?php endif; ?>
-                                        <div class="col-6 text-center">
-                                            <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" style="width: 95px" value="<?php echo e(encrypt($barang->no_manifest)); ?>" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
-                                        </div>  
-                                    </div>   
-                                </td>  
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
-                    <?php endif; ?>
                     </tbody>
                 </table>
             </div> 

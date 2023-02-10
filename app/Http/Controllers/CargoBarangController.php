@@ -40,14 +40,8 @@ class CargoBarangController extends Controller
     protected function page(Request $request)
     {
         $kodeKota = $request->user->kodeKota(); 
-<<<<<<< HEAD
         
         $cargoArray = $request->user->pengirimanBarangs($request->user->id_kode_kota);
-=======
-        $wilayah = $request->user->Wilayah();
-        $cargoArray = $request->user->pengirimanBarangs($kodeKota->kota);
-        $wilayahArray = $request->user->pengirimanBarangs($wilayah->wilayah);
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 
         $data = array(
             'name' => $request->user->name,
@@ -55,11 +49,9 @@ class CargoBarangController extends Controller
             'jenisUser' => $request->user->jenis_user,
 
             'kodeKota' => $kodeKota,
-            'wilayah' => $wilayah,
 
-            'allCargo' => $cargoArray,
-            'allWilayah' => $wilayahArray,
-        );
+            'allCargo' => $cargoArray
+        ); 
         return view('page.admin.CargoBarang', [], $data);
     }
 }

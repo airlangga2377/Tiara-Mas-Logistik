@@ -85,11 +85,7 @@
         </tr>
       </thead>
       <tbody> 
-<<<<<<< HEAD
         <?php for($i = 0; $i < 27; $i++): ?>
-=======
-        <?php for($i = 0; $i < 25; $i++): ?>
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
           <tr> 
             <?php if(count($detail) > $i): ?> 
               <td class="text" style="text-align: center"><?php echo e($i + 1); ?></td>

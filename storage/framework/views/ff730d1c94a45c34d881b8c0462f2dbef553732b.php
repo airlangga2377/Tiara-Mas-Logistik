@@ -46,16 +46,7 @@
         </div>
     </div>
 
-<<<<<<< HEAD
      
-=======
-    
-    <?php if($errors->any()): ?>
-        <script>
-            alert($errors->first()); 
-        </script>
-    <?php endif; ?> 
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     <div class="container"> 
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -144,7 +135,6 @@
                                                         </form>
                                                 </div>
                                             <?php endif; ?>
-<<<<<<< HEAD
                                             <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12"); ?> text-center">
                                                 <?php if($barang->jenis_pengiriman == "truk"): ?>
                                                     <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
@@ -164,16 +154,6 @@
                                                     </div>
                                                 <?php endif; ?>
                                             </div> 
-=======
-                                        </div>
-                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12"); ?> text-center">
-                                            <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" style="width: 75px">Cetak</button>
-                                            </form>
-                                        </div> 
-                                        <div class="col-6 text-center">
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                                             <?php
                                                 $isBayarTujuan = $barang->id_status_pembayaran == 1;
                                                 $isPiutang = $barang->id_status_pembayaran == 3;
@@ -187,7 +167,6 @@
                                                 </div>  
                                             <?php endif; ?>
                                             <?php if(!$barang->no_manifest && !$barang->is_lunas && !$barang->last_id_message_tracking): ?>  
-<<<<<<< HEAD
                                                 <div class="col-6 text-center">
                                                         <form action="<?php echo e(url("barang/delete")); ?>" method="get">
                                                             <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
@@ -202,22 +181,6 @@
                                     </td>  
                                 </tr>
                             <?php endif; ?>
-=======
-                                                <form action="<?php echo e(url("barang/truk/delete")); ?>" method="get">
-                                                    <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
-                                                    <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
-                                                </form>
-                                            <?php elseif(!$barang->is_lunas || !$barang->is_diterima): ?>
-                                                <button type="button" class="btn btn-secondary disabled" style="width: 75px">Hapus</button>
-                                            <?php endif; ?>
-                                        </div> 
-                                        <div class="<?php echo e(($barang->is_lunas && $barang->is_diterima) ? "col-12" : "col-6"); ?> text-center" data-bs-toggle="modal" data-bs-target="#modalTracking">
-                                            <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" value="<?php echo e(encrypt($barang->no_lmt)); ?>" style="width: 75px">Lacak</button>
-                                        </div>   
-                                    </div> 
-                                </td>  
-                            </tr>
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
                     </tbody>
                 </table>
@@ -255,10 +218,7 @@
                 
                 $('#tableIdTracking').DataTable({ 
                     processing: true,
-<<<<<<< HEAD
                     order: [[2,'desc']],
-=======
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                     ajax: {
                         url: '/barang/tracking',
                         type: 'POST',

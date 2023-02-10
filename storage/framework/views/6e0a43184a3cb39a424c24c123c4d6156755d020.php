@@ -24,17 +24,12 @@
                 Lacak Barangmu
             </div>
             <div class="mb-3 m-auto"> 
-<<<<<<< HEAD
                 <input type="text" class="form-control shadow-sm" name="r" id="trackGood" aria-describedby="trackGood" placeholder="isi nomor resimu" value="1"> 
-=======
-                <input type="text" class="form-control shadow-sm" name="r" id="trackGood" aria-describedby="trackGood" placeholder="isi nomor resimu" value="3"> 
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
             </div>
             <button type="submit" class="btn btn-success w-100" id="btn-lacak">Lacak</button>
         
             <div class="container-fluid mt-2 p-0">
                 <ul class="list-group" id="parentTracking"> 
-<<<<<<< HEAD
                     <?php if($trackings): ?>
                         <?php $__currentLoopData = $trackings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tracking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <li class="list-group-item <?php if($loop->last): ?> active <?php endif; ?>">
@@ -53,8 +48,6 @@
                         </li>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                         
                     <?php endif; ?>
-=======
->>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                 </ul>
             </div>
         </div>
