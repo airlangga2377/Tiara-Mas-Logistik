@@ -59,11 +59,11 @@
                         <label for="tujuan" class="form-label fs-4">Tujuan</label>  
                         <select class="form-select" aria-label="Pilih tujuan" id="selectBoxTujuan" data-live-search="true" name="tujuan">
                             <option disabled <?php if(old("tujuan") == null || old() == null): ?> selected <?php endif; ?> value>Semua Tujuan</option>
-                            <?php if($kodeKota->kota != "surabaya" || $isUserSuperadmin): ?> <option value="surabaya" <?php if(old("tujuan") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option> <?php endif; ?>
-                            <?php if($kodeKota->kota != "taliwang" || $isUserSuperadmin): ?> <option value="taliwang" <?php if(old("tujuan") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option> <?php endif; ?>
-                            <?php if($kodeKota->kota != "bima" || $isUserSuperadmin): ?> <option value="bima" <?php if(old("tujuan") == "bima"): ?> selected <?php endif; ?>>Bima</option> <?php endif; ?>
-                            <?php if($kodeKota->kota != "sumbawa" || $isUserSuperadmin): ?> <option value="sumbawa" <?php if(old("tujuan") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option> <?php endif; ?>
-                            <?php if($kodeKota->kota != "mataram" || $isUserSuperadmin): ?> <option value="mataram" <?php if(old("tujuan") == "mataram"): ?> selected <?php endif; ?>>Mataram</option> <?php endif; ?>
+                            
+                            
+                            <?php if($kodeKota->kota != "surabaya" || $isUserSuperadmin): ?> <option value="1" <?php if(old("id_kode_kota_tujuan") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option> <?php endif; ?>
+                            <?php if($kodeKota->kota != "sumbawa" || $isUserSuperadmin): ?> <option value="2" <?php if(old("id_kode_kota_tujuan") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option> <?php endif; ?>
+                            <?php if($kodeKota->kota != "taliwang" || $isUserSuperadmin): ?> <option value="3" <?php if(old("id_kode_kota_tujuan") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option> <?php endif; ?>
                         </select>
                     </div>   
                 </div> 

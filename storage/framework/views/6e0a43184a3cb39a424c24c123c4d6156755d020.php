@@ -23,47 +23,31 @@
             <div class="text-wrap fs-4 mb-2 text-center">
                 Lacak Barangmu
             </div>
-            <form action="/index.html" method="post"> 
-                <div class="mb-3 m-auto"> 
-                    <input type="text" class="form-control shadow-sm" name="trackGood" id="trackGood" aria-describedby="trackGood" placeholder="isi nomor resimu"> 
-                </div>
-                <button type="submit" class="btn btn-success w-100">Lacak</button>
-            </form>
+            <div class="mb-3 m-auto"> 
+                <input type="text" class="form-control shadow-sm" name="r" id="trackGood" aria-describedby="trackGood" placeholder="isi nomor resimu" value="1"> 
+            </div>
+            <button type="submit" class="btn btn-success w-100" id="btn-lacak">Lacak</button>
         
             <div class="container-fluid mt-2 p-0">
-                <ul class="list-group">
-                    <li class="list-group-item active">
-                        <div class="row justify-content-center align-items-center">
-                            <div class="col-3">
-                                <div class="col"> 
-                                    <div class="text-wrap mb-2 fs-8 fw-lighter text-start">12:41</div>
-                                    <div class="text-wrap mb-2 fs-12 fw-lighter text-start">20 Oct</div>
+                <ul class="list-group" id="parentTracking"> 
+                    <?php if($trackings): ?>
+                        <?php $__currentLoopData = $trackings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tracking): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li class="list-group-item <?php if($loop->last): ?> active <?php endif; ?>">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-3">
+                                    <div class="col">
+                                        <div class="text-wrap mb-2 fs-12 fw-lighter text-start"><?php echo e($tracking->created); ?></div>
+                                    </div>
                                 </div>
-                            </div> 
-                            <div class="col">
-                                <div class="col"> 
-                                    <div class="text-wrap mb-2 fs-8 fw-bold text-start">Gudang</div>
-                                    <div class="text-wrap mb-2 fs-12 fw-lighter text-start">Kode Gudang</div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="row justify-content-center align-items-center">
-                            <div class="col-3">
-                                <div class="col"> 
-                                    <div class="text-wrap mb-2 fs-6 fw-lighter text-start">12:41</div>
-                                    <div class="text-wrap mb-2 fs-12 fw-lighter text-start">20 Oct</div>
-                                </div>
-                            </div> 
-                            <div class="col">
-                                <div class="col"> 
-                                    <div class="text-wrap mb-2 fs-6 fw-lighter text-start">Gudang</div>
-                                    <div class="text-wrap mb-2 fs-12 fw-lighter text-start">Kode Gudang</div>
+                                <div class="col">
+                                    <div class="col">
+                                        <div class="text-wrap mb-2 fs-6 fw-lighter text-start"><?php echo e($tracking->pesan); ?></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
+                        </li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>                         
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
@@ -76,8 +60,62 @@
 
 <?php $__env->startSection('script-body-bottom'); ?>  
     <script> 
+        function capitalizeFirstLetter(string) {
+            return string[0].toUpperCase() + string.slice(1);
+        }
+
         $(document).ready( function () { 
             $('#overlayLoading').css('visibility', 'hidden');
+
+            $('#btn-lacak').click(function (e) { 
+                var req = $("#trackGood").val();
+                if(
+                    req === undefined 
+                    || req === ""
+                ){
+                    $("#trackGood").addClass("alert alert-danger");
+                    $("#trackGood").attr("role", "alert");
+                    return;
+                }
+                $("#trackGood").removeClass("alert alert-danger");
+                $("#trackGood").attr("role", "");
+                $.ajax({
+                    type: "POST",
+                    url: "/",
+                    headers: {
+                        'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                    },
+                    data: 
+                        JSON.stringify({
+                            "r" : req
+                        })
+                    , 
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $('#parentTracking').empty();
+                        $("#trackGood").val("");
+                        $.each(response, function( index, value ) {
+                            if(value.pesan === null && value.created === null){
+                                return;
+                            }
+                            value.pesan = capitalizeFirstLetter(value.pesan);
+                            var html = `<li class="list-group-item"><div class="row justify-content-center align-items-center"><div class="col-3"><div class="col"><div class="text-wrap mb-2 fs-12 fw-lighter text-start">` + value.created + `</div></div></div><div class="col"><div class="col"><div class="text-wrap mb-2 fs-6 fw-lighter text-start">` + value.pesan + `</div></div></div></div></li>`
+                            if(index+1 === response.length){
+                                html = `<li class="list-group-item active"><div class="row justify-content-center align-items-center"><div class="col-3"><div class="col"><div class="text-wrap mb-2 fs-12 fw-lighter text-start">` + value.created + `</div></div></div><div class="col"><div class="col"><div class="text-wrap mb-2 fs-6 fw-lighter text-start">` + value.pesan + `</div></div></div></div></li>`;
+                            }
+                            $('#parentTracking').append(html);
+                        });
+                    },
+                    statusCode: {
+                        404: function() {
+                            $('#parentTracking').empty();
+                            alert( "Tidak ditemukan" );
+                        }
+                    },
+                });
+                e.preventDefault();
+            }); 
         });
     </script>
 <?php $__env->stopSection(); ?>

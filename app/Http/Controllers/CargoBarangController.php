@@ -41,10 +41,12 @@ class CargoBarangController extends Controller
     {
         $kodeKota = $request->user->kodeKota(); 
         
-        $cargoArray = $request->user->pengirimanBarangs($kodeKota->kota);
+        $cargoArray = $request->user->pengirimanBarangs($request->user->id_kode_kota);
 
         $data = array(
             'name' => $request->user->name,
+            
+            'jenisUser' => $request->user->jenis_user,
 
             'kodeKota' => $kodeKota,
 

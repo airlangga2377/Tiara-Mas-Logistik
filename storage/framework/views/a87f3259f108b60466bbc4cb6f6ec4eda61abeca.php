@@ -16,6 +16,36 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>    
+    <!-- Modal tracking -->
+    <div class="modal fade modal-dialog-scrollable" id="modalTracking" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+            
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="parentTableIdTracking"> 
+                <table id="tableIdTracking" class="display">
+                    <thead>
+                        <tr> 
+                            <th>Deskripsi Tracking</th> 
+                            <th>Status Pembayaran</th> 
+
+                            <th>Tanggal</th> 
+                        </tr>
+                    </thead>
+                    <tbody> 
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            
+            
+            </div>
+        </div>
+        </div>
+    </div>
+
     
     <?php if($errors->any()): ?>
         <script>
@@ -43,7 +73,11 @@
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
                     <div class="col-12 pt-2">
+                        <?php if(Auth::user()->is_user_superadmin!=0): ?>
                         <a role="button" class="fs-5 btn btn-success" href="<?php echo e(url('barang/truk/insert#pengiriman')); ?>">Tambah Pengiriman</a>
+                        <?php else: ?>
+                        <a role="button" class="fs-5 btn btn-success" href="<?php echo e(url('barang/bus/insert#pengiriman')); ?>">Tambah Pengiriman</a>
+                        <?php endif; ?>
                     </div>  
                     <div class="col-12 pt-2 ">
                         <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest')); ?>">Manifest</a>
@@ -83,7 +117,7 @@
                                     <div class="row justify-content-start align-items-center g-2 px-3">
                                         <div class="col-6 text-center">
                                             
-                                            <?php if(!$barang->is_diterima && $barang->no_manifest && $barang->last_id_message_tracking == 3 && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")): ?> 
+                                            <?php if(!$barang->is_diterima && $barang->no_manifest && ($barang->last_id_message_tracking == 3 || $barang->last_id_message_tracking == 5 || $barang->last_id_message_tracking == 6) && ($kodeKota->kota == $barang->tujuan || $name == "superadmin")): ?> 
                                                 <form action="<?php echo e(url("barang/truk/update/diterima")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                     <button type="submit" class="btn btn-primary" style="width: 75px">Terima</button>
@@ -92,13 +126,8 @@
                                                 <button type="button" class="btn btn-secondary disabled">Terima</button>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-auto"); ?> text-center">
+                                        <div class="<?php echo e((!$barang->is_lunas || !$barang->is_diterima) ? "col-6" : "col-12"); ?> text-center">
                                             <?php if(Auth::user()->is_user_superadmin!=0): ?>
-                                            <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
-                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
-                                            </form>
-                                            <?php else: ?>
                                             <form action="<?php echo e(url("barang/bus/print/resi")); ?>" method="get" target="_blank">
                                                 <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_resi)); ?>" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Resi</button>
@@ -108,7 +137,12 @@
                                                 <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_resi)); ?>" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 75px">Cetak Barang</button>
                                             </form>
-                                        <?php endif; ?>
+                                            <?php else: ?>
+                                            <form action="<?php echo e(url("barang/truk/print/deliverynote")); ?>" method="get" target="_blank">
+                                                <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 75px">Cetak</button>
+                                            </form>
+                                            <?php endif; ?>
                                         </div> 
                                         <div class="col-6 text-center">
                                             <?php
@@ -129,10 +163,11 @@
                                                 <form action="<?php echo e(url("barang/truk/delete")); ?>" method="get">
                                                     <input type="text" name="no_lmt" value="<?php echo e(encrypt($barang->no_lmt)); ?>" hidden>
                                                     <button type="submit" class="btn btn-danger" style="width: 75px">Hapus</button>
-                                                </form>
-                                            <?php elseif(!$barang->is_lunas || !$barang->is_diterima): ?>
-                                                <button type="button" class="btn btn-danger disabled" style="width: 75px">Hapus</button>
+                                                </form> 
                                             <?php endif; ?>
+                                        </div> 
+                                        <div class="<?php echo e(($barang->is_lunas && $barang->is_diterima) ? "col-12" : "col-6"); ?> text-center" data-bs-toggle="modal" data-bs-target="#modalTracking">
+                                            <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" value="<?php echo e(encrypt($barang->no_lmt)); ?>" style="width: 75px">Lacak</button>
                                         </div>   
                                     </div> 
                                 </td>  
@@ -146,7 +181,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('footer'); ?>
-    <?php echo $__env->make('layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
+    <?php echo $__env->make("layouts.footerAdmin", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script-body-bottom'); ?>  
@@ -164,7 +199,44 @@
                 });
             }).draw();
 
-            
+            $('#tableId tbody').on('click', '#btnGetTracking', function () {
+                $("#overlayLoading").css("visibility", "visible");   
+
+                var value = $(this).val(); 
+
+                $('#parentTableIdTracking').empty();
+                $('#parentTableIdTracking').append("<table id='tableIdTracking' class='display'><thead><tr><th>Deskripsi Tracking</th><th>Status Pembayaran</th><th>Tanggal</th></tr></thead><tbody></tbody></table>");
+                
+                $('#tableIdTracking').DataTable({ 
+                    processing: true,
+                    ajax: {
+                        url: '/barang/tracking',
+                        type: 'POST',
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8;", 
+                        headers: {
+                            'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
+                        },
+                        "data": function ( d ) {
+                            d.no_lmt = value;
+                            return JSON.stringify( d );
+                        },
+                        statusCode: {
+                            404: function() {
+                                alert( "Tidak ditemukan" );
+                            }
+                        },
+                    },
+                    columns: [   
+                        {data: "pesan"}, 
+                        {data: "pembayaran"},  
+                        {data: "created"},  
+                    ],  
+                    pageLength: 10,
+                });
+
+                $("#overlayLoading").css("visibility", "hidden");   
+            }); 
   
             $('#overlayLoading').css('visibility', 'hidden');
             

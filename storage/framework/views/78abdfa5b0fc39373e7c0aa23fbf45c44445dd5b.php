@@ -136,8 +136,9 @@
                                 <select class="form-select" aria-label="Pilih Status Pembayaran" id="selectBoxStatusPembayaran" data-live-search="true" name="statusPembayaran">
                                     <option disabled <?php if(old("statusPembayaran") == null || old() == null): ?> selected <?php endif; ?> value>Pilih Status Pembayaran</option>
                                     <option value="1" <?php if(old("statusPembayaran") == "1"): ?> selected <?php endif; ?>>Bayar Tujuan</option>
-                                    <option value="2" <?php if(old("statusPembayaran") == "2"): ?> selected <?php endif; ?>>Lunas Kantor Surabaya</option>
+                                    <option value="2" <?php if(old("statusPembayaran") == "2"): ?> selected <?php endif; ?>>Lunas Kantor Pengirim</option>
                                     <option value="3" <?php if(old("statusPembayaran") == "3"): ?> selected <?php endif; ?>>Piutang</option> 
+                                    <option value="4" <?php if(old("statusPembayaran") == "3"): ?> selected <?php endif; ?>>Lunas Kantor Tujuan</option> 
                                 </select>
                                 <div id="validationtujuan" class="invalid-feedback">
                                     <?php if(Session::has("statusPembayaranError")): ?> <?php endif; ?>

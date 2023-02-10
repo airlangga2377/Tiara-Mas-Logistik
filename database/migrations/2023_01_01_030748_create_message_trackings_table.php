@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMessageTrackingsTable extends Migration
+class CreateMessageStatusPembayaransTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateMessageTrackingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('message_trackings', function (Blueprint $table) {
-            $table->bigIncrements('id_message_tracking');
+        Schema::create('message_status_pembayarans', function (Blueprint $table) {
+            $table->bigIncrements('id_message_status_pembayaran');
             $table->string('pesan')->nullable(false);
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ class CreateMessageTrackingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('message_trackings');
+        Schema::dropIfExists('message_status_pembayarans');
     }
 }

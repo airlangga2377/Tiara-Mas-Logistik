@@ -16,7 +16,7 @@ class InputOption extends \Symfony\Component\Console\Input\InputOption
         $this->description = $description;
     }
 
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description ?: parent::getDescription();
     }

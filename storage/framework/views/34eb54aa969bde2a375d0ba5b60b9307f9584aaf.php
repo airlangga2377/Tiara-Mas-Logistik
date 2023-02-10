@@ -103,12 +103,11 @@
                             <div class="mb-xl-3 mb-sm-5 p-3 w-60"> 
                                 <label for="asal" class="form-label fs-4">Asal</label>  
                                 <select class="form-select" aria-label="Pilih asal" id="selectBoxAsal" data-live-search="true" name="asal">
-                                    <option disabled <?php if(old("asal") == null || old() == null): ?> selected <?php endif; ?> value>Semua Asal</option>
-                                    <option value="surabaya" <?php if(old("asal") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option>
-                                    <option value="taliwang" <?php if(old("asal") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option>
-                                    <option value="bima" <?php if(old("asal") == "bima"): ?> selected <?php endif; ?>>Bima</option>
-                                    <option value="sumbawa" <?php if(old("asal") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option>
-                                    <option value="mataram" <?php if(old("asal") == "mataram"): ?> selected <?php endif; ?>>Mataram</option>
+                                    <option disabled <?php if(old("asal") == null || old() == null): ?> selected <?php endif; ?> value>Pilih Asal</option>
+                                    
+                                    <?php if($kodeKota->kota != "surabaya" || $isUserSuperadmin): ?> <option value="1" <?php if(old("id_kode_kota_asal") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option> <?php endif; ?>
+                                    <?php if($kodeKota->kota != "sumbawa" || $isUserSuperadmin): ?> <option value="2" <?php if(old("id_kode_kota_asal") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option> <?php endif; ?>
+                                    <?php if($kodeKota->kota != "taliwang" || $isUserSuperadmin): ?> <option value="3" <?php if(old("id_kode_kota_asal") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option> <?php endif; ?>
                                 </select>
                                 <div id="validationasal" class="invalid-feedback">
                                     <?php if(Session::has("asalError")): ?> <?php endif; ?>
@@ -118,12 +117,12 @@
                             <div class="mb-xl-3 mb-sm-5 p-3 w-60"> 
                                 <label for="tujuan" class="form-label fs-4">Tujuan</label>  
                                 <select class="form-select" aria-label="Pilih tujuan" id="selectBoxTujuan" data-live-search="true" name="tujuan">
-                                    <option disabled <?php if(old("tujuan") == null || old() == null): ?> selected <?php endif; ?> value>Semua Tujuan</option>
-                                    <?php if($kodeKota->kota != "surabaya" || $isUserSuperadmin): ?> <option value="surabaya" <?php if(old("tujuan") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option> <?php endif; ?>
-                                    <?php if($kodeKota->kota != "taliwang" || $isUserSuperadmin): ?> <option value="taliwang" <?php if(old("tujuan") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option> <?php endif; ?>
-                                    <?php if($kodeKota->kota != "bima" || $isUserSuperadmin): ?> <option value="bima" <?php if(old("tujuan") == "bima"): ?> selected <?php endif; ?>>Bima</option> <?php endif; ?>
-                                    <?php if($kodeKota->kota != "sumbawa" || $isUserSuperadmin): ?> <option value="sumbawa" <?php if(old("tujuan") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option> <?php endif; ?>
-                                    <?php if($kodeKota->kota != "mataram" || $isUserSuperadmin): ?> <option value="mataram" <?php if(old("tujuan") == "mataram"): ?> selected <?php endif; ?>>Mataram</option> <?php endif; ?>
+                                    <option disabled <?php if(old("tujuan") == null || old() == null): ?> selected <?php endif; ?> value>Pilih Tujuan</option>
+                                    
+                                    
+                                    <?php if($kodeKota->kota != "surabaya" || $isUserSuperadmin): ?> <option value="1" <?php if(old("id_kode_kota_tujuan") == "surabaya"): ?> selected <?php endif; ?>>Surabaya</option> <?php endif; ?>
+                                    <?php if($kodeKota->kota != "sumbawa" || $isUserSuperadmin): ?> <option value="2" <?php if(old("id_kode_kota_tujuan") == "sumbawa"): ?> selected <?php endif; ?>>Sumbawa</option> <?php endif; ?>
+                                    <?php if($kodeKota->kota != "taliwang" || $isUserSuperadmin): ?> <option value="3" <?php if(old("id_kode_kota_tujuan") == "taliwang"): ?> selected <?php endif; ?>>Taliwang</option> <?php endif; ?>
                                 </select>
                                 <div id="validationtujuan" class="invalid-feedback">
                                     <?php if(Session::has("tujuanError")): ?> <?php endif; ?>
@@ -136,8 +135,9 @@
                                 <select class="form-select" aria-label="Pilih Status Pembayaran" id="selectBoxStatusPembayaran" data-live-search="true" name="statusPembayaran">
                                     <option disabled <?php if(old("statusPembayaran") == null || old() == null): ?> selected <?php endif; ?> value>Pilih Status Pembayaran</option>
                                     <option value="1" <?php if(old("statusPembayaran") == "1"): ?> selected <?php endif; ?>>Bayar Tujuan</option>
-                                    <option value="2" <?php if(old("statusPembayaran") == "2"): ?> selected <?php endif; ?>>Lunas Kantor Surabaya</option>
+                                    <option value="2" <?php if(old("statusPembayaran") == "2"): ?> selected <?php endif; ?>>Lunas Kantor Pengirim</option>
                                     <option value="3" <?php if(old("statusPembayaran") == "3"): ?> selected <?php endif; ?>>Piutang</option> 
+                                    <option value="4" <?php if(old("statusPembayaran") == "3"): ?> selected <?php endif; ?>>Lunas Kantor Tujuan</option> 
                                 </select>
                                 <div id="validationtujuan" class="invalid-feedback">
                                     <?php if(Session::has("statusPembayaranError")): ?> <?php endif; ?>
@@ -441,6 +441,22 @@
 
             $('#tableId tbody').on('change', 'tr', disableSubmitButtonTable);
  
+            $('#tableId tbody').on('change', 'tr #biaya', function () {
+                var biaya = $(this).val();
+                if(biaya !== ""){
+                        // format number to Euro
+                        let idr = Intl.NumberFormat('ID', {
+                            style: 'currency',
+                            currency: 'IDR',
+                            currencySign: 'accounting',
+                            // currencyDisplay: 'none',
+                        }); 
+                        $(this).attr("title", idr.format(biaya));
+                    }else{
+                        $(this).attr("title", "Biaya barang");
+                    }
+            }); 
+
             $("#namaPengirim").change(disableSubmitButton);
             $("#nomorPengirim").change(disableSubmitButton);
             $("#namaPenerima").change(disableSubmitButton);

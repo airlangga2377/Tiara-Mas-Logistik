@@ -26,6 +26,10 @@ class CreateUsersTable extends Migration
             
             $table->index('id_kode_kota');
             $table->string('id_kode_kota')->nullable(true); 
+
+            $table->index('jenis_user');
+            $table->string('jenis_user')->nullable(true); 
+            
             $table->rememberToken();
             $table->string('api_token')->nullable(true);
             $table->timestamps();

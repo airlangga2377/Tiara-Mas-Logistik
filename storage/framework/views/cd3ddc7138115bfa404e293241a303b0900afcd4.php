@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
             <style>
                 .container-fluid{
                     /* background-color:#f5f5f5; */
@@ -168,26 +168,15 @@
             </style>
             <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-5 md-15">
-                    <?php if(Auth::user()->is_user_superadmin!=0): ?>
-                        <div class="col">
-                            <div class="mb-xl-3 mb-sm-5">
-                                <label hidden for="pickup" class="form-label fs-4">Asal Barang</label>
-                                <select hidden type="option" id="" class="form-control select-pickup shadow-sm p-3" name="pickup" id="pickup" aria-describedby="pickupText" value="<?php echo old('pickup'); ?>">
-                                <option value="<?php echo e(Auth::user()->wilayah); ?>" selected><?php echo e(Auth::user()->wilayah); ?></option>
-                                </select>
-                                <div id="validationpickup" class="invalid-feedback">
-                                    <?php if(Session::has("pickupError")): ?> <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php else: ?>
+                    
+                    <?php if($isUserSuperadmin): ?>
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">                             
                                 <label for="pickup" class="form-label fs-4">Asal Barang</label>
                                 <select type="option" id="pickup" class="form-control select-pickup shadow-sm p-3" name="pickup" id="pickup" aria-describedby="pickupText" value="<?php echo old('pickup'); ?>">
-                                    <option value="">Silahkan Pilih Asal</option>
-                                <?php $__currentLoopData = $allWilayah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wilayah): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($wilayah->name); ?>"><?php echo e($wilayah->name); ?></option>
+                                    <option value="" disabled selected>Silahkan Pilih Asal</option>
+                                <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wilayah): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($wilayah->wilayah); ?>"><?php echo e($wilayah->wilayah); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <div id="validationpickup" class="invalid-feedback">
@@ -195,14 +184,15 @@
                                 </div>
                             </div>
                         </div>
+                        <?php else: ?>
                     <?php endif; ?>
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
                             <label for="dropoff" class="form-label fs-4">Tujuan Barang</label>
                             <select type="option" id="dropoff" class="form-control" name="dropoff" id="tujuanBarang" aria-describedby="tujuanBarangText" value="<?php echo old('tujuanBarang'); ?>">
                                 <option value=""> Silahkan Pilih Tujuan </option>
-                                <?php $__currentLoopData = $allWilayah; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kota): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($kota->name); ?>"><?php echo e($kota->name); ?></option>
+                                <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kota): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($kota->wilayah); ?>"><?php echo e($kota->wilayah); ?></option>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                             <div id="validationTujuanBarang" class="invalid-feedback">

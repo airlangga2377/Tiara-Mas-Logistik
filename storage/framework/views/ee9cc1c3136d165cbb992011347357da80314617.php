@@ -43,12 +43,7 @@
             border-collapse: collapse;
             padding-left: 2px;
             width: 282px;
-        }
-        .table-asal th{
             text-align: center;
-        }
-        .table-asal td{
-            padding-bottom: 40px;
         }
     </style>
   </head>
@@ -69,7 +64,7 @@
                 </tbody>
             </table>
         </div>
-        <b><caption style="width:550px;text-align:center;">ini adalah kode agen</caption></b>
+        <b><caption style="width:550px;text-align:center;"><?php echo e($detail->kode_kota_asal); ?>-<?php echo e($detail->kode_wilayah_asal); ?>-<?php echo e($detail->id_user); ?></caption></b>
         <div class="row">
             <div class="col metode-pembayaran">
                 <table class="table-metode-pembayaran">
@@ -112,12 +107,12 @@
                     </thead>
                     <tbody>                    
                         <tr>
-                            <td style="border-left-style: hidden;">
-                                <?php echo e(explode(" ", $detail->nama_pengirim)[0]); ?>
+                            <td style="border-left-style: hidden;padding-top:20px;padding-bottom:20px;">
+                                <?php echo e($detail->nama_pengirim); ?>
 
                             </td>
-                            <td>
-                                <?php echo e(explode(" ", $detail->nama_penerima)[0]); ?>
+                            <td style="padding-top:20px;padding-bottom:20px;">
+                                <?php echo e($detail->nama_penerima); ?>
 
                             </td>
                         </tr>
@@ -143,15 +138,15 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="border-left-style: hidden;padding-top: 35px;padding-bottom: 35px;">
+                            <td style="border-left-style: hidden;padding-top: 20px;padding-bottom: 20px;">
                                 <?php echo e($detail->jenis_paket); ?>
 
                             </td>
-                            <td>
+                            <td style="padding-top: 20px;padding-bottom: 20px;">
                                 <?php echo e($detail->jenis_barang); ?>
 
                             </td>
-                            <td style="border-right-style: hidden;">
+                            <td style="border-right-style: hidden;padding-top: 20px;padding-bottom: 20px;">
                                 <?php echo e($detail->jumlah_barang); ?> <?php echo e($detail->code); ?>
 
                             </td>
@@ -209,11 +204,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="border-left-style: hidden;">
+                            <td style="border-left-style: hidden;padding-bottom:35px;padding-top:35px;">
                                 <?php echo e($detail->asal); ?>
 
                             </td>
-                            <td style="border-right-style: hidden;">
+                            <td style="border-right-style: hidden;padding-bottom:35px;padding-top:35px;">
                                 <?php echo e($detail->tujuan); ?>
 
                             </td>

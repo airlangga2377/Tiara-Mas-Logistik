@@ -78,8 +78,6 @@ class CargoPengirimanBarang extends Model
             $this->nama_penerima = $data->nama_penerima;
             $this->sopir = $data->sopir;
             $this->no_pol = $data->no_pol;
-            $this->jenis = $data->jenis;
-            $this->asal = $data->asal;
             $this->tujuan = $data->tujuan;
             $this->biaya = $data->biaya; 
             $this->created = date_format(date_create($data->created, timezone_open("Asia/Jakarta")), 'd F Y');

@@ -15,7 +15,11 @@ class CreateWilayahTable extends Migration
     {
         Schema::create('wilayah', function (Blueprint $table) {
             $table->bigIncrements('id_wilayah');
-            $table->string('name');
+            
+            $table->string('wilayah');
+
+            $table->string('kode_wilayah');
+            $table->string('id_kode_kota');
             $table->timestamps();
         });
     }

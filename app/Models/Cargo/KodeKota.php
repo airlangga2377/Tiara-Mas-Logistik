@@ -30,6 +30,8 @@ class KodeKota extends Model
         'kode_kota',  
         'wilayah',  
         'kode_wilayah',  
+        'alamat',  
+        'jenis',  
     ];
 
     /**

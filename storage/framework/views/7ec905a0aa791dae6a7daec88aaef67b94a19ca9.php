@@ -73,7 +73,7 @@
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
                     <div class="col-12 pt-2"> 
-                        <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest/create')); ?>">Tambah Manifest</a>
+                        <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('/barang/manifest/create')); ?>">Tambah Manifest</a>
                     </div>   
                 </div>
             </div>
@@ -95,47 +95,47 @@
                     <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                         <?php if($barang->no_manifest): ?> 
                             <tr>
-                                <td data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman <?php echo e($barang->jenis_pengiriman); ?>"><?php echo e($loop->index + 1); ?></td> 
+                                <td class="<?php if($barang->last_id_message_tracking > 2): ?> bg-success text-white <?php endif; ?>" data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman <?php echo e($barang->jenis_pengiriman); ?>"><?php echo e($loop->index + 1); ?></td> 
                                 <td><?php echo e($barang->no_manifest); ?></td>  
                                 <td><?php echo e($barang->no_pol); ?></td>   
                                 <td><?php echo e($barang->sopir ? $barang->sopir : $barang->sopir_utama); ?></td>  
 
-                                <td><?php echo e($barang->asal); ?></td>  
+                                <td><?php echo e($barang->created); ?></td>  
 
-                                <td>
-                                    <div class="row justify-content-start align-items-center g-2 px-3">
-                                        <div class="col-6 text-center">
-                                            <?php if($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->kota || $name == "superadmin")): ?> 
-                                                <form action="<?php echo e(url("barang/manifest/berangkat")); ?>" method="post">
-                                                    <?php echo csrf_field(); ?>
-                                                    <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
-                                                </form>
-                                            <?php else: ?>
-                                                <button type="button" class="btn btn-primary disabled" style="width: 95px">Berangkat</button>
-                                            <?php endif; ?>
-                                        </div>  
-                                        <div class="col-6 text-center">
-                                            <form action="<?php echo e(url("barang/manifest/print")); ?>" method="get" target="_blank">
-                                                <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
-                                            </form>
-                                        </div>   
+                                <?php if($barang->jenis_pengiriman == "truk" || $name == "superadmin"): ?>
+                                    <td>
+                                        <div class="row justify-content-start align-items-center g-2 px-3">
+                                            <?php if($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->id_kode_kota || $name == "superadmin")): ?> 
                                             <div class="col-6 text-center">
-                                                <?php if(($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->kota || $name == "superadmin")): ?> 
-                                                    <form action="<?php echo e(url("barang/manifest/sampai")); ?>" method="get">
+                                                    <form action="<?php echo e(url("barang/manifest/berangkat")); ?>" method="post">
+                                                        <?php echo csrf_field(); ?>
                                                         <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
-                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
-                                                    </form>
-                                                <?php else: ?>
-                                                    <button type="button" class="btn btn-primary disabled" style="width: 95px">Sampai</button>
+                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
+                                                    </form> 
+                                            </div>  
+                                            <?php endif; ?>
+                                            <div class="col-6 text-center">
+                                                <form action="<?php echo e(url("barang/manifest/print")); ?>" method="get" target="_blank">
+                                                    <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
+                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
+                                                </form>
+                                            </div>   
+                                                <?php if(($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->id_kode_kota || $name == "superadmin")): ?> 
+                                                <div class="col-6 text-center">
+                                                        <form action="<?php echo e(url("barang/manifest/sampai")); ?>" method="get">
+                                                            <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
+                                                            <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
+                                                        </form> 
+                                                </div>    
                                                 <?php endif; ?>
-                                            </div>    
-                                        <div class="col-6 text-center">
-                                            <button type="button" class="btn btn-primary" id="btnGetTracking" style="width: 95px" value="<?php echo e(encrypt($barang->no_manifest)); ?>" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
-                                        </div>  
-                                    </div>   
-                                </td>  
+                                            <div class="col-6 text-center">
+                                                <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" style="width: 95px" value="<?php echo e(encrypt($barang->no_manifest)); ?>" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+                                            </div>  
+                                        </div>   
+                                    </td>  
+                                <?php else: ?>
+                                    
+                                <?php endif; ?>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
@@ -147,7 +147,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('footer'); ?>
-    <?php echo $__env->make('layouts.footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
+    <?php echo $__env->make("layouts.footerAdmin", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('script-body-bottom'); ?>  

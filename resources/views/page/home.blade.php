@@ -30,20 +30,27 @@
             <div class="card card-body text-center shadow-sm menu-widget">
                 <h4 class="card-title fs-3">Input Pengiriman</h4>
                 <p class="card-text fs-5 py-3">Anda dapat membuat surat jalan</p>
-                <a class="btn btn-primary fs-5" href="{{ url('barang/truk/insert#pengiriman') }}" role="button">Input Pengiriman</a>
+                @if (Auth::user()->is_user_superadmin) 
+                    <div class="row justify-content-center align-items-center g-2">
+                        <div class="col-12"><a role="button" class="btn btn-primary fs-5 w-100" href="{{ url('barang/truk/insert#pengiriman') }}">Tambah Truk</a></div>
+                        <div class="col-12"><a role="button" class="btn btn-primary fs-5 w-100" href="{{ url('barang/bus/insert#pengiriman') }}">Tambah Bus</a></div>
+                    </div>
+                @else
+                    <a class="btn btn-primary fs-5" href="{{ url('barang/' . $jenisUser .'/insert#pengiriman') }}">Tambah Pengiriman</a>
+                @endif
             </div>
         </div>
         <div class="col-xl-4 col-sm-12">
             <div class="card card-body text-center shadow-sm menu-widget">
                 <h4 class="card-title fs-3">Input Manifest</h4>
                 <p class="card-text fs-5 py-3">Anda dapat membuat manifest</p>
-                <a class="btn btn-primary fs-5" href="{{ url('barang/manifest') }}" role="button">Input Manifest</a>
+                <a class="btn btn-primary fs-5" href="{{ url('barang/manifest/create') }}" role="button">Input Manifest</a>
             </div>
         </div>
         <div class="col-xl-4 col-sm-12">
             <div class="card card-body text-center shadow-sm menu-widget">
                 <h4 class="card-title fs-3">Barang</h4>
-                <p class="card-text fs-5 py-3">Anda dapat melihat beberapa barang</p>
+                <p class="card-text fs-5 py-3">Anda dapat melihat barang</p>
                 <a class="btn btn-primary fs-5" href="{{ url('barang') }}" role="button">Lihat Barang</a>
             </div>
         </div>

@@ -66,7 +66,7 @@
         <tbody> 
           <tr>
             <td colspan="3"><p class="text">Sopir: <?php echo e($truck->sopir ? $truck->sopir : $truck->sopir_utama); ?></p></td>
-            <td colspan="3"><p class="text">Kernet: <?php echo e($truck->kernet ? $truck->kernet : "-"); ?></p></td>
+            <td colspan="3"><p class="text">Kernet: <?php echo e($truck->kernet ? ucfirst($truck->kernet) : "-"); ?></p></td>
           </tr>
       </tbody> 
     </table> 
@@ -79,7 +79,7 @@
           <th class="title text">Jenis</th>
           <th class="title text">Biaya</th>
           <th class="title text">Koli</th>
-          <th class="title text">no.lmt</th>
+          <th class="title text">Resi</th>
           <th class="title text">Pembayaran</th>
           <th class="title text">Keterangan</th>
         </tr>
@@ -89,14 +89,14 @@
           <tr> 
             <?php if(count($detail) > $i): ?> 
               <td class="text" style="text-align: center"><?php echo e($i + 1); ?></td>
-              <td style="text-align: center;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->nama_pengirim); ?> <?php endif; ?></td>
-              <td style="text-align: center;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->nama_penerima); ?> <?php endif; ?></td>
+              <td style="text-align: left;"><?php if($detail[$i]): ?> <?php echo e(explode(" ", $detail[$i]->nama_pengirim)[0]); ?> <?php endif; ?></td>
+              <td style="text-align: left;"><?php if($detail[$i]): ?> <?php echo e(explode(" ", $detail[$i]->nama_penerima)[0]); ?> <?php endif; ?></td>
               <td style="text-align: center;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->jenis_barang_detail); ?> <?php endif; ?></td>
               <td style="text-align: right;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->biaya); ?> <?php endif; ?></td>
               <td style="text-align: right;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->jumlah_barang); ?> <?php endif; ?></td>
               <td style="text-align: right;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->no_lmt); ?> <?php endif; ?></td>
-              <td style="text-align: right;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->pesan); ?> <?php endif; ?></td> 
-              <td style="text-align: right;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->Keterangan); ?> <?php endif; ?></td>
+              <td style="text-align: left; font-size: 20px"><?php if($detail[$i]): ?> <?php echo e(ucfirst($detail[$i]->pesan)); ?> <?php endif; ?></td> 
+              <td style="text-align: left;"><?php if($detail[$i]): ?> <?php echo e($detail[$i]->Keterangan); ?> <?php endif; ?></td>
             <?php else: ?>
               <td class="text" style="text-align: center; color: white">/</td>
               <td class="text"></td>

@@ -44,13 +44,12 @@ class CreateCargoPengirimanDetailsTable extends Migration
             $table->string('jenis_pengiriman')->default('truk');
             $table->string('jenis_pengirim')->nullable(true)->default('umum');
             $table->string('jenis_biaya')->default('kubikasi'); 
-            $table->string('jenis_paket');
 
-            $table->index('id_status_pembayaran');
             $table->string('id_status_pembayaran')->nullable(true);
 
-            $table->string('asal'); 
-            $table->string('tujuan'); 
+            $table->string('id_kode_kota_asal')->nullable(true);
+
+            $table->string('id_kode_kota_tujuan')->nullable(true);
             
             $table->string('keterangan')->nullable(true);
 

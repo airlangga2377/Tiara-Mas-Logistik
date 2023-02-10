@@ -9,7 +9,11 @@
 @section("preload")
     {{-- Datatables --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>   
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> 
+
+    {{-- SELECT 2 --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.css" integrity="sha512-PO7TIdn2hPTkZ6DSc5eN2DyMpTn/ZixXUQMDLUx+O5d7zGy0h1Th5jgYt84DXvMRhF3N0Ucfd7snCyzlJbAHQA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.full.js" integrity="sha512-Gu2OIWdShncC2h0KqZMOrDWTR0okm7pXBU3M1HuedqlVCDgMbz9BCQWx2AV72pvDAbPhyP9qR7hjk6pUXXj1xg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     {{-- Loading Jquery --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easy-loading/1.3.0/jquery.loading.js"></script>
@@ -35,7 +39,7 @@
         </ol>
     </nav>
 
-    <form action="{{ url("barang/manifest/create") }}" method="post">
+    <form action="{{ url("/barang/manifest-bus/create") }}" method="post">
         @csrf  
         <div class="row justify-content-center align-items-center g-2">
             <div class="col">
@@ -55,7 +59,7 @@
                     <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
                         {!! Session::get("message") !!}
                         <script> 
-                            window.open("http://127.0.0.1:8000/barang/manifest/print?no_manifest={!! Session::get('no_manifest') !!}&sopir={!! Session::get('sopir') !!}", "_blank")
+                            window.open("/barang/manifest-bus/print?no_manifest={!! Session::get('no_manifest') !!}&sopir={!! Session::get('sopir') !!}", "_blank")
                         </script>
                     </div>
                 @endif  
@@ -65,11 +69,9 @@
                         <label for="tujuan" class="form-label fs-4">Tujuan</label>  
                         <select class="form-select" aria-label="Pilih tujuan" id="selectBoxTujuan" data-live-search="true" name="tujuan">
                             <option disabled @if (old("tujuan") == null || old() == null) selected @endif value>Semua Tujuan</option>
-                            @if ($kodeKota->kota != "surabaya" || $isUserSuperadmin) <option value="surabaya" @if (old("tujuan") == "surabaya") selected @endif>Surabaya</option> @endif
-                            @if ($kodeKota->kota != "taliwang" || $isUserSuperadmin) <option value="taliwang" @if (old("tujuan") == "taliwang") selected @endif>Taliwang</option> @endif
-                            @if ($kodeKota->kota != "bima" || $isUserSuperadmin) <option value="bima" @if (old("tujuan") == "bima") selected @endif>Bima</option> @endif
-                            @if ($kodeKota->kota != "sumbawa" || $isUserSuperadmin) <option value="sumbawa" @if (old("tujuan") == "sumbawa") selected @endif>Sumbawa</option> @endif
-                            @if ($kodeKota->kota != "mataram" || $isUserSuperadmin) <option value="mataram" @if (old("tujuan") == "mataram") selected @endif>Mataram</option> @endif
+                            @foreach ($allWilayah as $wilayah)                                           
+                                @if ($wilayah->wilayah != "$wilayah->kota" || $isUserSuperadmin) <option value="{{ $wilayah->wilayah }}" @if (old("tujuan") == "{{ $wilayah->wilayah }}") selected @endif>{{ $wilayah->wilayah }}</option> @endif
+                            @endforeach                     
                         </select>
                     </div>   
                 </div> 
@@ -110,7 +112,9 @@
                         <label for="no pol" class="form-label fs-4">No Pol</label>  
                         <select class="form-select" aria-label="Pilih no_pol" id="selectBoxNoPol" data-live-search="true" name="no_pol">
                             <option disabled @if (old("no_pol") == null || old() == null) selected @endif value>Semua No Pol</option>
-                            <option value="1" @if (old("no_pol") == "EA") selected @endif>EA</option> 
+                            @foreach ($allBus as $bus)                                
+                            <option value="{{ $bus->id_bus }}" @if (old("no_pol") == "{{ $bus->no_pol }}") selected @endif>{{ $bus->no_pol }}</option> 
+                            @endforeach
                         </select>
                     </div>  
                     <div class="col">
@@ -139,7 +143,7 @@
             var table = $('#tableId').DataTable({ 
                 processing: true,
                 ajax: {
-                    url: '/barang/manifest/get',
+                    url: '/barang/manifest-bus/get',
                     type: 'POST',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8;", 
@@ -156,11 +160,11 @@
 
                     {data: "nama_pengirim"}, 
 
-                    {data: "no_lmt"}, 
+                    {data: "no_resi"}, 
                     {data: "pesan"}, 
                     {data: "created"},  
                     {
-                        data: "no_lmt",
+                        data: "no_resi",
                         render: function (data, type, row) {
                             return "<input class='form-check-input border-dark' type='checkbox' value='" + data + "'>"
                         }, 
@@ -245,6 +249,9 @@
 
             $("#selectBoxTujuan").change(function (e) { 
                 table.ajax.reload();
+            });
+            $('#selectBoxTujuan').select2({
+                width: "resolve"
             });
         });
     </script>

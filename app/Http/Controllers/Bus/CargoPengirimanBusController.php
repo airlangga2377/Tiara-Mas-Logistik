@@ -21,6 +21,18 @@ use App\Models\Cargo\CargoPengirimanDetail;
 class CargoPengirimanBusController extends Controller
 {
     public static $path = "page.admin.Bus.resi.";
+
+    protected function page(Request $request)
+    {
+        $allWilayah = $request->user->allWilayah();  
+        $data = array(
+            'name' => $request->user->name,
+            'jenisUser' => $request->user->jenis_user,
+            'isUserSuperadmin' => $request->user->is_user_superadmin,
+            'allWilayah' => $allWilayah
+        );
+        return view('page.admin.Bus.CargoPengirimanBus', [], $data); 
+    }
     /**
      * Display a page pengiriman
      *
@@ -36,8 +48,7 @@ class CargoPengirimanBusController extends Controller
         // if($validator){
         //     return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
         // } 
-        $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
-        $no_resi = CargoPengirimanBarang::select('no_resi')->max('no_resi') ? CargoPengirimanBarang::select('no_resi')->max('no_resi') + 1 : 1;
+        $no_lmt = $no_resi = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
 
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
@@ -139,7 +150,7 @@ class CargoPengirimanBusController extends Controller
             'id_status_pembayaran' => $request->statusPembayaran,
             'jenis_paket' => $request->jenisPaket,
             'jenis_biaya' => $request->jenisBiaya,
-            'asal' => $request->pickup,
+            'asal' => $request->user->is_user_superadmin == 1 ? $request->pickup : $request->user->wilayah()->wilayah,
             'tujuan' => $request->dropoff,
 
             'id_user' => $request->user->id, 
@@ -161,6 +172,7 @@ class CargoPengirimanBusController extends Controller
         $data['message'] = 'Error pada input';
         return redirect()->back()->withErrors($data)->withInput(); 
     }
+    
     protected function validator(Request $request)
     {
         return $request->validate([
@@ -285,18 +297,6 @@ class CargoPengirimanBusController extends Controller
         // return $pdf->download("tes.pdf");
     }
 
-    protected function page(Request $request)
-    {
-        $cargoArray = $request->user->kodeKota();
-        $wilayahArray = $request->user->allWilayah();
-        $data = array(
-            'name' => $request->user->name,
-            'allCargo' => $cargoArray,
-            'allWilayah' => $wilayahArray
-        );
-        return view('page.admin.Bus.CargoPengirimanBus', [], $data); 
-    }
-
     protected function barang()
     {
         $barang = PengirimanBus::all();
@@ -323,23 +323,4 @@ class CargoPengirimanBusController extends Controller
         $categorys->save();
         return redirect('/barang/bus/category')->with('status','Data Telah Tersimpan');
     }
-
-    // protected function getTujuan(Request $request)
-    // {
-    //     $nama_wilayah = $request->name;
-    //     $kotas = Tujuan::where('nama_wilayah', $nama_wilayah)->get;
-        
-    //     foreach ($kotas as $kota ){
-    //         echo "<option value='{{ $kota->name }}'>{{ $kota->name }}</option>";
-    //     }
-    // }
-
-   
-
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 }
