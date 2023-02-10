@@ -73,7 +73,15 @@
                         <label for="jenisBarang" class="fs-5 form-label fw-bold w-100">Fitur</label>  
                     </div>
                     <div class="col-12 pt-2"> 
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
                         <a role="button" class="fs-5 btn btn-success w-100" href="<?php echo e(url('barang/manifest/create')); ?>">Tambah Manifest</a>
+========
+                        @if (Auth::user()->jenis_user == "bus")
+                        <a role="button" class="fs-5 btn btn-success w-100" href="{{ url('/barang/manifest/bus/create') }}">Tambah Manifest</a>
+                        @elseif (Auth::user()->jenis_user == "truk")
+                        <a role="button" class="fs-5 btn btn-success w-100" href="{{ url('barang/manifest/create') }}">Tambah Manifest</a>
+                        @endif
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
                     </div>   
                 </div>
             </div>
@@ -92,8 +100,14 @@
                         </tr>
                     </thead>
                     <tbody>
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
                     <?php $__currentLoopData = $allCargo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $barang): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                         <?php if($barang->no_manifest): ?> 
+========
+                    @if (Auth::user()->jenis_user == "truk")
+                    @foreach ($allCargo as $barang) 
+                        @if ($barang->no_manifest) 
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
                             <tr>
                                 <td data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman <?php echo e($barang->jenis_pengiriman); ?>"><?php echo e($loop->index + 1); ?></td> 
                                 <td><?php echo e($barang->no_manifest); ?></td>  
@@ -104,6 +118,7 @@
 
                                 <td>
                                     <div class="row justify-content-start align-items-center g-2 px-3">
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
                                         <?php if($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->kota || $name == "superadmin")): ?> 
                                         <div class="col-6 text-center">
                                                 <form action="<?php echo e(url("barang/manifest/berangkat")); ?>" method="post">
@@ -113,12 +128,24 @@
                                                 </form> 
                                         </div>  
                                         <?php endif; ?>
+========
+                                        @if ($barang->last_id_message_tracking == 1  && ($barang->asal == $kodeKota->kota || $name == "superadmin")) 
+                                        <div class="col-6 text-center">
+                                                <form action="{{ url("barang/manifest/berangkat") }}" method="post">
+                                                    @csrf
+                                                    <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
+                                                </form> 
+                                        </div>  
+                                        @endif
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
                                         <div class="col-6 text-center">
                                             <form action="<?php echo e(url("barang/manifest/print")); ?>" method="get" target="_blank">
                                                 <input type="text" name="no_manifest" value="<?php echo e(encrypt($barang->no_manifest)); ?>" hidden>
                                                 <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
                                             </form>
                                         </div>   
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
                                             <?php if(($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->kota || $name == "superadmin")): ?> 
                                             <div class="col-6 text-center">
                                                     <form action="<?php echo e(url("barang/manifest/sampai")); ?>" method="get">
@@ -129,12 +156,74 @@
                                             <?php endif; ?>
                                         <div class="col-6 text-center">
                                             <button type="button" class="btn btn-primary <?php echo e(($barang->is_lunas && $barang->is_diterima) ? "w-100" : ""); ?>" id="btnGetTracking" style="width: 95px" value="<?php echo e(encrypt($barang->no_manifest)); ?>" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+========
+                                            @if (($barang->last_id_message_tracking == 2) && ($barang->tujuan == $kodeKota->kota || $name == "superadmin")) 
+                                            <div class="col-6 text-center">
+                                                    <form action="{{ url("barang/manifest/sampai") }}" method="get">
+                                                        <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
+                                                    </form> 
+                                            </div>    
+                                            @endif
+                                        <div class="col-6 text-center">
+                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" style="width: 95px" value="{{ encrypt($barang->no_manifest) }}" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
                                         </div>  
                                     </div>   
                                 </td>  
                             </tr>
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
                         <?php endif; ?>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
+========
+                        @endif
+                    @endforeach 
+                    @elseif (Auth::user()->jenis_user == "bus")
+                    @foreach ($allWilayah as $barang)
+                        @if ($barang->no_manifest) 
+                            <tr>
+                                <td data-toggle="tooltip" data-placement="top" title="Jenis Pengiriman {{ $barang->jenis_pengiriman }}">{{ $loop->index + 1 }}</td> 
+                                <td>{{ $barang->no_manifest }}</td>  
+                                <td>{{ $barang->no_pol }}</td>   
+                                <td>{{ $barang->sopir ? $barang->sopir : $barang->sopir_utama }}</td>  
+
+                                <td>{{ \Carbon\Carbon::parse($barang->created)->format('d-M-y') }}</td>  
+
+                                <td>
+                                    <div class="row justify-content-start align-items-center g-2 px-3">
+                                        @if ($barang->last_id_message_tracking == 1  && ($barang->asal == $wilayah->wilayah || $name == "superadmin")) 
+                                        <div class="col-6 text-center">
+                                                <form action="{{ url("barang/manifest/berangkat") }}" method="post">
+                                                    @csrf
+                                                    <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                    <button type="submit" class="btn btn-primary" style="width: 95px">Berangkat</button>
+                                                </form> 
+                                        </div>  
+                                        @endif
+                                        <div class="col-6 text-center">
+                                            <form action="{{ url("/barang/manifest-bus/print") }}" method="get" target="_blank">
+                                                <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                <button type="submit" class="btn btn-primary" style="width: 95px">Cetak</button>
+                                            </form>
+                                        </div>   
+                                            @if (($barang->last_id_message_tracking == 2) && ($barang->tujuan == $wilayah->wilayah || $name == "superadmin")) 
+                                            <div class="col-6 text-center">
+                                                    <form action="{{ url("barang/manifest/sampai") }}" method="get">
+                                                        <input type="text" name="no_manifest" value="{{ encrypt($barang->no_manifest) }}" hidden>
+                                                        <button type="submit" class="btn btn-primary" style="width: 95px">Sampai</button>
+                                                    </form> 
+                                            </div>    
+                                            @endif
+                                        <div class="col-6 text-center">
+                                            <button type="button" class="btn btn-primary {{ ($barang->is_lunas && $barang->is_diterima) ? "w-100" : "" }}" id="btnGetTracking" style="width: 95px" value="{{ encrypt($barang->no_manifest) }}" data-bs-toggle="modal" data-bs-target="#modalTracking">Lacak</button>
+                                        </div>  
+                                    </div>   
+                                </td>  
+                            </tr>
+                        @endif
+                    @endforeach 
+                    @endif
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
                     </tbody>
                 </table>
             </div> 
@@ -142,9 +231,15 @@
     </div>
 <?php $__env->stopSection(); ?>
 
+<<<<<<<< HEAD:storage/framework/views/8fd4ab1ab6e6d39f058b28a108db7f4076de49e1.php
 <?php $__env->startSection('footer'); ?>
     <?php echo $__env->make("layouts.footerAdmin", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
 <?php $__env->stopSection(); ?>
+========
+@section('footer')
+    @include("layouts.footerAdmin") 
+@endsection
+>>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d:resources/views/page/admin/manifest/CargoPengirimanTrukManifest.blade.php
 
 <?php $__env->startSection('script-body-bottom'); ?>  
     <script> 

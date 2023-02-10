@@ -20,9 +20,15 @@ class CargoManifestController extends Controller
      */
     protected function page(Request $request)
     {
-        $kodeKota = $request->user->kodeKota(); 
+        $kodeKota = $request->user->kodeKota();
+        $wilayah = $request->user->Wilayah(); 
 
+<<<<<<< HEAD
         $cargoArray = $request->user->manifests($request->user->id_kode_kota);
+=======
+        $cargoArray = $request->user->truckManifests($kodeKota->kota);
+        $wilayahArray = $request->user->busManifests($wilayah->wilayah);
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
         
         $data = array(
             'name' => $request->user->name, 
@@ -30,10 +36,17 @@ class CargoManifestController extends Controller
             'jenisUser' => $request->user->jenis_user,
 
             'kodeKota' => $kodeKota,
+            'wilayah' => $wilayah,
 
             'allCargo' => $cargoArray,
+<<<<<<< HEAD
         );  
         return view(CargoManifestController::$path . 'CargoPengirimanManifest', [], $data);
+=======
+            'allWilayah' => $wilayahArray,
+        );
+        return view(CargoManifestController::$path . 'CargoPengirimanTrukManifest', [], $data);
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     }
 
     /**
@@ -55,6 +68,7 @@ class CargoManifestController extends Controller
             'isUserSuperadmin' => $request->user->is_user_superadmin,
 
             'kodeKota' => $kodeKota,
+<<<<<<< HEAD
 
             'allWilayah' => $allWilayah,
         );
@@ -306,6 +320,10 @@ class CargoManifestController extends Controller
         $data = array();
         $data['message'] = 'Error memilih jenis pengiriman';
         return redirect()->back()->withErrors($data)->withInput();
+=======
+        );
+        return view(CargoManifestController::$path . 'CargoPengirimanTrukManifestInput', [], $data);
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     }
 
     /**

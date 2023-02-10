@@ -40,6 +40,7 @@ class CargoPengirimanDetail extends Model
         'sopir',
         'kernet', 
         'no_pol', 
+        'jenis_paket', 
 
         'is_lunas', 
         'is_diterima', 
@@ -110,6 +111,7 @@ class CargoPengirimanDetail extends Model
     }
 
     /**
+<<<<<<< HEAD
      * Get the Pengiriman Cargo.
     */ 
     public function barang($no_lmt)
@@ -139,6 +141,8 @@ class CargoPengirimanDetail extends Model
     }
 
     /**
+=======
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
      * Get the Pengiriman Cargo.
     */ 
     public function summary($no_lmt)
@@ -149,17 +153,28 @@ class CargoPengirimanDetail extends Model
             'code, 
             berat, 
             jenis_barang,
+<<<<<<< HEAD
             kode_kotas.kota as asal,
             status_pembayarans.pesan,
+=======
+            cargo_pengiriman_details.asal, 
+            status_pembayarans.pesan,
+            area_bus.kode_wilayah, 
+            area_bus.kode_kota,
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
             SUM(biaya) as biaya,
             SUM(jumlah_barang) as jumlah_barang,
             cargo_pengiriman_details.keterangan, 
             DATE(cargo_pengiriman_details.created_at) as created',
         )
         ->leftJoin("cargo_pengiriman_details", "cargo_pengiriman_details.no_lmt", "cargo_pengiriman_barangs.no_lmt")
+<<<<<<< HEAD
 
         ->leftJoin("kode_kotas", "kode_kotas.id_kode_kota", "cargo_pengiriman_details.id_kode_kota_asal") 
 
+=======
+        ->leftJoin("area_bus", "area_bus.wilayah", "cargo_pengiriman_details.asal")
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
         ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran")
         ->where("cargo_pengiriman_details.no_lmt", ($no_lmt ? decrypt($no_lmt) : $this->no_lmt))
         ->orderByDesc('cargo_pengiriman_details.created_at') 

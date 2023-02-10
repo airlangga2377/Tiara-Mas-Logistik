@@ -11,7 +11,10 @@ use App\Models\Cargo\Bus\Bus;
 use App\Models\Cargo\Bus\Tujuan;
 use App\Models\Cargo\Bus\Regency;
 use App\Models\Cargo\Bus\Wilayah as Wilayah;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
+=======
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 
 class User extends Authenticatable
 {
@@ -85,7 +88,12 @@ class User extends Authenticatable
                 cargo_pengiriman_details.no_manifest,
                 nama_pengirim,
                 nama_penerima,
+<<<<<<< HEAD
                 kode_kotas.kota as tujuan,
+=======
+                asal,
+                tujuan,
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                 jenis_pengiriman,
                 SUM(cargo_pengiriman_barangs.biaya) as biaya,
                 SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
@@ -109,6 +117,7 @@ class User extends Authenticatable
             ->get()
             ; 
         } else {
+<<<<<<< HEAD
             if($this->jenis_user == "truk"){
                 $data = $sql
                 ->selectRaw(
@@ -187,6 +196,42 @@ class User extends Authenticatable
                 ;  
             }
         } 
+=======
+            $sql =  new CargoPengirimanDetail();
+            $data = $sql
+            ->selectRaw(
+                'id_cargo_pengiriman_barang,
+                cargo_pengiriman_details.no_lmt,
+                cargo_pengiriman_details.no_resi,
+                cargo_pengiriman_details.no_manifest,
+                nama_pengirim,
+                nama_penerima,
+                asal,
+                tujuan,
+                jenis_pengiriman,
+                SUM(cargo_pengiriman_barangs.biaya) as biaya,
+                SUM(cargo_pengiriman_barangs.jumlah_barang) as jumlah_barang,
+                MAX(message_trackings.id_message_tracking) as last_id_message_tracking,
+                keterangan,
+                status_pembayarans.id_status_pembayaran,
+                is_lunas,
+                is_diterima,
+                DATE(cargo_pengiriman_details.created_at) as created',
+            ) 
+            ->leftJoin('cargo_pengiriman_barangs', 'cargo_pengiriman_barangs.no_lmt', 'cargo_pengiriman_details.no_lmt')
+            ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
+            ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
+            ->leftJoin("status_pembayarans", "status_pembayarans.id_status_pembayaran", "cargo_pengiriman_details.id_status_pembayaran") 
+            
+            ->orWhere('tujuan', $kotaAdmin)
+            ->orWhere('asal', $kotaAdmin)
+            ->orderByDesc('cargo_pengiriman_barangs.created_at') 
+            ->groupBy("cargo_pengiriman_details.no_lmt")
+            ->get()
+            ; 
+        }
+        // dd($data);
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
         return $data ? $data : array();
     }
 
@@ -291,6 +336,7 @@ class User extends Authenticatable
         $data = $sql 
         ->first();
         return $data ? $data : new KodeKota();
+<<<<<<< HEAD
     }  
 
     public function allWilayah(){ 
@@ -306,6 +352,9 @@ class User extends Authenticatable
         return $data ? $data : array();
     }
     
+=======
+    }
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     public function allTujuan()
     {
         if($this->name == "superadmin"){
@@ -326,6 +375,40 @@ class User extends Authenticatable
         return $data ? $data : array();
     }
 
+<<<<<<< HEAD
+=======
+    public function allWilayah(){
+        if($this->name == "superadmin"){
+            $sql =  new Wilayah();
+            $data = $sql
+            ->select(
+                'id_area_bus',
+                'kota',
+                'kode_kota',
+                'wilayah',
+                'kode_wilayah',
+                'alamat',
+            )
+            ->groupBy("kota")
+            ->get()
+            ;
+        } else {
+            $sql =  new Wilayah();            
+            $data = $sql
+            ->select(
+                'kota',
+                'kode_kota',
+                'wilayah',
+                'kode_wilayah',
+                'alamat',
+            )
+            ->groupBy("kota")
+            ->get();
+        }
+        return $data ? $data : array();
+    }
+
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     public function wilayah(){
         if($this->name == "superadmin"){
             $sql =  new Wilayah();
@@ -372,8 +455,13 @@ class User extends Authenticatable
             DATE(cargo_pengiriman_details.created_at) as created',
         )    
         ->leftJoin("bus", "bus.no_pol", "cargo_pengiriman_details.no_pol") 
+<<<<<<< HEAD
         ->leftJoin("trackings", "trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
         ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "trackings.id_message_tracking") 
+=======
+        ->leftJoin("truck_trackings", "truck_trackings.no_lmt", "cargo_pengiriman_details.no_lmt") 
+        ->leftJoin("message_trackings", "message_trackings.id_message_tracking", "truck_trackings.id_message_tracking") 
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
         ->where('no_manifest', "!=", null)
         ->where('tujuan', $tujuan)
         ->orWhere('asal', $tujuan)

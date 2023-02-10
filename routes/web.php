@@ -45,6 +45,12 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
 
     Route::post('/barang/manifest/get', 'CargoManifestController@getManifest'); 
     Route::post('/barang/manifest/tracking', 'CargoManifestController@getManifestTracking'); 
+<<<<<<< HEAD
+=======
+    
+    Route::get('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
+    Route::post('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     
     Route::post('/barang/manifest/berangkat', 'CargoManifestController@updateBerangkat');  
     Route::post('/barang/manifest/sampai', 'CargoManifestController@updateSampai');  
@@ -74,9 +80,18 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::get('/barang/update/lunas', 'CargoPengirimanController@updateLunas');  
 
     // BARANG DELETE
+<<<<<<< HEAD
     Route::get('/barang/delete', 'CargoPengirimanController@destroyDetail');
 
     Route::post('/barang/tracking', 'CargoPengirimanController@getResiTracking');
+=======
+    Route::get('/barang/truk/delete', 'CargoPengirimanTrukController@destroy');
+
+    Route::post('/barang/tracking', 'CargoPengirimanTrukController@getResiTracking');
+    // PENGIRIMAN BUS    
+    Route::get('/barang/bus/insert', 'Bus\CargoPengirimanBusController@page');
+    Route::post('/barang/bus/insert-save', 'Bus\CargoPengirimanBusController@pagecreate');
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 
     // RESI BUS
     Route::get('/barang/bus', function (){return abort(404);});  
@@ -90,7 +105,12 @@ Route::group(['middleware' => 'userAuthenticated'], function ()
     Route::post('/save-busarea', 'WilayahBusController@add_wilayah');
     // Route::get('/barang/bus/print/resi', 'CargoPengirimanController@DeliveryNote');
 
+<<<<<<< HEAD
     // MANIFEST BUS 
+=======
+    // MANIFEST BUS
+    Route::get('/barang/manifest/bus/create', 'Bus\ManifestBusController@pageCreateManifest');  
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     Route::post('/barang/manifest-bus/create', 'Bus\ManifestBusController@createManifest');  
     Route::post('/barang/manifest-bus/get', 'Bus\ManifestBusController@getManifest'); 
     Route::get('/barang/manifest-bus/print', 'Bus\ManifestBusController@storeCetakManifestBus');  

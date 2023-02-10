@@ -76,11 +76,16 @@
             <?php endif; ?>
 
             <?php if(Session::has("message")): ?> 
-                <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
-                    <?php echo Session::get("message"); ?>
-
-                </div>
-            <?php endif; ?> 
+                    <div class="fs-5 alert alert-success bg-success text-white border-0 text-center" role="alert" id="toggleStatusPengiriman">
+                        <?php echo Session::get("message"); ?> 
+                        <script>
+                            window.open("/barang/bus/print/resi?no_lmt=<?php echo Session::get('no_lmt'); ?>", "_blank")
+                        </script>
+                        <script>
+                            window.open("/barang/bus/print/barang?no_lmt=<?php echo Session::get('no_lmt'); ?>", "_blank")
+                        </script>
+                    </div>
+                <?php endif; ?> 
             <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-1">
                     <div class="col">
@@ -168,7 +173,10 @@
             </style>
             <div class="row justify-content-between d-flex g-1">
                 <div class="row align-items-start py-5 md-15">
+<<<<<<< HEAD
                     
+=======
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
                     <?php if($isUserSuperadmin): ?>
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">                             
@@ -234,23 +242,23 @@
                     <div class="row align-items-start py-1">
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                <label for="tipePaket" class="form-label fs-4">Pilih Tipe Paket</label>                                                                            
-                                <select class="form-select shadow-sm p-3" name="jenisPaket" id="tipePaket" aria-describedby="tipePaketText" value="<?php echo old('tipePaket')[$i]; ?>">                                        
+                                <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
+                                <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="<?php echo old('jenisBarang')[$i]; ?>">                                        
                                         <option value="barang">Barang</option>
                                         <option value="dokumen">Dokumen</option>
                                         <option value="cairan">Cairan</option>
                                 </select>
-                                <div id="validationTipePaket" class="invalid-feedback">
-                                    <?php if(Session::has("tipePaketError")): ?> <?php endif; ?>
+                                <div id="validationJenisBarang" class="invalid-feedback">
+                                    <?php if(Session::has("jenisBarangError")): ?> <?php endif; ?>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-xl-3 mb-sm-5">
-                                <label for="jenisBarang" class="form-label fs-4">Jenis Barang</label>
-                                <input type="text" class="form-control shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" placeholder="isi jenis barang" value="<?php echo old('jenisBarang')[$i]; ?>">
-                                <div id="validationJenisBarang" class="invalid-feedback">
-                                    <?php if(Session::has("jenisBarangError")): ?> <?php endif; ?>
+                                <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
+                                <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="<?php echo old('jenisPaket'); ?>">
+                                <div id="validationJenisPaket" class="invalid-feedback">
+                                    <?php if(Session::has("jenisPaketError")): ?> <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -324,23 +332,23 @@
                 <div class="row align-items-start py-1">
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
-                            <label for="tipePaket" class="form-label fs-4">Pilih Tipe Paket</label>                                                                            
-                            <select class="form-select shadow-sm p-3" name="jenisPaket" id="tipePaket" aria-describedby="tipePaketText" value="">                                        
+                            <label for="jenisBarang" class="form-label fs-4">Pilih Jenis Barang</label>                                                                            
+                            <select class="form-select shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" value="">                                        
                                     <option value="barang">Barang</option>
                                     <option value="dokumen">Dokumen</option>
                                     <option value="cairan">Cairan</option>
                             </select>
-                            <div id="validationTipePaket" class="invalid-feedback">
-                                <?php if(Session::has("tipePaketError")): ?> <?php endif; ?>
+                            <div id="validationJenisBarang" class="invalid-feedback">
+                                <?php if(Session::has("jenisBarangError")): ?> <?php endif; ?>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-xl-3 mb-sm-5">
-                            <label for="jenisBarang" class="form-label fs-4">Jenis Barang</label>
-                            <input type="text" class="form-control shadow-sm p-3" name="jenisBarang[]" id="jenisBarang" aria-describedby="jenisBarangText" placeholder="isi jenis barang" value="">
-                            <div id="validationJenisBarang" class="invalid-feedback">
-                                <?php if(Session::has("jenisBarangError")): ?> <?php endif; ?>
+                            <label for="jenisPaket" class="form-label fs-4">Isi Menurut Pengakuan</label>
+                            <input type="text" class="form-control shadow-sm p-3" name="jenisPaket" id="jenisPaket" aria-describedby="jenisPaketText" placeholder="isi menurut pengakuan" value="">
+                            <div id="validationJenisPaket" class="invalid-feedback">
+                                <?php if(Session::has("jenisPaketError")): ?> <?php endif; ?>
                             </div>
                         </div>
                     </div>

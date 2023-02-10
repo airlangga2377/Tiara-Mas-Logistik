@@ -48,7 +48,12 @@ class CargoPengirimanBusController extends Controller
         // if($validator){
         //     return redirect()->back()->withErrors($this->validatorMany($request))->withInput(); 
         // } 
+<<<<<<< HEAD
         $no_lmt = $no_resi = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
+=======
+        $no_lmt = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
+        $no_resi = CargoPengirimanBarang::select('no_lmt')->max('no_lmt') ? CargoPengirimanBarang::select('no_lmt')->max('no_lmt') + 1 : 1;
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
 
         for ($i=0; $i < count($request->jenisBarang); $i++) {    
             if($request->jenisBarang[$i]){
@@ -297,6 +302,21 @@ class CargoPengirimanBusController extends Controller
         // return $pdf->download("tes.pdf");
     }
 
+<<<<<<< HEAD
+=======
+    protected function page(Request $request)
+    {
+        $kodeKota = $request->user->wilayah();
+        $cargoArray = $request->user->allWilayah($kodeKota->kota);
+        $data = array(
+            'isUserSuperadmin' => $request->user->is_user_superadmin,
+            'name' => $request->user->name,
+            'allCargo' => $cargoArray
+        );
+        return view('page.admin.Bus.CargoPengirimanBus', [], $data); 
+    }
+
+>>>>>>> a1d66252d031d8304a268ea3ce5a09ee09d6e01d
     protected function barang()
     {
         $barang = PengirimanBus::all();
